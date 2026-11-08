@@ -156,6 +156,25 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .intro-title{margin:0; font-family:var(--f-retro); font-weight:900; font-variation-settings:"SOFT" 100, "WONK" 1, "opsz" 144; font-size:min(7.2cqw, 13cqh); line-height:.92; letter-spacing:-.005em; color:var(--retro-ink); text-shadow:.05em .05em 0 var(--retro-shadow)}
 .intro-card .scroll-cue{color:#F3EBD3; font-size:max(9px, min(1cqw, 1.8cqh)); margin-top:min(1cqw,2cqh)}
 .intro-skip{position:absolute; left:3cqw; bottom:4.5cqh; border:1px solid var(--cta)}
+.intro-cta{border:1px solid var(--cta); margin-top:min(1.2cqw,2.2cqh)}
+/* desktop clip layout, after a streaming-service hero: bottom-left title, meta row, description, two buttons; discipline badges bottom-right */
+.ov-meta,.ov-actions{display:none}
+@media (min-width:821px){
+  .screen.openable .ov{justify-content:flex-end; padding:3.6cqw 4cqw; background:linear-gradient(to top, rgba(6,10,20,.88), rgba(6,10,20,.25) 45%, transparent 65%), linear-gradient(90deg, rgba(6,10,20,.65), transparent 58%)}
+  .screen.openable .ov-top{position:absolute; top:3cqw; left:4cqw; right:4cqw}
+  .screen.openable .ov-mid{max-width:56cqw}
+  .ov-meta{display:flex; flex-wrap:wrap; align-items:center; gap:.35em .55em; margin:.9em 0 0; font-size:max(12px,1.3cqw); font-weight:600; color:#fff}
+  .ov-meta i{font-style:normal; color:rgba(255,255,255,.5)}
+  .screen.openable .ov-sub{margin:.55em 0 0; font-size:max(14px,1.65cqw); line-height:1.4; color:#fff; max-width:40ch}
+  .ov-actions{display:flex; gap:max(8px,.9cqw); margin-top:36px}
+  .ov-actions .chip-btn,.ov-btn2{height:max(38px,4.3cqw); padding:0 max(16px,2.2cqw); font-size:max(13px,1.55cqw); font-weight:600; border-radius:999px; margin:0}
+  .ov-actions .chip-btn svg{width:.95em; height:.95em}
+  .ov-btn2{display:inline-flex; align-items:center; gap:8px; color:#fff; background:rgba(120,120,128,.5); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
+  .ov-btn2:hover{background:rgba(140,140,148,.62)}
+  .ov-badges{position:absolute; right:4cqw; bottom:3.6cqw; display:flex; gap:max(6px,.7cqw)}
+  .ov-badge{display:inline-flex; align-items:center; gap:7px; padding:max(5px,.55cqw) max(9px,1cqw); border-radius:8px; background:rgba(16,18,24,.62); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); font-size:max(11px,1.1cqw); font-weight:600; color:#fff}
+  .ov-badge i{width:8px; height:8px; border-radius:2px; display:block}
+}
 @keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(11px);opacity:0}100%{transform:translateY(0);opacity:0}}
 .playhead{position:absolute; top:0; bottom:0; width:0; z-index:5; pointer-events:none}
 .playhead::before{content:""; position:absolute; top:0; bottom:0; left:-.5px; width:1px; background:var(--play)}
@@ -419,7 +438,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
   .m-actions{display:grid}
   .intro-card .scroll-cue{display:none}
   .intro-card{padding:6cqh 5cqw 5.5cqw}
-  .intro-skip{display:none}
+  .intro-skip,.intro-cta,.ov-cta{display:none}
   .intro-card{gap:3.5cqh}
   .intro-lockup{height:clamp(46px,13vw,64px)}
   .inspector .panel-head{display:none}
@@ -737,10 +756,10 @@ function overlayFor(seg){
     <div class="intro-card" id="introT">
       <p class="intro-pre">Raul Muñoz presents</p>
       <h1 class="intro-title">Creative Director<br>who still makes<br>the work.</h1>
-      <span class="scroll-cue" aria-hidden="true">Scroll</span>
+      <button type="button" class="chip-btn intro-cta" data-act="skip">View work →</button>
       <div class="m-actions"><button type="button" class="m-btn primary" data-act="skip">${PLAY}View work</button><button type="button" class="m-btn" data-act="about">About</button></div>
     </div>
-    <button type="button" class="chip-btn intro-skip" data-act="skip">View work →</button>`;
+    `;
   if (seg.kind === 'end') return `
     <div class="ov-top mono"><span>END CARD</span><span id="fr"></span></div>
     <div class="ov-mid"><h2 class="ov-title">That's a wrap.</h2><p class="ov-sub">Want the full timeline, the archive, or a conversation?</p></div>
@@ -752,10 +771,12 @@ function overlayFor(seg){
     <div class="m-actions" style="margin-top:0"><button type="button" class="m-btn primary" data-act="contact">Contact</button><button type="button" class="m-btn" data-act="restart">Back to start</button></div>`;
   return `
     <div class="ov-top mono"><span></span><span id="fr"></span></div>
-    <div class="ov-mid"><p class="m-eyebrow">Clip ${seg.n} · ${TC[seg.tracks[0]].name}</p><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2><p class="ov-sub">${seg.line}</p>
+    <div class="ov-mid"><p class="m-eyebrow">Clip ${seg.n} · ${TC[seg.tracks[0]].name}</p><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2>
+      <p class="ov-meta">${[seg.client, seg.year, seg.role, seg.markets].filter(x => x && x !== '—').join('<i>•</i>')}</p>
+      <p class="ov-sub">${seg.line}</p>
+      <div class="ov-actions"><button type="button" class="chip-btn ov-cta" data-act="open">${PLAY}Open project</button><button type="button" class="ov-btn2" data-act="next">Next clip</button></div>
       <div class="m-actions"><button type="button" class="m-btn primary" data-act="open">${PLAY}Open project</button><button type="button" class="m-btn" data-act="next">Next clip${NEXT}</button></div></div>
-    <div class="ov-bottom"><span class="hint mono">${seg.tracks.map(t => TC[t].name).join(' · ')}</span>
-      </div>`;
+    <div class="ov-bottom ov-badges">${seg.tracks.map(t => `<span class="ov-badge"><i style="background:${TC[t].c}"></i>${TC[t].name}</span>`).join('')}</div>`;
 }
 ov.addEventListener('click', e => {
   const a = e.target.closest('[data-act]'); if (!a) return;
@@ -781,7 +802,7 @@ function inspectorFor(seg){
     <p class="insp-line">${seg.line}</p>
     <dl class="kv"><dt>Client</dt><dd>${seg.client}</dd><dt>Year</dt><dd>${seg.year}</dd><dt>Role</dt><dd>${seg.role}</dd><dt>Scale</dt><dd>${seg.scale}</dd></dl>
     <div class="tags">${seg.tracks.map(t => `<span class="tag"><i style="background:${TC[t].c}"></i>${TC[t].name}</span>`).join('')}</div>
-    <button type="button" class="chip-btn insp-open" data-open="${seg.id}">Open project ${ARR}</button>`;
+    `;
 }
 $('#insp').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openProject(b.dataset.open, true); });
 
