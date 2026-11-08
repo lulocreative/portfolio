@@ -1,0 +1,61 @@
+PROJECT NAME: Yummo Adventures – Cenovis Kids Storybook App
+CLIENT / COMPANY: Cenovis (agency: Pusher, Sydney)
+YEAR: 2012
+MARKETS: Australia
+PLATFORM: Tablet app, iOS and Android (check)
+
+MY ROLE: Digital Art Director (concept, design and animation)
+
+STARTING POINT: a Word document with the kids' story and dialogue. Nothing else.
+Everything visual, and the game concepts, came from me.
+
+LED:
+- The creative idea: turning the story into an app world (Yummo)
+- The concept for all four games (Super Charge, Wipe Out, Get Netted, Bed Head)
+
+MADE MYSELF:
+- Character design: Sammy and Sally, fruit characters, germs, fish, sleep enemies
+- Illustration of all characters and worlds
+- Storyboards for the stories
+- Animation of the stories and characters
+
+THE CHALLENGE (from Behance):
+"A huge 34% of Aussie kids do not eat the minimum recommended daily number of serves
+of fruit and vegetables. Cenovis wanted to reach parents and their kids, teaching them
+the importance of good nutrition and vitamins in a fun and positive way."
+
+THE IDEA (from Behance, the text is cut off in the original image):
+"To show kids the benefits of eating well Pusher created Yummo Adventures, a series of
+games for the tablet (both iOS and an[droid?]). The games take kids on an adventure where
+they learn about 'Good Stuff' like the vitamins found in fruit and vegetables..."
+
+STORYBOOK: animated stories with Sammy and Sally ("Sammy gets sleepy", "Sally gets sniffly"...)
+
+GAMES (from Behance):
+- SUPER CHARGE: Sammy and Sally run through Yummo collecting fruit and vegetables to keep
+  their energy up while avoiding candy rocks. Speed and difficulty increase over time.
+- WIPE OUT: squash nasty germs before they make Sammy and Sally sneeze. 3 lives,
+  multivitamin power-ups give temporary protection.
+- GET NETTED: catch the fish jumping out of the lake with a net to earn fish oil points.
+  Gets faster and more complex as you improve.
+- BED HEAD: Sammy and Sally bounce on floating beds in a dream, reaching for flying apples
+  while avoiding "sleep-depriving" things like TVs and video games. Timing and rhythm game.
+
+CHARACTERS: Sammy and Sally, fruit characters, germ monsters, candy rocks, fish, sleep enemies
+(TV, game controller, light bulb, moon).
+
+RESULTS: no data available. Lead with the craft and the brief-to-product story instead.
+
+FILES:
+00-behance-cover.png            Behance thumbnail (404x316, small)
+01-intro-title-ipad.jpg         Logo + iPad home screen (hero candidate)
+02-yummo-world-ipad.jpg         Yummo world on iPad
+03-story-scenes-grid.jpg        6 storybook scenes
+04-07-game-*.jpg                One screen per game
+08-game-characters.jpg          Character sheet
+09-sammy-and-sally.jpg          Main characters
+10-full-page-background.jpg     Behance page background
+11-full-presentation-original.jpg  The full Behance presentation, uncut
+
+NOTE: Behance only gives 600 px wide images. For the website, originals (artwork,
+animation files, app screen recordings) from your archive will look much better.
