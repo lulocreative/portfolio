@@ -6,7 +6,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-[hidden]{display:none!important}
 /* Layout: a single-screen editing suite. Program monitor + inspector on top, multi-track timeline below.
    Page scroll drives the playhead; overlays (project, lightbox, bin, about) sit above the suite. */
 :root{
@@ -121,6 +120,16 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .clip .fx{position:absolute; top:0; left:0; right:0; height:3px; background:rgba(0,0,0,.25)}
 .clip span{position:relative; overflow:hidden; text-overflow:ellipsis}
 .wave{position:absolute; inset:3px 0; width:100%; height:20px}
+.lanes{cursor:grab; touch-action:pan-y}
+.lanes.dragging{cursor:grabbing}
+.lockup-row{display:flex; align-items:center; gap:clamp(12px,2vw,22px); margin:0 0 clamp(10px,2vw,26px)}
+.lockup-row .intro-lockup{margin:0}
+.scroll-cue{display:flex; flex-direction:column; align-items:center; gap:6px; font-family:var(--f-mono); font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:#C9C6BF}
+.scroll-cue .mouse{width:20px; height:32px; border:1.5px solid #ECE9E2; border-radius:11px; position:relative}
+.scroll-cue .mouse::after{content:""; position:absolute; left:50%; top:6px; width:3px; height:7px; margin-left:-1.5px; border-radius:2px; background:var(--play); animation:cue 1.6s cubic-bezier(.6,0,.4,1) infinite}
+.ov > .scroll-cue{position:absolute; right:clamp(16px,3vw,36px); top:50%; transform:translateY(-50%)}
+.intro-name{margin:0 0 clamp(8px,1.4vw,16px); font-family:var(--f-mono); font-size:clamp(10px,1vw,12px); letter-spacing:.14em; text-transform:uppercase; color:#F3E3DE}
+@keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(11px);opacity:0}100%{transform:translateY(0);opacity:0}}
 .playhead{position:absolute; top:0; bottom:0; width:0; z-index:5; pointer-events:none}
 .playhead::before{content:""; position:absolute; top:0; bottom:0; left:-.5px; width:1px; background:var(--play)}
 .playhead::after{content:""; position:absolute; top:0; left:-6px; border:6px solid transparent; border-top:9px solid var(--play)}
@@ -239,7 +248,16 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
   .kv{display:none}
   .labels{display:none}
   .tl-body{grid-template-columns:minmax(0,1fr)}
-  .lane,.ruler{height:22px} .clip{font-size:10px}
+  .lane,.ruler{height:30px} .clip{font-size:11px}
+  .inspector .tags{display:none}
+  .wf-badge{display:none}
+  .ov-title{font-size:clamp(22px,6.6vw,30px)}
+  .ov-top{display:none}
+  .intro-lockup{height:clamp(46px,13vw,64px)}
+  .inspector .panel-head{display:none}
+  .insp-line{font-size:13px}
+  .ov-sub{display:none}
+  .ov-bottom .hint{display:none}
   .facts{grid-template-columns:1fr 1fr}
   .facts div{padding-left:0 !important; border-left:0 !important; border-top:1px solid var(--line)}
   .facts div:nth-child(-n+2){border-top:0}
@@ -295,7 +313,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
       <div class="tl-head">
         <span class="eyebrow seq">Sequence 01</span>
         <span class="tc mono" id="tcTl">00:00:00:00</span>
-        <span class="zoom mono">Scroll to scrub · click a clip to jump</span>
+        <span class="zoom mono">Scroll or drag to scrub · click a clip to jump</span>
       </div>
       <div class="tl-body">
         <div class="labels" id="labels"><div class="ruler-pad"></div></div>
@@ -478,6 +496,7 @@ function fitScreen(){
   fitCanvas();
 }
 const SHAPES = ['circle','square','tri','bars','circle','square','grid','circle','bars'];
+const SOLID_BG = '#B23A2F';   // intro + end card: one solid colour inside the 16:9 frame
 const IMG = {};
 function getImg(src){ if (!IMG[src]) { const i = new Image(); i.onload = () => req(); i.src = src; IMG[src] = i; } return IMG[src]; }
 SEGS.forEach(s => (s.imgs || []).forEach(getImg));
@@ -495,6 +514,7 @@ function draw(seg, t){
   const w = cv.width / (cv.width / screen.clientWidth || 1), h = screen.clientHeight;
   ctx.clearRect(0,0,w,h);
   if (seg.imgs) return drawImgs(seg, t, w, h);
+  if (seg.kind === 'intro' || seg.kind === 'end') { ctx.fillStyle = SOLID_BG; ctx.fillRect(0,0,w,h); return; }
   const g = ctx.createLinearGradient(0,0,w,h);
   g.addColorStop(0,'#2E3136'); g.addColorStop(1,'#222428');
   ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
@@ -517,10 +537,11 @@ function draw(seg, t){
 function overlayFor(seg){
   if (seg.kind === 'intro') return `
     <div class="ov-top mono"><span>CLIP 00 · TITLE</span><span id="fr"></span></div>
-    <div class="ov-mid"><img class="intro-lockup" src="brand/lulo-lockup-white.png" alt="lulo · Raul Muñoz, Creative Director">
+    <span class="scroll-cue" aria-hidden="true"><span class="mouse"></span>Scroll</span>
+    <div class="ov-mid"><p class="intro-name">Raul Muñoz · Creative Director</p>
       <h1 class="ov-title" id="introT">Creative Director who still makes the work.</h1>
       <p class="ov-sub">Ideas, direction and hands-on craft across film, digital, illustration and photography.</p></div>
-    <div class="ov-bottom"><span class="hint mono">Scroll to play <span class="arrow">↓</span></span>
+    <div class="ov-bottom"><span></span>
       <button type="button" class="chip-btn" data-act="skip">View work →</button></div>`;
   if (seg.kind === 'end') return `
     <div class="ov-top mono"><span>END CARD</span><span id="fr"></span></div>
@@ -575,7 +596,9 @@ function frame(){
   if (isMobile()) {
     const W = TOTAL * 18;
     lanesInner.style.width = W + 'px';
-    lanesInner.style.transform = `translateX(${laneW/2 - sec/TOTAL*W}px)`;
+    // keep the strip full: playhead starts at the left edge, rides to the centre, stays there, then runs to the right edge at the end
+    const tx = Math.min(0, Math.max(laneW - W, laneW/2 - sec/TOTAL*W));
+    lanesInner.style.transform = `translateX(${tx}px)`;
   } else { lanesInner.style.width = '100%'; lanesInner.style.transform = 'none'; }
   playhead.style.left = (sec / TOTAL * 100) + '%';
   if (seg.i !== curSeg) {
@@ -595,6 +618,29 @@ const req = () => { if (!rafPending) { rafPending = true; requestAnimationFrame(
 addEventListener('scroll', req, {passive:true});
 addEventListener('resize', () => { fitScreen(); curSeg = -1; req(); });
 new ResizeObserver(() => { fitScreen(); req(); }).observe(screen.parentElement);
+
+/* ---------- drag to scrub (touch + mouse) ---------- */
+let drag = null, suppressClick = false;
+const clampSec = s => Math.max(0, Math.min(TOTAL - 0.001, s));
+const secAtX = x => clampSec((x - lanesInner.getBoundingClientRect().left) / lanesInner.getBoundingClientRect().width * TOTAL);
+lanes.addEventListener('pointerdown', e => { drag = {x: e.clientX, sec: secFromScroll(), moved: false, id: e.pointerId, onClip: !!e.target.closest('.clip')}; stopPlay(); });
+lanes.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const dx = e.clientX - drag.x;
+  if (!drag.moved && Math.abs(dx) < 6) return;
+  if (!drag.moved) { drag.moved = true; try { lanes.setPointerCapture(drag.id); } catch(_) {} lanes.classList.add('dragging'); }
+  // phone: drag the strip like film (finger left = forward); desktop: the playhead follows the pointer
+  const sec = isMobile() ? clampSec(drag.sec - dx / (lanesInner.getBoundingClientRect().width / TOTAL)) : secAtX(e.clientX);
+  scrollTo(0, scrollFromSec(sec));
+});
+const endDrag = e => {
+  if (drag && drag.moved) { suppressClick = true; setTimeout(() => suppressClick = false, 0); }
+  else if (drag && !drag.onClip && !isMobile() && e.type === 'pointerup') scrollTo({top: scrollFromSec(secAtX(e.clientX)), behavior: reduce ? 'auto' : 'smooth'});
+  drag = null; lanes.classList.remove('dragging');
+};
+lanes.addEventListener('pointerup', endDrag);
+lanes.addEventListener('pointercancel', endDrag);
+lanes.addEventListener('click', e => { if (suppressClick) { e.stopPropagation(); e.preventDefault(); } }, true);
 
 /* ---------- play / transport ---------- */
 let playing = false, lastT = 0;
