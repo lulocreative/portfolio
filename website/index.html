@@ -4,7 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,700..900,0..100,0..1;1,9..144,700..900,0..100,0..1&display=swap">
 <style>
 /* Layout: a single-screen editing suite. Program monitor + inspector on top, multi-track timeline below.
    Page scroll drives the playhead; overlays (project, lightbox, bin, about) sit above the suite. */
@@ -17,6 +17,8 @@
   --f-display:"Archivo", "Helvetica Neue", Arial, sans-serif;
   --f-body:"Archivo", "Helvetica Neue", Arial, sans-serif;
   --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --f-retro:"Fraunces", "Cooper Black", Georgia, serif;
+  --retro-ink:#F5DE4E; --retro-shadow:#C8401F;
   --labelW:136px; --topH:52px;
   color-scheme:dark;
 }
@@ -120,7 +122,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .clip .fx{position:absolute; top:0; left:0; right:0; height:3px; background:rgba(0,0,0,.25)}
 .clip span{position:relative; overflow:hidden; text-overflow:ellipsis}
 .wave{position:absolute; inset:3px 0; width:100%; height:20px}
-.lanes{cursor:grab; touch-action:pan-y}
+.lanes{cursor:grab; touch-action:none; -webkit-user-select:none; user-select:none}
 .lanes.dragging{cursor:grabbing}
 .lockup-row{display:flex; align-items:center; gap:clamp(12px,2vw,22px); margin:0 0 clamp(10px,2vw,26px)}
 .lockup-row .intro-lockup{margin:0}
@@ -129,6 +131,14 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .scroll-cue .mouse::after{content:""; position:absolute; left:50%; top:6px; width:3px; height:7px; margin-left:-1.5px; border-radius:2px; background:var(--play); animation:cue 1.6s cubic-bezier(.6,0,.4,1) infinite}
 .ov > .scroll-cue{position:absolute; right:clamp(16px,3vw,36px); top:50%; transform:translateY(-50%)}
 .intro-name{margin:0 0 clamp(8px,1.4vw,16px); font-family:var(--f-mono); font-size:clamp(10px,1vw,12px); letter-spacing:.14em; text-transform:uppercase; color:#F3E3DE}
+.screen{container-type:size}
+/* intro composed around the portrait: face sits left of centre, title lives in the open purple space on the right */
+.screen.intro .ov{background:linear-gradient(270deg, rgba(36,8,58,.5), rgba(36,8,58,.15) 45%, transparent 62%)}
+.intro-card{position:absolute; inset:0; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; text-align:right; gap:min(2cqw,3.6cqh); padding:6cqh 6cqw 10cqh 56cqw}
+.intro-pre{margin:0; font-family:var(--f-retro); font-weight:800; font-style:italic; font-size:max(10px, min(1.7cqw, 3cqh)); letter-spacing:.04em; color:var(--retro-ink); text-shadow:.08em .08em 0 var(--retro-shadow)}
+.intro-title{margin:0; font-family:var(--f-retro); font-weight:900; font-variation-settings:"SOFT" 100, "WONK" 1, "opsz" 144; font-size:min(5.6cqw, 10cqh); line-height:.92; letter-spacing:-.005em; color:var(--retro-ink); text-shadow:.05em .05em 0 var(--retro-shadow)}
+.intro-card .scroll-cue{color:#F3EBD3; font-size:max(9px, min(1cqw, 1.8cqh)); margin-top:min(1cqw,2cqh)}
+.intro-skip{position:absolute; left:3cqw; bottom:4.5cqh; border-color:rgba(243,235,211,.5); color:#F3EBD3; background:rgba(12,9,6,.25)}
 @keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(11px);opacity:0}100%{transform:translateY(0);opacity:0}}
 .playhead{position:absolute; top:0; bottom:0; width:0; z-index:5; pointer-events:none}
 .playhead::before{content:""; position:absolute; top:0; bottom:0; left:-.5px; width:1px; background:var(--play)}
@@ -176,8 +186,11 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .next{display:block; width:100%; text-align:left; border-top:1px solid var(--line); padding-block:36px 72px}
 .next .v-title{font-size:clamp(32px,5vw,64px); color:var(--muted); transition:color .2s}
 .next:hover .v-title{color:var(--fg)}
-.ghost{position:fixed; z-index:59; background:var(--ph); pointer-events:none}
+.flip-ghost{position:fixed; z-index:59; background:var(--ph); pointer-events:none}
 .ov-title,.ov-sub{text-shadow:0 2px 20px rgba(0,0,0,.6)}
+/* every clip title uses the same retro title-card type as the first screen */
+.ov-title{font-family:var(--f-retro); font-weight:900; font-stretch:normal; font-variation-settings:"SOFT" 100, "WONK" 1, "opsz" 144; letter-spacing:-.005em; line-height:.92; color:var(--retro-ink); text-shadow:.05em .05em 0 var(--retro-shadow)}
+.arr{width:.9em; height:.9em; flex:none; display:inline-block; vertical-align:-.1em}
 .screen.real .ov{background:linear-gradient(90deg, rgba(10,11,12,.82), rgba(10,11,12,.35) 45%, transparent 70%)}
 .screen.real .ov-top{color:#C9C6BF}
 .v-hero{overflow:hidden}
@@ -253,6 +266,9 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
   .wf-badge{display:none}
   .ov-title{font-size:clamp(22px,6.6vw,30px)}
   .ov-top{display:none}
+  .ov > .ov-mid{margin-block:auto}
+  .intro-skip{display:none}
+  .intro-card{gap:3.5cqh}
   .intro-lockup{height:clamp(46px,13vw,64px)}
   .inspector .panel-head{display:none}
   .insp-line{font-size:13px}
@@ -376,7 +392,7 @@ const TRACKS = [
 const TC = Object.fromEntries(TRACKS.map(t => [t.id, t]));
 
 const SEGS = [
-  {id:'intro', kind:'intro', dur:8, title:'Opening titles', tracks:['dir']},
+  {id:'intro', kind:'intro', dur:8, title:'Opening titles', tracks:['dir'], imgs:['media/intro-me-v2.jpg']},
   {id:'summer-campaign', kind:'project', dur:12, title:'Summer Campaign', client:'NutraQ / VitaeLab', year:'2024', role:'Creative Director', markets:'5 markets',
     scale:'2 shoot days · 5 markets · film, social, print', line:'One summer idea, produced for five markets.', tracks:['dir','film'],
     led:['Campaign concept and creative platform','Large-scale production across 2 shoot days','Rollout for 5 markets and every channel','Alignment with marketing and market leads'],
@@ -496,7 +512,10 @@ function fitScreen(){
   fitCanvas();
 }
 const SHAPES = ['circle','square','tri','bars','circle','square','grid','circle','bars'];
-const SOLID_BG = '#B23A2F';   // intro + end card: one solid colour inside the 16:9 frame
+const SOLID_BG = '#B23A2F';
+// drawn arrow: the ↗ character turns into a colour emoji on iPhones
+const ARR = '<svg class="arr" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 11L11 5M6 5h5v5"/></svg>';
+const PLACEHOLDER_COLORS = ['#3A4A6B','#2F5C56','#6A3F3A','#4C3F6B','#5A5534','#2E4A5C','#6B4A2E','#3F5A3A','#5B3651'];   // intro + end card: one solid colour inside the 16:9 frame
 const IMG = {};
 function getImg(src){ if (!IMG[src]) { const i = new Image(); i.onload = () => req(); i.src = src; IMG[src] = i; } return IMG[src]; }
 SEGS.forEach(s => (s.imgs || []).forEach(getImg));
@@ -515,34 +534,20 @@ function draw(seg, t){
   ctx.clearRect(0,0,w,h);
   if (seg.imgs) return drawImgs(seg, t, w, h);
   if (seg.kind === 'intro' || seg.kind === 'end') { ctx.fillStyle = SOLID_BG; ctx.fillRect(0,0,w,h); return; }
-  const g = ctx.createLinearGradient(0,0,w,h);
-  g.addColorStop(0,'#2E3136'); g.addColorStop(1,'#222428');
-  ctx.fillStyle = g; ctx.fillRect(0,0,w,h);
-  ctx.strokeStyle = '#3A3E44'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(w,h); ctx.moveTo(w,0); ctx.lineTo(0,h); ctx.stroke();
-  // scrubbed motion: a shape travels and rotates with the playhead (stands in for an image sequence)
-  const shape = SHAPES[seg.i % SHAPES.length];
-  const x = w * (0.18 + 0.64 * t), y = h * (0.5 + Math.sin(t * Math.PI * 2) * 0.12), s = Math.min(w,h) * (0.16 + 0.06 * Math.sin(t*Math.PI));
-  ctx.save(); ctx.translate(x,y); ctx.rotate(t * Math.PI);
-  ctx.fillStyle = '#464B52'; ctx.strokeStyle = '#5A6068'; ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  if (shape === 'circle') ctx.arc(0,0,s,0,Math.PI*2);
-  else if (shape === 'square') ctx.rect(-s,-s,s*2,s*2);
-  else if (shape === 'tri') { ctx.moveTo(0,-s); ctx.lineTo(s,s*.8); ctx.lineTo(-s,s*.8); ctx.closePath(); }
-  else if (shape === 'grid') { for (let i=-1;i<=1;i++) for (let j=-1;j<=1;j++) ctx.rect(i*s*.7-s*.28, j*s*.7-s*.28, s*.56, s*.56); }
-  else { for (let i=-2;i<=2;i++) ctx.rect(i*s*.42-s*.15, -s*(.4+.5*Math.abs(Math.sin(t*6+i))), s*.3, s*(.8+Math.abs(Math.sin(t*6+i)))); }
-  ctx.fill(); ctx.stroke(); ctx.restore();
+  // placeholder: one solid colour per clip until the real footage arrives (scrub, frame counter and open-project still work)
+  ctx.fillStyle = PLACEHOLDER_COLORS[seg.i % PLACEHOLDER_COLORS.length];
+  ctx.fillRect(0,0,w,h);
 }
 
 function overlayFor(seg){
   if (seg.kind === 'intro') return `
     <div class="ov-top mono"><span>CLIP 00 · TITLE</span><span id="fr"></span></div>
-    <span class="scroll-cue" aria-hidden="true"><span class="mouse"></span>Scroll</span>
-    <div class="ov-mid"><p class="intro-name">Raul Muñoz · Creative Director</p>
-      <h1 class="ov-title" id="introT">Creative Director who still makes the work.</h1>
-      <p class="ov-sub">Ideas, direction and hands-on craft across film, digital, illustration and photography.</p></div>
-    <div class="ov-bottom"><span></span>
-      <button type="button" class="chip-btn" data-act="skip">View work →</button></div>`;
+    <div class="intro-card" id="introT">
+      <p class="intro-pre">Raul Muñoz presents</p>
+      <h1 class="intro-title">Creative<br>Director who<br>still makes<br>the work.</h1>
+      <span class="scroll-cue" aria-hidden="true"><span class="mouse"></span>Scroll</span>
+    </div>
+    <button type="button" class="chip-btn ghost intro-skip" data-act="skip">View work →</button>`;
   if (seg.kind === 'end') return `
     <div class="ov-top mono"><span>END CARD</span><span id="fr"></span></div>
     <div class="ov-mid"><h2 class="ov-title">That's a wrap.</h2><p class="ov-sub">Want the full timeline, the archive, or a conversation?</p></div>
@@ -553,9 +558,9 @@ function overlayFor(seg){
       <button type="button" class="chip-btn ghost" data-act="restart">↺ Back to start</button></div>`;
   return `
     <div class="ov-top mono"><span>CLIP ${seg.n} · ${seg.imgs ? 'REAL CONTENT' : 'PLACEHOLDER'} · SCROLL-SCRUBBED SEQUENCE</span><span id="fr"></span></div>
-    <div class="ov-mid"><h2 class="ov-title" style="font-size:clamp(26px,4.4vw,60px)">${seg.title}</h2><p class="ov-sub">${seg.line}</p></div>
+    <div class="ov-mid"><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2><p class="ov-sub">${seg.line}</p></div>
     <div class="ov-bottom"><span class="hint mono">${seg.tracks.map(t => TC[t].name).join(' · ')}</span>
-      <button type="button" class="chip-btn" data-act="open">Open project ↗</button></div>`;
+      <button type="button" class="chip-btn" data-act="open">Open project ${ARR}</button></div>`;
 }
 ov.addEventListener('click', e => {
   const a = e.target.closest('[data-act]'); if (!a) return;
@@ -580,7 +585,7 @@ function inspectorFor(seg){
     <p class="insp-line">${seg.line}</p>
     <dl class="kv"><dt>Client</dt><dd>${seg.client}</dd><dt>Year</dt><dd>${seg.year}</dd><dt>Role</dt><dd>${seg.role}</dd><dt>Scale</dt><dd>${seg.scale}</dd></dl>
     <div class="tags">${seg.tracks.map(t => `<span class="tag"><i style="background:${TC[t].c}"></i>${TC[t].name}</span>`).join('')}</div>
-    <button type="button" class="chip-btn insp-open" data-open="${seg.id}">Open project ↗</button>`;
+    <button type="button" class="chip-btn insp-open" data-open="${seg.id}">Open project ${ARR}</button>`;
 }
 $('#insp').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openProject(b.dataset.open, true); });
 
@@ -607,7 +612,8 @@ function frame(){
     $('#insp').innerHTML = inspectorFor(seg);
     $('#clipTc').textContent = seg.n ? `CLIP ${seg.n}` : (seg.kind === 'intro' ? 'CLIP 00' : 'END');
     screen.classList.toggle('openable', PROJECTS.includes(seg));
-    screen.classList.toggle('real', !!seg.imgs);
+    screen.classList.toggle('real', !!seg.imgs && seg.kind !== 'intro');
+    screen.classList.toggle('intro', seg.kind === 'intro');
     clipEls.forEach(c => c.el.classList.toggle('active', c.seg === seg.i));
   }
   const fr = $('#fr'); if (fr) fr.textContent = `FRAME ${String(Math.floor(t*seg.dur*25)).padStart(4,'0')} / ${String(seg.dur*25).padStart(4,'0')}`;
@@ -619,25 +625,50 @@ addEventListener('scroll', req, {passive:true});
 addEventListener('resize', () => { fitScreen(); curSeg = -1; req(); });
 new ResizeObserver(() => { fitScreen(); req(); }).observe(screen.parentElement);
 
-/* ---------- drag to scrub (touch + mouse) ---------- */
-let drag = null, suppressClick = false;
+/* ---------- drag to scrub (touch + mouse): one update per frame, 1:1 with the finger, flick momentum on phones ---------- */
+let drag = null, suppressClick = false, pendingSec = null, momentum = 0;
 const clampSec = s => Math.max(0, Math.min(TOTAL - 0.001, s));
-const secAtX = x => clampSec((x - lanesInner.getBoundingClientRect().left) / lanesInner.getBoundingClientRect().width * TOTAL);
-lanes.addEventListener('pointerdown', e => { drag = {x: e.clientX, sec: secFromScroll(), moved: false, id: e.pointerId, onClip: !!e.target.closest('.clip')}; stopPlay(); });
+const secAtX = x => { const r = lanesInner.getBoundingClientRect(); return clampSec((x - r.left) / r.width * TOTAL); };
+const pxPerSec = () => lanesInner.getBoundingClientRect().width / TOTAL;
+function applySec(){ if (pendingSec !== null) { scrollTo(0, scrollFromSec(pendingSec)); pendingSec = null; } }
+function scrubTo(sec){ const first = pendingSec === null; pendingSec = clampSec(sec); if (first) requestAnimationFrame(applySec); }
+lanes.addEventListener('pointerdown', e => {
+  if (e.button > 0) return;
+  cancelAnimationFrame(momentum);
+  drag = {x: e.clientX, lastX: e.clientX, lastT: performance.now(), v: 0, sec: secFromScroll(), moved: false, id: e.pointerId, onClip: !!e.target.closest('.clip')};
+  stopPlay();
+});
 lanes.addEventListener('pointermove', e => {
   if (!drag) return;
   const dx = e.clientX - drag.x;
-  if (!drag.moved && Math.abs(dx) < 6) return;
+  if (!drag.moved && Math.abs(dx) < 4) return;
   if (!drag.moved) { drag.moved = true; try { lanes.setPointerCapture(drag.id); } catch(_) {} lanes.classList.add('dragging'); }
-  // phone: drag the strip like film (finger left = forward); desktop: the playhead follows the pointer
-  const sec = isMobile() ? clampSec(drag.sec - dx / (lanesInner.getBoundingClientRect().width / TOTAL)) : secAtX(e.clientX);
-  scrollTo(0, scrollFromSec(sec));
+  const now = performance.now(), dt = Math.max(1, now - drag.lastT);
+  drag.v = 0.8 * ((e.clientX - drag.lastX) / dt) + 0.2 * drag.v; drag.lastX = e.clientX; drag.lastT = now;
+  // phone: the strip moves with the finger like film (finger left = forward); desktop: the playhead follows the pointer
+  scrubTo(isMobile() ? drag.sec - dx / pxPerSec() : secAtX(e.clientX));
 });
 const endDrag = e => {
-  if (drag && drag.moved) { suppressClick = true; setTimeout(() => suppressClick = false, 0); }
-  else if (drag && !drag.onClip && !isMobile() && e.type === 'pointerup') scrollTo({top: scrollFromSec(secAtX(e.clientX)), behavior: reduce ? 'auto' : 'smooth'});
+  if (!drag) return;
+  if (drag.moved) {
+    suppressClick = true; setTimeout(() => suppressClick = false, 0);
+    // flick: keep gliding on phones and ease out, like a scroll view
+    if (isMobile() && !reduce && Math.abs(drag.v) > 0.15 && performance.now() - drag.lastT < 80) {
+      let v = -drag.v * 1000 / pxPerSec(), sec = pendingSec !== null ? pendingSec : secFromScroll(), last = performance.now();
+      const glide = now => {
+        const dt = (now - last) / 1000; last = now;
+        v *= Math.pow(0.04, dt); sec = clampSec(sec + v * dt);
+        scrollTo(0, scrollFromSec(sec));
+        if (Math.abs(v) > 0.3 && sec > 0 && sec < TOTAL - 0.01) momentum = requestAnimationFrame(glide);
+      };
+      momentum = requestAnimationFrame(glide);
+    }
+  } else if (!drag.onClip && !isMobile() && e.type === 'pointerup') {
+    scrollTo({top: scrollFromSec(secAtX(e.clientX)), behavior: reduce ? 'auto' : 'smooth'});
+  }
   drag = null; lanes.classList.remove('dragging');
 };
+['wheel','touchstart'].forEach(ev => addEventListener(ev, () => cancelAnimationFrame(momentum), {passive: true}));
 lanes.addEventListener('pointerup', endDrag);
 lanes.addEventListener('pointercancel', endDrag);
 lanes.addEventListener('click', e => { if (suppressClick) { e.stopPropagation(); e.preventDefault(); } }, true);
@@ -655,8 +686,16 @@ function step(ts){
 function startPlay(){ if (reduce) { jumpTo(Math.min(SEGS.length-1, curSeg+1)); return; } playing = true; lastT = 0; $('#tPlay').classList.add('on'); $('#icPlay').innerHTML = '<path d="M4 2h3v12H4zM9 2h3v12H9z"/>'; requestAnimationFrame(step); }
 function stopPlay(){ playing = false; $('#tPlay').classList.remove('on'); $('#icPlay').innerHTML = '<path d="M4 2l10 6-10 6z"/>'; }
 $('#tPlay').onclick = () => playing ? stopPlay() : startPlay();
-$('#tPrev').onclick = () => { const sec = secFromScroll(), s = segAt(sec); jumpTo(sec - s.start > 1.2 ? s.i : Math.max(0, s.i - 1)); };
-$('#tNext').onclick = () => jumpTo(Math.min(SEGS.length - 1, curSeg + 1));
+// previous / next clip: always move one clip along the timeline; rapid presses keep counting from the last target while the smooth scroll is still travelling
+let navTarget = null, navTimer = 0;
+function navStep(d){
+  const base = navTarget !== null ? navTarget : segAt(secFromScroll()).i;
+  const i = Math.max(0, Math.min(SEGS.length - 1, base + d));
+  navTarget = i; clearTimeout(navTimer); navTimer = setTimeout(() => { navTarget = null; }, 900);
+  jumpTo(i);
+}
+$('#tPrev').onclick = () => navStep(-1);
+$('#tNext').onclick = () => navStep(1);
 $('#tOpen').onclick = () => { const s = SEGS[curSeg]; if (PROJECTS.includes(s)) openProject(s.id, true); };
 ['wheel','touchstart'].forEach(ev => addEventListener(ev, () => playing && stopPlay(), {passive:true}));
 
@@ -729,7 +768,7 @@ function showProject(p){
   if (!wasOpen && !reduce) {
     // expand from the program monitor into the project hero
     const r = screen.getBoundingClientRect();
-    const g = document.createElement('div'); g.className = 'ghost';
+    const g = document.createElement('div'); g.className = 'flip-ghost';
     Object.assign(g.style, {left:r.left+'px', top:r.top+'px', width:r.width+'px', height:r.height+'px'});
     document.body.appendChild(g);
     const top = $('.topbar').offsetHeight, h = Math.min(innerWidth * 9/16, innerHeight * .78);
