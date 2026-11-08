@@ -53,7 +53,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 
 /* ---------- scroll space + sticky stage ---------- */
 #scrollspace{position:relative}
-.stage{position:sticky; top:0; height:100vh; height:100dvh; padding-top:calc(var(--topH) + env(safe-area-inset-top,0px));
+.stage{position:fixed; top:0; right:0; bottom:0; left:0; padding-top:calc(var(--topH) + env(safe-area-inset-top,0px));
   display:grid; grid-template-rows:minmax(0,1fr) auto}
 .suite{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:1px; background:var(--line); min-height:0; border-bottom:1px solid var(--line)}
 .panel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; height:34px; padding:0 14px; border-bottom:1px solid var(--line); flex:none}
@@ -691,10 +691,14 @@ function jumpTo(i){
 /* ---------- monitor: canvas placeholder that scrubs with scroll ---------- */
 const cv = $('#cv'), ctx = cv.getContext('2d'), screen = $('#screen'), ov = $('#ov');
 function fitCanvas(){
+  // resizing a canvas wipes it, so only resize when the size really changed
   const r = screen.getBoundingClientRect(), d = Math.min(2, devicePixelRatio || 1);
-  cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d);
+  const tw = Math.max(1, Math.round(r.width * d)), th = Math.max(1, Math.round(r.height * d));
+  if (cv.width !== tw || cv.height !== th) { cv.width = tw; cv.height = th; }
   ctx.setTransform(d,0,0,d,0,0);
 }
+// redraw the current frame immediately (no blank frame in between)
+function redraw(){ const sec = secFromScroll(), s = segAt(sec); draw(s, (sec - s.start) / s.dur); }
 const stage = document.querySelector('.stage');
 function fitScreen(){
   // desktop: the opening reel fills the whole monitor; project clips keep 16:9 inside it
@@ -829,8 +833,8 @@ function frame(){
     $('#insp').innerHTML = inspectorFor(seg);
     $('#clipTc').textContent = seg.n ? `CLIP ${seg.n}` : (seg.kind === 'intro' ? 'CLIP 00' : 'END');
     // opening screen: inspector hidden and the reel takes the full width; it slides in when the projects start
-    stage.classList.toggle('intro-wide', seg.kind === 'intro');
-    fitScreen();
+    const wide = seg.kind === 'intro';
+    if (stage.classList.contains('intro-wide') !== wide) { stage.classList.toggle('intro-wide', wide); fitScreen(); }
     screen.classList.toggle('openable', PROJECTS.includes(seg));
     screen.classList.toggle('real', !!seg.imgs && seg.kind !== 'intro');
     screen.classList.toggle('intro', seg.kind === 'intro');
@@ -840,15 +844,19 @@ function frame(){
     clipEls.forEach(c => c.el.classList.toggle('active', c.seg === seg.i));
   }
   const fr = $('#fr'); if (fr) fr.textContent = `FRAME ${String(Math.floor(t*seg.dur*25)).padStart(4,'0')} / ${String(seg.dur*25).padStart(4,'0')}`;
-  const it = $('#introT'); if (it) { const o = t < .55 ? 1 : Math.max(.15, 1 - (t-.55)/.45); it.style.opacity = o; it.style.transform = `translateY(${(1-o)*-16}px)`; }
+  // fade only the intro text as the playhead leaves the title clip; the buttons stay fully visible
+  if (seg.kind === 'intro') { const o = t < .55 ? 1 : Math.max(.15, 1 - (t-.55)/.45); document.querySelectorAll('#introT .intro-pre, #introT .intro-title').forEach(el => { el.style.opacity = o; el.style.transform = `translateY(${(1-o)*-16}px)`; }); }
   draw(seg, t);
 }
 const req = () => { if (!rafPending) { rafPending = true; requestAnimationFrame(frame); } };
 addEventListener('scroll', req, {passive:true});
-addEventListener('resize', () => { fitScreen(); curSeg = -1; req(); });
-new ResizeObserver(() => { fitScreen(); req(); }).observe(screen.parentElement);
+// phones fire 'resize' whenever the address bar shows or hides while scrolling:
+// only rebuild the overlay when switching between phone and desktop layouts
+let lastMobile = isMobile();
+addEventListener('resize', () => { const m = isMobile(); if (m !== lastMobile) { lastMobile = m; curSeg = -1; } fitScreen(); redraw(); req(); });
+new ResizeObserver(() => { fitScreen(); redraw(); }).observe(screen.parentElement);
 // keep the picture sharp and drawn while the frame animates between full-width and 16:9
-new ResizeObserver(() => { fitCanvas(); curSeg = curSeg; draw(segAt(secFromScroll()), (secFromScroll() - segAt(secFromScroll()).start) / segAt(secFromScroll()).dur); }).observe(screen);
+new ResizeObserver(() => { fitCanvas(); redraw(); }).observe(screen);
 
 /* ---------- drag to scrub (touch + mouse): one update per frame, 1:1 with the finger, flick momentum on phones ---------- */
 let drag = null, suppressClick = false, pendingSec = null, momentum = 0;
