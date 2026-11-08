@@ -509,7 +509,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
         <div class="panel-head"><span class="eyebrow">Program · Director's Cut</span><span class="mono" style="font-size:12px;color:var(--muted)" id="clipTc">CLIP 00</span></div>
         <div class="screen-wrap">
           <div class="screen" id="screen">
-            <video class="reel" id="reel" src="video/showreel-loop.mp4" poster="media/showreel-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+            <video class="reel" id="reel" src="video/showreel-loop-v2.mp4" poster="media/showreel-poster-v2.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
             <canvas id="cv" aria-hidden="true"></canvas>
             <div class="ov" id="ov"></div>
           </div>
@@ -628,19 +628,14 @@ const SEGS = [
             ['w3','On the shore',1.5,false,'media/hanna-maria/photos/04-beach-kneel.jpg'],['w3','Kayak',1.773,false,'media/hanna-maria/photos/05-kayak.jpg'],['w6','Underwater',1.773,false,'media/hanna-maria/photos/06-underwater.jpg'],
             ['w3','Training court',1.5,false,'media/hanna-maria/photos/07-training-court.jpg'],['w3','Workout',1.443,false,'media/hanna-maria/photos/08-workout.jpg'],
             ['w3','Product in hand',1.5,false,'media/hanna-maria/photos/09-product-hand.jpg'],['w3','Product still life',1.5,false,'media/hanna-maria/photos/10-product-bag.jpg']]},
-  {id:'kids-app', kind:'project', dur:12, title:'Yummo Adventures', client:'Cenovis · Pusher, Sydney', year:'2012', role:'Digital Art Director', markets:'Australia',
-    scale:'Tablet storybook app · 4 games', line:'A Word document in. A whole world out.', tracks:['film','design'],
-    led:['The creative idea: turning a script into an app world','Concepts for all four games'],
-    made:['Character design','Illustration of every character and world','Storyboards','Animation of the stories and characters'],
-    imgs:['kids/04-game-super-charge.jpg','kids/05-game-wipe-out.jpg','kids/06-game-get-netted.jpg','kids/07-game-bed-head.jpg'],
-    hero:['hero','Yummo world on iPad',0.814,false,'kids/02-yummo-world-ipad.jpg'],
-    story:[['Challenge',"34% of Australian kids don't eat their recommended daily fruit and vegetables. Cenovis wanted to teach kids and parents about good nutrition in a fun, positive way."],
-           ['Idea',"Yummo Adventures: a tablet storybook app where Sammy and Sally learn about the “good stuff” in fruit and vegetables, through animated stories and four games."],
-           ['What I delivered',"The brief was a Word document with the story and dialogue. I created everything else: characters, storyboards, animated stories and four original games."]],
-    media:[['w2','Home screen on iPad',0.636,false,'kids/01-intro-title-ipad.jpg'],['w2','Character sheet',0.69,false,'kids/08-game-characters.jpg'],['w2','Storybook scenes',0.461,false,'kids/03-story-scenes-grid.jpg'],
-           ['w3','Game · Super Charge',1.405,false,'kids/04-game-super-charge.jpg'],['w3','Game · Wipe Out',1.339,false,'kids/05-game-wipe-out.jpg'],
-           ['w3','Game · Get Netted',1.412,false,'kids/06-game-get-netted.jpg'],['w3','Game · Bed Head',1.412,false,'kids/07-game-bed-head.jpg'],
-           ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg']]},
+  {id:'you-still-got-it', kind:'project', dur:12, title:'You Still Got It', client:'VitaePro (NutraQ)', year:'2025', role:'Creative Director', markets:'Norway',
+    scale:'30s TV ad · sales campaign', line:'A dance through the decades, from 1981 to today: you still got it.', tracks:['dir','film'],
+    led:['Campaign concept','Creative direction'], made:['TBC: tell me what you made hands-on'],
+    seq:true, imgs:Array.from({length:48}, (_, i) => `media/still-got-it/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/still-got-it/still-got-it.gif',
+    hero:['hero','TV ad · 30s (Norway)',16/9,true,'media/still-got-it/poster.jpg','video/still-got-it-2025.mp4'],
+    media:[['w6','1993, the wedding',16/9,false,'media/still-got-it/still-03.jpg'],['w3','1981',16/9,false,'media/still-got-it/still-01.jpg'],['w3','Disco',16/9,false,'media/still-got-it/still-02.jpg'],
+           ['w3','2002',16/9,false,'media/still-got-it/still-04.jpg'],['w3','2025, the gym',16/9,false,'media/still-got-it/still-07.jpg'],['w3','The product',16/9,false,'media/still-got-it/still-05.jpg'],
+           ['w3','Host and friend',16/9,false,'media/still-got-it/still-06.jpg'],['w6','Through the decades',16/9,false,'media/still-got-it/still-08.jpg']]},
   {id:'digital-australia', kind:'project', dur:12, title:'Digital Channels, Australia', client:'TBC', year:'2016–2018', role:'Digital Creative Director', markets:'Australia',
     scale:'Apps, landing pages, social', line:'Digital creative direction across apps, web and social.', tracks:['design','dir'],
     led:['Team across UX, UI and motion','Digital channel strategy'], made:['UX flows','UI design','Prototypes']},
@@ -652,6 +647,18 @@ const SEGS = [
     led:['Brand creation','Launch campaign'], made:['Product photography','Packaging design']},
   {id:'photography', kind:'photo', dur:10, title:'Photography', client:'Personal + professional', year:'Various', role:'Photographer', markets:'—',
     scale:'Editorial, product, portrait', line:"Personal editorial for T‑Michael, featured on Vogue's Instagram.", tracks:['design'], marker:'◆ Vogue feature'},
+  {id:'kids-app', kind:'project', dur:12, title:'Yummo Adventures', client:'Cenovis · Pusher, Sydney', year:'2012', role:'Digital Art Director', markets:'Australia',
+    scale:'Tablet storybook app · 4 games', line:'A Word document in. A whole world out.', tracks:['film','design'],
+    led:['The creative idea: turning a script into an app world','Concepts for all four games'],
+    made:['Character design','Illustration of every character and world','Storyboards','Animation of the stories and characters'],
+    hero:['hero','Yummo world on iPad',0.814,false,'kids/02-yummo-world-ipad.jpg'],
+    story:[['Challenge',"34% of Australian kids don't eat their recommended daily fruit and vegetables. Cenovis wanted to teach kids and parents about good nutrition in a fun, positive way."],
+           ['Idea',"Yummo Adventures: a tablet storybook app where Sammy and Sally learn about the “good stuff” in fruit and vegetables, through animated stories and four games."],
+           ['What I delivered',"The brief was a Word document with the story and dialogue. I created everything else: characters, storyboards, animated stories and four original games."]],
+    media:[['w2','Home screen on iPad',0.636,false,'kids/01-intro-title-ipad.jpg'],['w2','Character sheet',0.69,false,'kids/08-game-characters.jpg'],['w2','Storybook scenes',0.461,false,'kids/03-story-scenes-grid.jpg'],
+           ['w3','Game · Super Charge',1.405,false,'kids/04-game-super-charge.jpg'],['w3','Game · Wipe Out',1.339,false,'kids/05-game-wipe-out.jpg'],
+           ['w3','Game · Get Netted',1.412,false,'kids/06-game-get-netted.jpg'],['w3','Game · Bed Head',1.412,false,'kids/07-game-bed-head.jpg'],
+           ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg']]},
   {id:'end', kind:'end', dur:6, title:"That's a wrap", tracks:['dir']}
 ];
 let acc = 0;
@@ -1090,7 +1097,7 @@ lb.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.cl
 /* ---------- bin ---------- */
 const FOLDERS = [
   ['Featured cut', PROJECTS.map(p => p.id)],
-  ['Campaigns', ['summer-campaign']], ['Film', ['hanna-maria-greece','summer-campaign']], ['Digital · UX/UI', ['digital-australia','kids-app']],
+  ['Campaigns', ['summer-campaign','you-still-got-it']], ['Film', ['hanna-maria-greece','summer-campaign','you-still-got-it']], ['Digital · UX/UI', ['digital-australia','kids-app']],
   ['Brand', ['rebrand','brand-from-zero']], ['Illustration & Animation', ['kids-app']], ['Photography', ['photography']],
   ['Archive 2006–2016', []]
 ];
