@@ -4,7 +4,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,700..900,0..100,0..1;1,9..144,700..900,0..100,0..1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,700..900,0..100,0..1;1,9..144,700..900,0..100,0..1&family=Instrument+Sans:wght@400..700&display=swap">
 <style>
 /* Layout: a single-screen editing suite. Program monitor + inspector on top, multi-track timeline below.
    Page scroll drives the playhead; overlays (project, lightbox, bin, about) sit above the suite. */
@@ -19,6 +19,8 @@
   --f-mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --f-retro:"Fraunces", "Cooper Black", Georgia, serif;
   --retro-ink:#F5DE4E; --retro-shadow:#C8401F;
+  --cta:#E80687; --cta-hover:#C9056F;   /* primary call to action */
+  --f-head:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;   /* headings: clean app-style sans */
   --labelW:136px; --topH:52px;
   color-scheme:dark;
 }
@@ -69,7 +71,8 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .ov-title{font-family:var(--f-display); font-weight:750; font-stretch:118%; font-size:clamp(28px,5.6vw,76px); line-height:.92; letter-spacing:-.01em; text-wrap:balance; margin:0}
 .ov-sub{font-size:clamp(14px,1.5vw,19px); color:#C9C6BF; margin:.6em 0 0; max-width:34ch; text-wrap:balance}
 .ov-bottom{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; flex-wrap:wrap}
-.chip-btn{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; background:var(--fg); color:var(--bg); font-weight:600; font-size:13px}
+.chip-btn{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:999px; background:var(--cta); color:#fff; font-weight:600; font-size:13px; transition:background .15s}
+.chip-btn:not(.ghost):hover{background:var(--cta-hover)}
 .chip-btn.ghost{background:transparent; color:var(--fg); border:1px solid var(--line-2)}
 .hint{font-size:11px; color:var(--muted)}
 .hint .arrow{display:inline-block; animation:nudge 1.6s ease-in-out infinite}
@@ -134,12 +137,25 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .intro-name{margin:0 0 clamp(8px,1.4vw,16px); font-family:var(--f-mono); font-size:clamp(10px,1vw,12px); letter-spacing:.14em; text-transform:uppercase; color:#F3E3DE}
 .screen{container-type:size}
 /* intro composed around the portrait: face sits left of centre, title lives in the open purple space on the right */
-.screen.intro .ov{background:linear-gradient(270deg, rgba(36,8,58,.5), rgba(36,8,58,.15) 45%, transparent 62%)}
-.intro-card{position:absolute; inset:0; display:flex; flex-direction:column; align-items:flex-end; justify-content:center; text-align:right; gap:min(2cqw,3.6cqh); padding:6cqh 6cqw 10cqh 56cqw}
+/* desktop opening screen: monitor takes the full width, inspector slides in when the projects begin */
+@media (min-width:821px){
+  .suite{transition:grid-template-columns .6s cubic-bezier(.2,.7,.2,1), gap .6s}
+  .inspector{transition:opacity .4s .1s, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .inspector .panel-head,.inspector .insp-body{min-width:300px}
+  .stage.intro-wide .suite{grid-template-columns:minmax(0,1fr) 0px; gap:0}
+  .stage.intro-wide .inspector{opacity:0; transform:translateX(30px); pointer-events:none; transition:opacity .25s, transform .6s cubic-bezier(.2,.7,.2,1)}
+  .screen{transition:width .6s cubic-bezier(.2,.7,.2,1), height .6s cubic-bezier(.2,.7,.2,1), border-radius .6s}
+}
+/* intro: a silent showreel loop of the featured films plays behind a centred title card */
+.reel{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .4s; background:#000}
+.screen.intro .reel{opacity:1}
+.screen.intro .ov{background:radial-gradient(ellipse at center, rgba(6,15,31,.35), rgba(6,15,31,.72) 80%)}
+.sr-only{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+.intro-card{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:min(2.2cqw,3.8cqh); padding:6cqh 8cqw}
 .intro-pre{margin:0; font-family:var(--f-retro); font-weight:800; font-style:italic; font-size:max(10px, min(1.7cqw, 3cqh)); letter-spacing:.04em; color:var(--retro-ink); text-shadow:.08em .08em 0 var(--retro-shadow)}
-.intro-title{margin:0; font-family:var(--f-retro); font-weight:900; font-variation-settings:"SOFT" 100, "WONK" 1, "opsz" 144; font-size:min(5.6cqw, 10cqh); line-height:.92; letter-spacing:-.005em; color:var(--retro-ink); text-shadow:.05em .05em 0 var(--retro-shadow)}
+.intro-title{margin:0; font-family:var(--f-retro); font-weight:900; font-variation-settings:"SOFT" 100, "WONK" 1, "opsz" 144; font-size:min(7.2cqw, 13cqh); line-height:.92; letter-spacing:-.005em; color:var(--retro-ink); text-shadow:.05em .05em 0 var(--retro-shadow)}
 .intro-card .scroll-cue{color:#F3EBD3; font-size:max(9px, min(1cqw, 1.8cqh)); margin-top:min(1cqw,2cqh)}
-.intro-skip{position:absolute; left:3cqw; bottom:4.5cqh; border-color:rgba(243,235,211,.5); color:#F3EBD3; background:rgba(12,9,6,.25)}
+.intro-skip{position:absolute; left:3cqw; bottom:4.5cqh; border:1px solid var(--cta)}
 @keyframes cue{0%{transform:translateY(0);opacity:1}70%{transform:translateY(11px);opacity:0}100%{transform:translateY(0);opacity:0}}
 .playhead{position:absolute; top:0; bottom:0; width:0; z-index:5; pointer-events:none}
 .playhead::before{content:""; position:absolute; top:0; bottom:0; left:-.5px; width:1px; background:var(--play)}
@@ -195,7 +211,8 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .m-eyebrow{display:none; margin:0 0 .7em; font-family:var(--f-mono); font-size:max(10px,2.8cqw); letter-spacing:.14em; text-transform:uppercase; color:#E8E4DC}
 .m-actions{display:none; grid-template-columns:1fr 1fr; gap:3cqw; margin-top:4.5cqw; align-self:stretch}
 .m-btn{display:flex; align-items:center; justify-content:center; gap:8px; height:max(44px,11.5cqw); border-radius:999px; font-weight:600; font-size:max(14px,4.2cqw); color:#fff; background:rgba(86,84,82,.72); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px)}
-.m-btn.primary{background:#fff; color:#111}
+.m-btn.primary{background:var(--cta); color:#fff}
+.m-btn.primary:hover{background:var(--cta-hover)}
 .m-btn svg{width:1em; height:1em; flex:none}
 .screen.real .ov{background:linear-gradient(90deg, rgba(10,11,12,.82), rgba(10,11,12,.35) 45%, transparent 70%)}
 .screen.real .ov-top{color:#C9C6BF}
@@ -208,6 +225,9 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .m .cap{position:absolute; left:8px; bottom:8px; font-size:10.5px; padding:3px 7px; background:rgba(13,14,16,.8); color:var(--fg); border-radius:3px; opacity:0; transition:opacity .2s}
 .m:hover .cap,.m:focus-visible .cap{opacity:1}
 .lb-item.real{background:transparent}
+.sec-head{display:flex; align-items:baseline; gap:14px; margin:8px 0 16px}
+.sec-head .eyebrow{margin:0}
+.sec-head h3{margin:0; font-family:var(--f-display); font-stretch:112%; font-size:clamp(20px,2vw,26px)}
 .v-hero.has-video{cursor:auto; background:#000}
 .v-hero .hero-video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000}
 .lb-item.real img{width:100%; height:100%; object-fit:contain; display:block}
@@ -295,6 +315,11 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .c-tip{position:absolute; z-index:3; background:var(--fg); color:var(--bg); padding:8px 10px; border-radius:4px; font-size:12px; line-height:1.35; max-width:240px; pointer-events:none; box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .contact{display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:4px max(16px, env(safe-area-inset-left,0px)) 32px}
 .contact .addr{font-family:var(--f-mono); font-size:14px; user-select:all; padding:8px 12px; border:1px solid var(--line-2); border-radius:4px}
+
+/* headings: clean, readable app-style sans, like editing software */
+.insp-title,.v-title,.about-grid h2,.ledmade h3,.sec-head h3{font-family:var(--f-head); font-weight:600; font-stretch:normal; letter-spacing:-.015em}
+.insp-title{font-size:28px; line-height:1.05}
+.v-title{line-height:.98}
 
 /* ---------- UI refresh: floating rounded panels, no hairline dividers, pill controls ---------- */
 :root{--r-lg:16px; --r-md:12px; --r-sm:8px}
@@ -427,12 +452,13 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 </header>
 
 <div id="scrollspace">
-  <div class="stage">
+  <div class="stage intro-wide">
     <div class="suite">
       <section class="monitor" aria-label="Program monitor">
         <div class="panel-head"><span class="eyebrow">Program · Director's Cut</span><span class="mono" style="font-size:12px;color:var(--muted)" id="clipTc">CLIP 00</span></div>
         <div class="screen-wrap">
           <div class="screen" id="screen">
+            <video class="reel" id="reel" src="video/showreel-loop.mp4" poster="media/showreel-poster.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
             <canvas id="cv" aria-hidden="true"></canvas>
             <div class="ov" id="ov"></div>
           </div>
@@ -529,7 +555,7 @@ const TRACKS = [
 const TC = Object.fromEntries(TRACKS.map(t => [t.id, t]));
 
 const SEGS = [
-  {id:'intro', kind:'intro', dur:8, title:'Opening titles', tracks:['dir'], imgs:['media/intro-me-v2.jpg']},
+  {id:'intro', kind:'intro', dur:8, title:'Opening titles', tracks:['dir']},
   {id:'summer-campaign', kind:'project', dur:12, title:'VitaePro Summer Campaign 2026', client:'VitaePro (NutraQ)', year:'2026', role:'Creative Director', markets:'5 markets',
     scale:'2 shoot days · 5 markets · film, social, print', line:'One summer idea, produced for five markets.', tracks:['dir','film'],
     seq:true, imgs:Array.from({length:48}, (_, i) => `media/vitaepro/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/vitaepro/vitaepro-summer-2026.gif',
@@ -546,7 +572,11 @@ const SEGS = [
     hero:['hero','TV ad · 30s (Finland)',16/9,true,'media/hanna-maria/poster.jpg','video/hanna-maria-greece-2024.mp4'],
     media:[['w6','Butterfly',16/9,false,'media/hanna-maria/still-04.jpg'],['w3','On the beach',16/9,false,'media/hanna-maria/still-01.jpg'],['w3','Close-up',16/9,false,'media/hanna-maria/still-06.jpg'],
            ['w3','Swim cap on',16/9,false,'media/hanna-maria/still-02.jpg'],['w3','Underwater',16/9,false,'media/hanna-maria/still-03.jpg'],['w3','Group training',16/9,false,'media/hanna-maria/still-05.jpg'],
-           ['w3','In the pool',16/9,false,'media/hanna-maria/still-07.jpg'],['w6','Pack shot',16/9,false,'media/hanna-maria/still-08.jpg']]},
+           ['w3','In the pool',16/9,false,'media/hanna-maria/still-07.jpg'],['w6','Pack shot',16/9,false,'media/hanna-maria/still-08.jpg']],
+    photos:[['w6','Butterfly',1.5,false,'media/hanna-maria/photos/01-butterfly.jpg'],['w3','Beach portrait',1.5,false,'media/hanna-maria/photos/02-beach-portrait.jpg'],['w3','Beach stretch',1.5,false,'media/hanna-maria/photos/03-beach-lunge.jpg'],
+            ['w3','On the shore',1.5,false,'media/hanna-maria/photos/04-beach-kneel.jpg'],['w3','Kayak',1.773,false,'media/hanna-maria/photos/05-kayak.jpg'],['w6','Underwater',1.773,false,'media/hanna-maria/photos/06-underwater.jpg'],
+            ['w3','Training court',1.5,false,'media/hanna-maria/photos/07-training-court.jpg'],['w3','Workout',1.443,false,'media/hanna-maria/photos/08-workout.jpg'],
+            ['w3','Product in hand',1.5,false,'media/hanna-maria/photos/09-product-hand.jpg'],['w3','Product still life',1.5,false,'media/hanna-maria/photos/10-product-bag.jpg']]},
   {id:'kids-app', kind:'project', dur:12, title:'Yummo Adventures', client:'Cenovis · Pusher, Sydney', year:'2012', role:'Digital Art Director', markets:'Australia',
     scale:'Tablet storybook app · 4 games', line:'A Word document in. A whole world out.', tracks:['film','design'],
     led:['The creative idea: turning a script into an app world','Concepts for all four games'],
@@ -646,15 +676,17 @@ function fitCanvas(){
   cv.width = Math.max(1, r.width * d); cv.height = Math.max(1, r.height * d);
   ctx.setTransform(d,0,0,d,0,0);
 }
+const stage = document.querySelector('.stage');
 function fitScreen(){
-  // keep 16:9 inside available box on desktop
+  // desktop: the opening reel fills the whole monitor; project clips keep 16:9 inside it
   const wrap = screen.parentElement, r = wrap.getBoundingClientRect();
-  if (isMobile()) { screen.style.width = ''; }
+  if (isMobile()) { screen.style.width = ''; screen.style.height = ''; }
   else {
     const cs = getComputedStyle(wrap);
     const w = r.width - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
     const h = r.height - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
-    screen.style.width = Math.min(w, h * 16/9) + 'px';
+    if (stage.classList.contains('intro-wide')) { screen.style.width = w + 'px'; screen.style.height = h + 'px'; }
+    else { const sw = Math.min(w, h * 16/9); screen.style.width = sw + 'px'; screen.style.height = (sw * 9/16) + 'px'; }
   }
   fitCanvas();
 }
@@ -691,6 +723,7 @@ function drawImgs(seg, t, w, h){
 function draw(seg, t){
   const w = cv.width / (cv.width / screen.clientWidth || 1), h = screen.clientHeight;
   ctx.clearRect(0,0,w,h);
+  if (seg.kind === 'intro') return;   // the showreel video shows through the cleared canvas
   if (seg.imgs) return drawImgs(seg, t, w, h);
   if (seg.kind === 'intro' || seg.kind === 'end') { ctx.fillStyle = SOLID_BG; ctx.fillRect(0,0,w,h); return; }
   // placeholder: one solid colour per clip until the real footage arrives (scrub, frame counter and open-project still work)
@@ -700,14 +733,14 @@ function draw(seg, t){
 
 function overlayFor(seg){
   if (seg.kind === 'intro') return `
-    <div class="ov-top mono"><span>CLIP 00 · TITLE</span><span id="fr"></span></div>
+    <div class="ov-top mono"><span></span><span id="fr"></span></div>
     <div class="intro-card" id="introT">
       <p class="intro-pre">Raul Muñoz presents</p>
-      <h1 class="intro-title">Creative<br>Director who<br>still makes<br>the work.</h1>
-      <span class="scroll-cue" aria-hidden="true"><span class="mouse"></span>Scroll</span>
+      <h1 class="intro-title">Creative Director<br>who still makes<br>the work.</h1>
+      <span class="scroll-cue" aria-hidden="true">Scroll</span>
       <div class="m-actions"><button type="button" class="m-btn primary" data-act="skip">${PLAY}View work</button><button type="button" class="m-btn" data-act="about">About</button></div>
     </div>
-    <button type="button" class="chip-btn ghost intro-skip" data-act="skip">View work →</button>`;
+    <button type="button" class="chip-btn intro-skip" data-act="skip">View work →</button>`;
   if (seg.kind === 'end') return `
     <div class="ov-top mono"><span>END CARD</span><span id="fr"></span></div>
     <div class="ov-mid"><h2 class="ov-title">That's a wrap.</h2><p class="ov-sub">Want the full timeline, the archive, or a conversation?</p></div>
@@ -722,7 +755,7 @@ function overlayFor(seg){
     <div class="ov-mid"><p class="m-eyebrow">Clip ${seg.n} · ${TC[seg.tracks[0]].name}</p><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2><p class="ov-sub">${seg.line}</p>
       <div class="m-actions"><button type="button" class="m-btn primary" data-act="open">${PLAY}Open project</button><button type="button" class="m-btn" data-act="next">Next clip${NEXT}</button></div></div>
     <div class="ov-bottom"><span class="hint mono">${seg.tracks.map(t => TC[t].name).join(' · ')}</span>
-      <button type="button" class="chip-btn" data-act="open">Open project ${ARR}</button></div>`;
+      </div>`;
 }
 ov.addEventListener('click', e => {
   const a = e.target.closest('[data-act]'); if (!a) return;
@@ -774,9 +807,15 @@ function frame(){
     ov.innerHTML = overlayFor(seg);
     $('#insp').innerHTML = inspectorFor(seg);
     $('#clipTc').textContent = seg.n ? `CLIP ${seg.n}` : (seg.kind === 'intro' ? 'CLIP 00' : 'END');
+    // opening screen: inspector hidden and the reel takes the full width; it slides in when the projects start
+    stage.classList.toggle('intro-wide', seg.kind === 'intro');
+    fitScreen();
     screen.classList.toggle('openable', PROJECTS.includes(seg));
     screen.classList.toggle('real', !!seg.imgs && seg.kind !== 'intro');
     screen.classList.toggle('intro', seg.kind === 'intro');
+    // the reel only plays while the intro is on screen
+    const rv = $('#reel');
+    if (rv) { if (seg.kind === 'intro' && !reduce) { const pr = rv.play(); if (pr) pr.catch(() => {}); } else rv.pause(); }
     clipEls.forEach(c => c.el.classList.toggle('active', c.seg === seg.i));
   }
   const fr = $('#fr'); if (fr) fr.textContent = `FRAME ${String(Math.floor(t*seg.dur*25)).padStart(4,'0')} / ${String(seg.dur*25).padStart(4,'0')}`;
@@ -787,6 +826,8 @@ const req = () => { if (!rafPending) { rafPending = true; requestAnimationFrame(
 addEventListener('scroll', req, {passive:true});
 addEventListener('resize', () => { fitScreen(); curSeg = -1; req(); });
 new ResizeObserver(() => { fitScreen(); req(); }).observe(screen.parentElement);
+// keep the picture sharp and drawn while the frame animates between full-width and 16:9
+new ResizeObserver(() => { fitCanvas(); curSeg = curSeg; draw(segAt(secFromScroll()), (secFromScroll() - segAt(secFromScroll()).start) / segAt(secFromScroll()).dur); }).observe(screen);
 
 /* ---------- drag to scrub (touch + mouse): one update per frame, 1:1 with the finger, flick momentum on phones ---------- */
 let drag = null, suppressClick = false, pendingSec = null, momentum = 0;
@@ -885,7 +926,7 @@ const heroImg = m => m[5]
 function renderProject(p){
   const idx = PROJECTS.indexOf(p), next = PROJECTS[(idx + 1) % PROJECTS.length];
   const media = p.media || (p.kind === 'photo' ? PHOTO_MEDIA : MEDIA);
-  lbItems = [p.hero || ['hero', p.kind === 'photo' ? 'Opening image' : 'Hero film', 16/9, p.kind !== 'photo'], ...media];
+  lbItems = [p.hero || ['hero', p.kind === 'photo' ? 'Opening image' : 'Hero film', 16/9, p.kind !== 'photo'], ...media, ...(p.photos || [])];
   const isPhoto = p.kind === 'photo';
   view.innerHTML = `
     <div class="view-bar"><button type="button" class="close" data-back style="margin-left:0">← Timeline</button>
@@ -915,7 +956,10 @@ function renderProject(p){
         <div><h4>Result</h4><p class="todo">Numbers if possible: reach, sales, engagement, awards.</p></div>`}
       </div>`}
       ${isPhoto ? '<div style="height:32px"></div>' : ''}
+      ${p.photos ? '<div class="sec-head"><p class="eyebrow">Film</p><h3>Stills from the ad</h3></div>' : ''}
       <div class="media">${media.map((m,i) => `<button type="button" class="m ${m[0]}${m[4] ? ' real' : ''}" data-lb="${i+1}" aria-label="Open ${m[1]} full screen"${m[4] ? ` style="aspect-ratio:${m[2]}"` : ''}>${cell(m)}</button>`).join('')}</div>
+      ${p.photos ? `<div class="sec-head"><p class="eyebrow">Photography</p><h3>The photoshoot, shot by me</h3></div>
+      <div class="media">${p.photos.map((m,i) => `<button type="button" class="m ${m[0]} real" data-lb="${media.length + i + 1}" aria-label="Open ${m[1]} full screen" style="aspect-ratio:${m[2]}">${cell(m)}</button>`).join('')}</div>` : ''}
       <button type="button" class="next" data-next="${next.id}"><span class="eyebrow">Next clip · ${next.n}</span><div class="v-title">${next.title} →</div></button>
     </div>`;
   view.scrollTop = 0;
