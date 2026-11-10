@@ -151,6 +151,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 /* intro: a silent showreel loop of the featured films plays behind a centred title card */
 .reel{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity .4s; background:#000}
 .screen.intro .reel{opacity:1}
+.reel.blocked{visibility:hidden}
 /* hide Safari's play overlay when autoplay is blocked (e.g. Low Power Mode): show the still frame instead */
 .reel::-webkit-media-controls,.reel::-webkit-media-controls-start-playback-button,.reel::-webkit-media-controls-overlay-play-button{display:none !important; -webkit-appearance:none}
 .screen.intro .ov{background:radial-gradient(ellipse at center, rgba(6,15,31,.35), rgba(6,15,31,.72) 80%)}
@@ -286,7 +287,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .mb-side{border-right:1px solid var(--line); padding:8px 0; overflow:auto; background:var(--panel)}
 .mb-side .grp{margin:0; padding:8px 14px 6px; font-family:var(--f-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim)}
 .mb-folder{display:flex; align-items:center; gap:8px; width:100%; padding:7px 14px 7px 20px; font-size:13px; color:var(--muted); text-align:left}
-.mb-folder svg{width:14px; height:14px; flex:none; color:var(--t-digital)}
+.mb-folder svg{width:14px; height:14px; flex:none; color:var(--fc, var(--t-digital))}
 .mb-folder:hover{background:var(--panel-2); color:var(--fg)}
 .mb-folder.on{background:#172A47; color:var(--fg); box-shadow:inset 2px 0 var(--play)}
 .mb-folder .n{margin-left:auto; font-family:var(--f-mono); font-size:11px; color:var(--dim)}
@@ -378,7 +379,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .mb-side{border-right:0; padding:6px 8px}
 .mb-folder{border-radius:var(--r-sm); padding:8px 12px; margin-block:1px}
 .mb-folder.on{box-shadow:none; background:var(--panel-2)}
-.mb-folder.on svg{color:var(--play)}
+.mb-folder.on svg{color:var(--fc, var(--play))}
 .mb-main{background:transparent}
 .mb-tools,.mb-foot{border:0; background:transparent}
 .mb-search{border:0; background:var(--panel); border-radius:999px; padding:0 14px}
@@ -397,13 +398,72 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .lb-nav button{border:0; background:var(--panel); border-radius:999px}
 .career-scroll{border:0; border-radius:var(--r-md); background:var(--panel)}
 /* About: photo + career dashboard */
-.about-photo{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; object-position:38% 40%; border-radius:var(--r-lg); margin:0 0 18px}
+.about-photo{display:block; width:100%; aspect-ratio:16/9; object-fit:cover; object-position:50% 30%; border-radius:var(--r-lg); margin:0 0 18px}
 .dash{padding:8px max(16px, env(safe-area-inset-left,0px)) 24px; display:flex; flex-direction:column; gap:10px}
 .stats{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px}
 .stat{background:var(--panel-2); border-radius:var(--r-md); padding:16px 18px; min-width:0}
 .stat b{display:block; font-family:var(--f-head); font-weight:600; font-size:34px; line-height:1; letter-spacing:-.02em; color:var(--fg)}
 .stat span{display:block; margin-top:8px; font-size:12.5px; color:var(--muted)}
-.dash-grid{display:grid; grid-template-columns:minmax(0,1.6fr) minmax(0,1fr); gap:10px; align-items:start}
+.dash-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:10px; align-items:start}
+.cv-card h4{margin:6px 0 6px; font-family:var(--f-head); font-size:20px; font-weight:600; letter-spacing:-.01em}
+.cv-card p:not(.eyebrow){margin:0 0 16px; color:var(--muted); font-size:14px; line-height:1.5}
+/* markets globe */
+.dash-globe{padding-bottom:0}
+.globe-card{display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:24px; align-items:center; margin-bottom:10px; padding:20px 22px; overflow:hidden}
+.gl-stage{position:relative; aspect-ratio:1; width:100%; max-width:460px; justify-self:center; background:radial-gradient(circle at 50% 50%, rgba(110,147,201,.10), transparent 62%)}
+#globe{position:absolute; inset:0; width:100%; height:100%; cursor:grab; touch-action:none; display:block}
+#globe.grab{cursor:grabbing}
+.gl-hint{position:absolute; left:0; right:0; bottom:0; margin:0; text-align:center; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--dim); pointer-events:none}
+.gl-side h4{margin:6px 0 8px; font-family:var(--f-head); font-size:24px; font-weight:600; letter-spacing:-.015em; line-height:1.1}
+.gl-intro{margin:0 0 16px; color:var(--muted); font-size:14px; line-height:1.5}
+.gl-tabs{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px}
+.gl-tab{display:inline-flex; align-items:center; gap:7px; height:32px; padding:0 13px; border-radius:999px; border:1px solid var(--line-2); font-size:13px; color:var(--muted)}
+.gl-tab i{width:8px; height:8px; border-radius:50%}
+.gl-tab:hover{color:var(--fg)}
+.gl-tab.on{background:var(--fg); border-color:var(--fg); color:#060F1F; font-weight:600}
+.gl-line{margin:0 0 12px; font-size:13px; color:#C9CFDA; line-height:1.45}
+.gl-city{padding:10px 0; border-top:1px solid var(--line)}
+.gl-cname{display:flex; align-items:center; gap:8px; font-weight:600; font-size:14px; color:var(--fg); padding:0}
+.gl-cname i{width:8px; height:8px; border-radius:50%}
+.gl-cname span{font-weight:400; color:var(--dim); font-size:12px}
+.gl-city.on .gl-cname{color:var(--cta)}
+.gl-city ul{list-style:none; margin:6px 0 0; padding:0 0 0 16px; display:grid; gap:4px}
+.gl-city li{display:grid; grid-template-columns:72px minmax(0,1fr); column-gap:10px; font-size:13px}
+.gl-city li .mono{font-size:11px; color:var(--dim); padding-top:2px; grid-row:span 2}
+.gl-city li b{font-weight:600; color:var(--fg)}
+.gl-city li em{font-style:normal; color:var(--muted); font-size:12px}
+@media (max-width:820px){.globe-card{grid-template-columns:minmax(0,1fr); padding:16px} .gl-stage{max-width:340px}}
+/* scopes */
+.scopes{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin-bottom:10px}
+.scope{background:var(--panel-2); border-radius:var(--r-md); padding:14px 16px 14px; min-width:0; display:flex; flex-direction:column; gap:10px}
+.sc-head{display:flex; align-items:baseline; justify-content:space-between; gap:8px; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim)}
+.sc-head b{font-family:var(--f-head); font-size:28px; font-weight:600; letter-spacing:-.02em; text-transform:none; color:var(--fg)}
+.sc-cap{margin:auto 0 0; font-size:12px; color:var(--muted); line-height:1.4}
+.sc-cap .lg{display:flex; flex-wrap:wrap; gap:4px 12px}
+.sc-cap .lg span{display:inline-flex; align-items:center; white-space:nowrap}
+.sc-cap .lg i{display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:5px; vertical-align:0}
+.sc-axis{display:flex; justify-content:space-between; font-size:9.5px; color:var(--dim); letter-spacing:.04em}
+.sc-track{position:relative; height:10px; margin-top:22px; border-radius:5px; background:#0A1526}
+.sc-track i{position:absolute; top:0; bottom:0; border-radius:2px; opacity:.9}
+.sc-track i:first-child{border-radius:5px 2px 2px 5px}
+.sc-thumb{position:absolute; top:50%; width:14px; height:14px; margin:-7px 0 0 -7px; border-radius:50%; background:var(--fg); box-shadow:0 0 0 3px var(--panel-2), 0 0 0 4px var(--cta)}
+.sc-ticks{display:flex; justify-content:space-between; height:8px; margin-top:-2px}
+.sc-ticks i{width:1px; height:4px; background:var(--line-2)}
+.sc-ticks i.maj{height:8px; background:var(--dim)}
+.sc-wheel{position:relative; width:min(108px,70%); aspect-ratio:1; margin:2px auto 0; border-radius:50%;
+  background:radial-gradient(circle, #112036 0 8%, rgba(17,32,54,.82) 34%, rgba(17,32,54,.2) 72%, rgba(17,32,54,0) 100%), conic-gradient(from 90deg, #c84a4a, #c8a24a, #7cc84a, #4ac8a2, #4a7cc8, #a24ac8, #c84a7c, #c84a4a);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), 0 0 0 4px #0A1526}
+.sc-wheel .cross{position:absolute; inset:0; background:linear-gradient(var(--line-2),var(--line-2)) center/1px 100% no-repeat, linear-gradient(var(--line-2),var(--line-2)) center/100% 1px no-repeat; border-radius:50%; opacity:.7}
+.sc-wheel .pt{position:absolute; width:9px; height:9px; margin:-4.5px 0 0 -4.5px; border-radius:50%; background:var(--c); box-shadow:0 0 0 2px #0A1526, 0 0 10px var(--c)}
+.sc-wheel .pt em{position:absolute; left:12px; top:-3px; font-style:normal; font-size:9px; color:var(--fg); letter-spacing:.06em}
+.sc-meter{display:flex; align-items:flex-end; gap:4px; height:62px; margin-top:6px}
+.sc-meter i{flex:1; height:var(--h); border-radius:2px; background:#1A2B45}
+.sc-meter i.on{background:linear-gradient(to top, #3E9C76, #A9B061 60%, #F0B43C)}
+.sc-meter i.on:nth-child(10){box-shadow:0 0 12px rgba(240,180,60,.45)}
+.sc-hist{display:flex; align-items:flex-end; gap:2px; height:62px; margin-top:6px; padding:0 0 1px; border-bottom:1px solid var(--line-2); background:repeating-linear-gradient(to top, transparent 0 15px, rgba(255,255,255,.04) 15px 16px)}
+.sc-hist i{flex:1; border-radius:1px 1px 0 0; background:#24385866}
+.sc-hist i.pk{background:linear-gradient(to top, var(--cta), #FF7AB8)}
+@media (max-width:820px){.scopes{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .dash-card{background:var(--panel-2); border-radius:var(--r-md); padding:16px 18px; min-width:0}
 .dash-card .xp li,.dash-card .aw li{border-top-color:rgba(255,255,255,.07)}
 .dash-card .xp .tg{background:var(--panel)}
@@ -451,6 +511,29 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .ed-btn:hover{background:rgba(255,255,255,.22)}
 .ed-btn.primary{background:var(--cta)}
 .ed-btn.primary:hover{background:var(--cta-hover)}
+
+/* ---------- unreleased clip: unrendered look until launch ---------- */
+.clip.locked{background-image:repeating-linear-gradient(135deg, rgba(6,15,31,.32) 0 6px, transparent 6px 12px) !important}
+.clip.locked::after{content:""; position:absolute; left:0; right:0; top:0; height:3px; background:#E5533D; border-radius:6px 6px 0 0}
+.ov-lock{display:inline-flex; align-items:center; gap:8px; margin:0 0 12px; padding:6px 12px; border-radius:999px; background:rgba(6,15,31,.55); border:1px solid rgba(255,255,255,.14); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#F2EEE5; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
+.ov-lock i{width:7px; height:7px; border-radius:50%; background:#E5533D; animation:recBlink 1.4s steps(2,start) infinite}
+
+/* ---------- contact drawer ---------- */
+#contact .drawer-panel{width:min(720px,100%)}
+.ct-body{padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px); display:flex; flex-direction:column; justify-content:center}
+.ct-pre{display:flex; align-items:center; gap:8px; margin:0 0 18px; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--dim)}
+.ct-pre i{width:8px; height:8px; border-radius:50%; background:var(--cta); animation:recBlink 1.4s steps(2,start) infinite}
+@keyframes recBlink{to{visibility:hidden}}
+.ct-title{margin:0; font-family:var(--f-head); font-weight:700; font-size:clamp(56px,11vw,112px); line-height:.92; letter-spacing:-.035em; color:var(--fg)}
+.ct-title em{font-style:normal; color:var(--cta)}
+.ct-copy{margin:22px 0 0; max-width:34em; font-size:clamp(16px,1.6vw,19px); line-height:1.5; color:#D7DCE6}
+.ct-copy.dim{margin-top:10px; font-size:14px; color:var(--muted)}
+.ct-mail{display:inline-block; align-self:flex-start; margin-top:36px; font-family:var(--f-head); font-weight:600; font-size:clamp(22px,3.4vw,34px); letter-spacing:-.01em; color:var(--fg); text-decoration:none; border-bottom:2px solid var(--cta); padding-bottom:4px; word-break:break-all}
+.ct-mail:hover{color:var(--cta)}
+.ct-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:28px}
+.ct-actions .chip-btn{height:40px; padding:0 18px; font-size:14px}
+a.chip-btn{text-decoration:none}
+@media (prefers-reduced-motion:reduce){.ct-pre i{animation:none}}
 
 /* ---------- splash: software-style loading window before the site appears ---------- */
 #splash{position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:16px; background:var(--bg); transition:opacity .55s ease, visibility .55s}
@@ -544,7 +627,8 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
   .v-head,.ledmade,.story,.about-grid,.caps{grid-template-columns:minmax(0,1fr)}
   .v-head{gap:14px; padding-block:24px 20px}
   .media{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .m.w6,.m.w4{grid-column:span 2; aspect-ratio:16/9} .m.w3{grid-column:span 2} .m.w2,.m.w2s{grid-column:span 1}
+  .m.w6,.m.w4{grid-column:span 2; aspect-ratio:16/9} .m.w3{grid-column:span 1} .m.w2,.m.w2s{grid-column:span 1}
+  .media{gap:8px}
 }
 @media (max-width:820px){ .top-tc{display:none} .nav{margin-left:auto} }
 @media (max-width:420px){ .brand b{font-size:14px} }
@@ -576,9 +660,9 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
   const steps = ['Reading preferences…', 'Importing footage…', 'Relinking media…', 'Building timeline…', 'Rendering previews…', 'Ready'];
   const st = document.getElementById('spStatus'), bar = document.getElementById('spBar');
   const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const MIN = rm ? 900 : 2600, MAX = 6000, t0 = performance.now();
-  let i = 0, finished = false, loaded = document.readyState === 'complete';
-  addEventListener('load', () => { loaded = true; });
+  const MIN = rm ? 600 : (innerWidth <= 820 ? 1100 : 1500), MAX = 2800, t0 = performance.now();
+  let i = 0, finished = false, loaded = document.readyState !== 'loading';
+  document.addEventListener('DOMContentLoaded', () => { loaded = true; });
   requestAnimationFrame(() => { bar.style.width = '8%'; });
   const tick = setInterval(() => { i = Math.min(steps.length - 2, i + 1); st.textContent = steps[i]; bar.style.width = (12 + i * 18) + '%'; }, MIN / (steps.length - 1));
   const done = () => {
@@ -609,7 +693,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
         <div class="panel-head"><span class="eyebrow">Program · Director's Cut</span><span class="mono" style="font-size:12px;color:var(--muted)" id="clipTc">CLIP 00</span></div>
         <div class="screen-wrap">
           <div class="screen" id="screen">
-            <video class="reel" id="reel" src="video/showreel-loop-v2.mp4" poster="media/showreel-poster-v2.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
+            <img class="reel reel-poster" src="media/showreel-poster-v2.jpg" alt="" aria-hidden="true"><video class="reel" id="reel" src="video/showreel-loop-v2.mp4" poster="media/showreel-poster-v2.jpg" muted loop playsinline autoplay preload="auto" aria-hidden="true"></video>
             <canvas id="cv" aria-hidden="true"></canvas>
             <div class="ov" id="ov"></div>
           </div>
@@ -691,6 +775,25 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
     <div class="drawer-body" id="aboutBody"></div>
   </div>
 </div>
+<!-- Contact -->
+<div class="drawer" id="contact" hidden role="dialog" aria-modal="true" aria-label="Contact">
+  <div class="scrim" data-close></div>
+  <div class="drawer-panel">
+    <div class="view-bar" style="position:static"><span class="eyebrow">Contact</span><span class="crumb">Say hola</span><button class="close" type="button" data-close>Close <kbd>ESC</kbd></button></div>
+    <div class="drawer-body ct-body">
+      <p class="ct-pre mono"><i></i>REC · New project</p>
+      <h2 class="ct-title">Say <em>hola.</em></h2>
+      <p class="ct-copy">Looking for a Creative Director who can lead the idea and still pick up the camera? Or have a brief that needs a fresh pair of eyes? I'd love to hear about it.</p>
+      <p class="ct-copy dim">Based in Norway. Open to Creative Director and Design Director roles.</p>
+      <a class="ct-mail" href="mailto:lulokoba@gmail.com" id="addr">lulokoba@gmail.com</a>
+      <div class="ct-actions">
+        <a class="chip-btn" href="mailto:lulokoba@gmail.com">Write an email</a>
+        <button type="button" class="chip-btn ghost" id="copyBtn">Copy email</button>
+        <a class="chip-btn ghost" href="CV/Raul_Munoz_CV.pdf" download="Raul_Munoz_CV.pdf" target="_blank" rel="noopener">Download CV · PDF</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 (() => {
@@ -711,9 +814,9 @@ const SEGS = [
     scale:'2 shoot days · 5 markets · film, social, print', line:'One summer idea, produced for five markets.', tracks:['dir','film'],
     seq:true, imgs:Array.from({length:48}, (_, i) => `media/vitaepro/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/vitaepro/vitaepro-summer-2026.gif',
     hero:['hero','Film · 45s (Norway)',16/9,true,'media/vitaepro/poster.jpg','video/vitaepro-summer-2026.mp4'],
-    media:[['w6','The dance',16/9,false,'media/vitaepro/still-05.jpg'],['w3','Morning stiffness',16/9,false,'media/vitaepro/still-01.jpg'],['w3','The dresser opens',16/9,false,'media/vitaepro/still-02.jpg'],
+    media:[['w3','The dance',16/9,false,'media/vitaepro/still-05.jpg'],['w3','Morning stiffness',16/9,false,'media/vitaepro/still-01.jpg'],['w3','The dresser opens',16/9,false,'media/vitaepro/still-02.jpg'],
            ['w3','The sock squad',16/9,false,'media/vitaepro/still-03.jpg'],['w3','Gathering round',16/9,false,'media/vitaepro/still-04.jpg'],['w3','One more stretch',16/9,false,'media/vitaepro/still-06.jpg'],
-           ['w3','Back to the room',16/9,false,'media/vitaepro/still-07.jpg'],['w6','Pack shot',16/9,false,'media/vitaepro/still-08.jpg']],
+           ['w3','Back to the room',16/9,false,'media/vitaepro/still-07.jpg'],['w3','Pack shot',16/9,false,'media/vitaepro/still-08.jpg']],
     led:['Campaign concept and creative platform','Large-scale production across 2 shoot days','Rollout for 5 markets and every channel','Alignment with marketing and market leads'],
     made:['Storyboards','On-set direction','Final craft reviews']},
   {id:'hanna-maria-greece', kind:'project', dur:12, title:'Hanna-Maria in Greece', client:'VitaePro (NutraQ)', year:'2024', role:'Director · DOP · Editor · Photographer', markets:'Finland',
@@ -721,9 +824,9 @@ const SEGS = [
     led:['Concept and script','On-location direction with the talent'], made:['Filming, on land and underwater','Editing','Colour grade','Photoshoot'],
     seq:true, imgs:Array.from({length:48}, (_, i) => `media/hanna-maria/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/hanna-maria/hanna-maria-greece.gif',
     hero:['hero','TV ad · 30s (Finland)',16/9,true,'media/hanna-maria/poster.jpg','video/hanna-maria-greece-2024.mp4'],
-    media:[['w6','Butterfly',16/9,false,'media/hanna-maria/still-04.jpg'],['w3','On the beach',16/9,false,'media/hanna-maria/still-01.jpg'],['w3','Close-up',16/9,false,'media/hanna-maria/still-06.jpg'],
+    media:[['w3','Butterfly',16/9,false,'media/hanna-maria/still-04.jpg'],['w3','On the beach',16/9,false,'media/hanna-maria/still-01.jpg'],['w3','Close-up',16/9,false,'media/hanna-maria/still-06.jpg'],
            ['w3','Swim cap on',16/9,false,'media/hanna-maria/still-02.jpg'],['w3','Underwater',16/9,false,'media/hanna-maria/still-03.jpg'],['w3','Group training',16/9,false,'media/hanna-maria/still-05.jpg'],
-           ['w3','In the pool',16/9,false,'media/hanna-maria/still-07.jpg'],['w6','Pack shot',16/9,false,'media/hanna-maria/still-08.jpg']],
+           ['w3','In the pool',16/9,false,'media/hanna-maria/still-07.jpg'],['w3','Pack shot',16/9,false,'media/hanna-maria/still-08.jpg']],
     photos:[['w6','Butterfly',1.5,false,'media/hanna-maria/photos/01-butterfly.jpg'],['w3','Beach portrait',1.5,false,'media/hanna-maria/photos/02-beach-portrait.jpg'],['w3','Beach stretch',1.5,false,'media/hanna-maria/photos/03-beach-lunge.jpg'],
             ['w3','On the shore',1.5,false,'media/hanna-maria/photos/04-beach-kneel.jpg'],['w3','Kayak',1.773,false,'media/hanna-maria/photos/05-kayak.jpg'],['w6','Underwater',1.773,false,'media/hanna-maria/photos/06-underwater.jpg'],
             ['w3','Training court',1.5,false,'media/hanna-maria/photos/07-training-court.jpg'],['w3','Workout',1.443,false,'media/hanna-maria/photos/08-workout.jpg'],
@@ -733,9 +836,18 @@ const SEGS = [
     led:['Campaign concept','Creative direction'], made:['TBC: tell me what you made hands-on'],
     seq:true, imgs:Array.from({length:48}, (_, i) => `media/still-got-it/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/still-got-it/still-got-it.gif',
     hero:['hero','TV ad · 30s (Norway)',16/9,true,'media/still-got-it/poster.jpg','video/still-got-it-2025.mp4'],
-    media:[['w6','1993, the wedding',16/9,false,'media/still-got-it/still-03.jpg'],['w3','1981',16/9,false,'media/still-got-it/still-01.jpg'],['w3','Disco',16/9,false,'media/still-got-it/still-02.jpg'],
+    media:[['w3','1993, the wedding',16/9,false,'media/still-got-it/still-03.jpg'],['w3','1981',16/9,false,'media/still-got-it/still-01.jpg'],['w3','Disco',16/9,false,'media/still-got-it/still-02.jpg'],
            ['w3','2002',16/9,false,'media/still-got-it/still-04.jpg'],['w3','2025, the gym',16/9,false,'media/still-got-it/still-07.jpg'],['w3','The product',16/9,false,'media/still-got-it/still-05.jpg'],
-           ['w3','Host and friend',16/9,false,'media/still-got-it/still-06.jpg'],['w6','Through the decades',16/9,false,'media/still-got-it/still-08.jpg']]},
+           ['w3','Host and friend',16/9,false,'media/still-got-it/still-06.jpg'],['w3','Through the decades',16/9,false,'media/still-got-it/still-08.jpg']]},
+  {id:'vitaeheart', kind:'project', dur:10, title:'VitaeHeart', client:'VitaeLab (NutraQ)', year:'TBC', role:'Creative Director', markets:'Sweden · Finland',
+    scale:'Brand, packaging, launch', line:'A heart-health brand that feels like everyday joy, not medicine.', tracks:['dir','design'],
+    led:['Brand idea and visual direction','Packaging system for Sweden and Finland'], made:['TBC: tell me what you made hands-on (illustration, packaging design, photography?)'],
+    imgs:['media/vitaeheart/01-pack-in-bag.jpg'],
+    hero:['hero','VitaeHeart pack, out in the world',1.5,false,'media/vitaeheart/01-pack-in-bag.jpg'],
+    story:[['Challenge',"Cholesterol products usually look clinical. VitaeHeart needed to stand out on a crowded shelf in Sweden and Finland and feel like something you'd happily carry around."],
+           ['Idea',"A clean white pack with a bold red ribbon of illustration: people dancing, moving and living well. Heart health shown as joy, not as a warning."],
+           ['What I delivered',"TBC: the brand, packaging and launch pieces I directed and made."]],
+    media:[['w3','Pack front · add image',1,false],['w3','Illustration detail · add image',1,false],['w6','In store / campaign · add image',16/9,false]]},
   {id:'digital-australia', kind:'project', dur:12, title:'Digital Channels, Australia', client:'TBC', year:'2016–2018', role:'Digital Creative Director', markets:'Australia',
     scale:'Apps, landing pages, social', line:'Digital creative direction across apps, web and social.', tracks:['design','dir'],
     led:['Team across UX, UI and motion','Digital channel strategy'], made:['UX flows','UI design','Prototypes']},
@@ -790,7 +902,7 @@ SEGS.forEach(seg => {
   seg.tracks.forEach((tid, k) => {
     const lane = laneWrap.querySelector(`[data-track="${tid}"]`);
     const b = document.createElement('button');
-    b.type = 'button'; b.className = 'clip';
+    b.type = 'button'; b.className = 'clip' + (seg.locked ? ' locked' : '');
     b.style.left = `calc(${pct(seg.start)} + 1px)`; b.style.width = `calc(${pct(seg.dur)} - 2px)`;
     b.style.background = TC[tid].c;
     const label = seg.kind === 'intro' ? 'Title · Opening' : seg.kind === 'end' ? 'End card' : `${seg.n} ${seg.title}`;
@@ -840,7 +952,9 @@ function fitCanvas(){
 (() => {
   const rv = document.getElementById('reel'); if (!rv) return;
   rv.muted = true; rv.defaultMuted = true; rv.playsInline = true; rv.setAttribute('muted', ''); rv.setAttribute('playsinline', '');
-  const tryPlay = () => { if (reduce || !document.querySelector('.screen.intro')) return; const pr = rv.play(); if (pr) pr.catch(() => {}); };
+  const tryPlay = () => { if (reduce || !document.querySelector('.screen.intro')) return; const pr = rv.play(); if (pr) pr.catch(() => rv.classList.add('blocked')); };
+  rv.addEventListener('playing', () => rv.classList.remove('blocked'));
+  rv.addEventListener('pause', () => { if (document.querySelector('.screen.intro') && !document.hidden) setTimeout(() => { if (rv.paused) rv.classList.add('blocked'); }, 120); });
   rv.addEventListener('loadeddata', tryPlay);
   const kick = () => { tryPlay(); if (!rv.paused) ['touchstart','pointerdown','scroll','keydown'].forEach(ev => removeEventListener(ev, kick, true)); };
   ['touchstart','pointerdown','scroll','keydown'].forEach(ev => addEventListener(ev, kick, {capture: true, passive: true}));
@@ -897,6 +1011,13 @@ function draw(seg, t){
   ctx.clearRect(0,0,w,h);
   if (seg.kind === 'intro') return;   // the showreel video shows through the cleared canvas
   if (seg.imgs) return drawImgs(seg, t, w, h);
+  if (seg.locked) {   // unreleased work: soft moving colour fields, no visuals until launch
+    ctx.fillStyle = '#081222'; ctx.fillRect(0,0,w,h);
+    [['232,6,135',.28,.35,.18],['110,147,201',.72,.55,.22],['240,180,60',.5,.8,.12]].forEach(([c,x,y,a], k) => {
+      const cx = w * (x + Math.sin(t * 3 + k * 2) * .12), cy = h * (y + Math.cos(t * 2.4 + k) * .1), r = Math.max(w, h) * .55;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, r); g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.fillRect(0,0,w,h); });
+    return;
+  }
   if (seg.kind === 'intro' || seg.kind === 'end') { ctx.fillStyle = SOLID_BG; ctx.fillRect(0,0,w,h); return; }
   // placeholder: one solid colour per clip until the real footage arrives (scrub, frame counter and open-project still work)
   ctx.fillStyle = PLACEHOLDER_COLORS[seg.i % PLACEHOLDER_COLORS.length];
@@ -926,7 +1047,7 @@ function overlayFor(seg){
     </div>`;
   return `
     <div class="ov-top mono"><span></span><span id="fr"></span></div>
-    <div class="ov-mid"><p class="m-eyebrow">Clip ${seg.n} · ${TC[seg.tracks[0]].name}</p><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2>
+    <div class="ov-mid">${seg.locked ? `<p class="ov-lock mono"><i></i>Rendering · premieres ${seg.premiere}</p>` : ''}<p class="m-eyebrow">Clip ${seg.n} · ${TC[seg.tracks[0]].name}</p><h2 class="ov-title" style="font-size:min(6.4cqw,12cqh)">${seg.title}</h2>
       <p class="ov-meta">${[seg.client, seg.year, seg.role, seg.markets].filter(x => x && x !== '—').join('<i>•</i>')}</p>
       <p class="ov-sub">${seg.line}</p>
       <div class="ov-actions"><button type="button" class="chip-btn ov-cta" data-act="open">${PLAY}Open project</button><button type="button" class="ov-btn2" data-act="next">Next clip</button></div>
@@ -992,7 +1113,7 @@ function frame(){
     screen.classList.toggle('endcard', seg.kind === 'end');
     // the reel only plays while the intro is on screen
     const rv = $('#reel');
-    if (rv) { if (seg.kind === 'intro' && !reduce) { const pr = rv.play(); if (pr) pr.catch(() => {}); } else rv.pause(); }
+    if (rv) { if (seg.kind === 'intro' && !reduce) { const pr = rv.play(); if (pr) pr.catch(() => rv.classList.add('blocked')); } else rv.pause(); }
     clipEls.forEach(c => c.el.classList.toggle('active', c.seg === seg.i));
   }
   const fr = $('#fr'); if (fr) fr.textContent = `FRAME ${String(Math.floor(t*seg.dur*25)).padStart(4,'0')} / ${String(seg.dur*25).padStart(4,'0')}`;
@@ -1006,7 +1127,7 @@ addEventListener('scroll', req, {passive:true});
 // only rebuild the overlay when switching between phone and desktop layouts
 let lastMobile = isMobile();
 // while a project page or panel covers the timeline, don't re-lay out the hidden stage (iOS fires resize as the address bar moves)
-const covered = () => !document.getElementById('view').hidden || !document.getElementById('bin').hidden || !document.getElementById('about').hidden;
+const covered = () => !document.getElementById('view').hidden || !document.getElementById('bin').hidden || !document.getElementById('about').hidden || !document.getElementById('contact').hidden;
 addEventListener('resize', () => { if (covered()) return; const m = isMobile(); if (m !== lastMobile) { lastMobile = m; curSeg = -1; } fitScreen(); redraw(); req(); });
 new ResizeObserver(() => { if (covered()) return; fitScreen(); redraw(); }).observe(screen.parentElement);
 // keep the picture sharp and drawn while the frame animates between full-width and 16:9
@@ -1089,7 +1210,7 @@ $('#tOpen').onclick = () => { const s = SEGS[curSeg]; if (PROJECTS.includes(s)) 
 ['wheel','touchstart'].forEach(ev => addEventListener(ev, () => playing && stopPlay(), {passive:true}));
 
 /* ---------- overlays: shared ---------- */
-const anyOpen = () => !$('#view').hidden || !$('#lb').hidden || !$('#bin').hidden || !$('#about').hidden;
+const anyOpen = () => !$('#view').hidden || !$('#lb').hidden || !$('#bin').hidden || !$('#about').hidden || !$('#contact').hidden;
 const lock = () => { document.documentElement.style.overflow = anyOpen() ? 'hidden' : ''; };
 
 /* ---------- project view ---------- */
@@ -1205,14 +1326,16 @@ lb.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.cl
 const FOLDERS = [
   ['Featured cut', PROJECTS.map(p => p.id)],
   ['Campaigns', ['summer-campaign','you-still-got-it']], ['Film', ['hanna-maria-greece','summer-campaign','you-still-got-it']], ['Digital · UX/UI', ['digital-australia','kids-app']],
-  ['Brand', ['rebrand','brand-from-zero']], ['Illustration & Animation', ['kids-app']], ['Photography', ['photography']],
+  ['Brand', ['vitaeheart','rebrand','brand-from-zero']], ['Illustration & Animation', ['kids-app']], ['Photography', ['photography']],
   ['Archive 2006–2016', []]
 ];
+/* Premiere-style label colours, one per bin, taken from the track palette */
+const FOLDER_COLORS = ['var(--cta)','var(--t-dir)','var(--t-film)','var(--t-digital)','var(--t-craft)','var(--play)','var(--t-photo)','var(--dim)'];
 const FOLDER_ICON = '<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M1.5 3.5h5l1.5 1.5h6.5v8h-13z"/></svg>';
 const mb = {f: 0, view: 'grid', q: ''};
 const thumbsFor = p => p.imgs ? p.imgs : (p.hero && p.hero[4] ? [p.hero[4]] : []);
 function renderBin(){
-  $('#mbSide').innerHTML = '<p class="grp">Bins</p>' + FOLDERS.map(([f, ids], i) => `<button type="button" class="mb-folder${i === mb.f ? ' on' : ''}" data-f="${i}">${FOLDER_ICON}<span>${f}</span><span class="n">${ids.length}</span></button>`).join('');
+  $('#mbSide').innerHTML = '<p class="grp">Bins</p>' + FOLDERS.map(([f, ids], i) => `<button type="button" class="mb-folder${i === mb.f ? ' on' : ''}" data-f="${i}" style="--fc:${FOLDER_COLORS[i] || 'var(--t-digital)'}">${FOLDER_ICON}<span>${f}</span><span class="n">${ids.length}</span></button>`).join('');
   const [fname, ids] = FOLDERS[mb.f], q = mb.q.trim().toLowerCase();
   const items = ids.map(id => PROJECTS.find(x => x.id === id)).filter(p => !q || [p.title, p.client, p.year, ...p.tracks.map(t => TC[t].name)].join(' ').toLowerCase().includes(q));
   $('#mbCrumb').textContent = fname;
@@ -1292,9 +1415,124 @@ const AW = [
 ];
 const STATS = [['18+','years in the industry'],['4','countries: Norway, Australia, Chile, NZ'],['10','studios, agencies and brands'],['6','awards']];
 const CT = Object.fromEntries(CAREER_TRACKS.map(t => [t[0], t]));
+const GLOBE_DOTS = '01o0af01o0el01o0ir01o0mx01o0r301o0v901o0zf01o13l01o17r01o1bx01o1g301o1k901o1of01o1sl01o1wr01o20x01o25301o29901o2df01o2hl01o2lr02408c0240bo0240f00240ic0240lo0240p00240sc0240vo0240z002412c02415o0241900241cc0241fo0241j00241mc0241po0241t00241wc0241zo02423002426c02429o0242d00242gc0242jo0242n002k09q02k0ci02k0fa02k0i202k0ku02k0nm02k0qe02k0t602k17202k19u02k1cm02k1fe02k1i602k1ky02k1nq02k1qi02k1ta02k1w202k1yu02k21m02k24e02k27602k29y02k2cq02k2fi02k2ia02k2l203008c0300aq0300d30300fh0300hv0300k90300mm0300p00300re03010x03015o0301820301af0301ct0301f70301hl0301jy0301mc0301oq0301r30301th0301vv0301y903020m03023003025e03027r0302a50302cj0302ex0302ha0302jo0302m203g07b03g09e03g0bh03g0dk03g0fn03g0hq03g0jt03g0lw03g0nz03g0q203g0s503g16q03g18t03g1aw03g1cz03g1f203g1h503g1j803g1lb03g1ne03g1ph03g1rk03g1tn03g1vq03g1xt03g1zw03g21z03g24203g26503g28803g2ab03g2ce03g2eh03g2gk03g2in03g2kq03g2mt03w0a703w0c103w0dw03w0fr03w0hl03w0jg03w0lb03w0n503w0p003w0qv03w0sp03w0uk03w19d03w1b803w1d303w1ex03w1gs03w1in03w1kh03w1mc03w1o703w1q103w1rw03w1tr03w1vl03w1xg03w1zb03w21503w23003w24v03w26p03w28k03w2af03w2c903w2e403w2fz03w2ht03w2jo03w2lj03w2nd04c0cb04c0h804c0m504c0ns04c0pf04c0r204c0sp04c0uc04c0vz04c1aq04c1cd04c1e004c1fn04c1ha04c1ix04c1kk04c1m704c1nu04c1ph04c1r404c1sr04c1ue04c1w104c1xo04c1zb04c20y04c22l04c24804c25v04c27i04c29504c2as04c2cf04c2e204c2fp04c2hc04c2iz04c2km04c2m904c2nw04s0ln04s0w304s1b104s1ci04s1e004s1fi04s1gz04s1ih04s1jz04s1lh04s1my04s1og04s1py04s1rg04s1sx04s1uf04s1vx04s1xf04s1yw04s20e04s21w04s23d04s24v04s26d04s27v04s29c04s2au04s2cc04s2du04s2fb04s2gt04s2ib04s2js04s2la04s2ms04s2oa0580uu0580w70581fd0581gr0581i40581jh0581kv0581m80581nl0581oz0581qc0581rp0581t20581ug0581vt0581yk0581zx05821a05822o05824105825e05826s05828505829i0582aw0582c90582dm0582f00582gd0582hq0582j30582kh0582lu0582n70582ol05o0u505o0vf05o1nm05o1q605o1rh05o1sr05o1u105o1vb05o1wl05o20g05o21q05o23005o24a05o25k05o26u05o28505o29f05o2ap05o2bz05o2d905o2ej05o2fu05o2h405o2ie05o2jo05o2ky0640vk0641rp0641sw0641u30641v90641wg06421806422f06423l06424s06425z06427606428d06429k0642ar0642bx0642d40642eb0642fi0642gp0642hw06k0vo06k1t006k26c06k29o06k2f809o0uv09o0vn0a40u80a40uz0ak0tv0ak0ul0ak0xg0b00tq0b00uf0bg0te0bg0u20bg0ur0bw0tr0bw0ue0bw0v20bw0vp0cc0tm0cc0u90cc0uw0cc2oi0cc2p50cs0ty0cs0uk0cs0v60cs0vs0cs2p80d80tt0d80uf0d80v10d80vn0d80w80d82io0d82pw0do0tp0do0ub0do0uw0do0vh0do0w20do0wn0do2ib0do2py0e40u60e40ur0e40vc0e40vw0e40wh0e42qk0e42r50ek0u20ek0um0ek0v60ek0vr0ek0wb0ek0wv0ek0xf0ek0y00ek2h20ek2hm0ek2i60ek2iq0ek2jb0ek2ql0f00ty0f00ui0f00v20f00vl0f00w50f00wp0f00x90f00xs0f02gr0f02ha0f02hu0f02ie0f02iy0f02jh0fg0ue0fg0ux0fg0vg0fg0w00fg0wj0fg0x20fg0xm0fg0y50fg0yo0fg1jn0fg2aj0fg2b20fg2gg0fg2gz0fg2hj0fg2i20fg2il0fg2j50fg2jo0fw0uf0fw0uy0fw0vh0fw0w00fw0wj0fw0x20fw0xm0fw0y50fw0yo0fw0z70fw1ja0fw1ju0fw1kd0fw1kw0fw1lf0fw2aa0fw2at0fw2bc0fw2bv0fw2ce0fw2fk0fw2g30fw2gm0fw2h60fw2hp0fw2i80fw2ir0fw2ja0fw2jt0gc0uh0gc0v00gc0vi0gc0w10gc0wk0gc0x30gc0xl0gc0y40gc0yn0gc0z60gc0zo0gc1jh0gc1k00gc1ki0gc1l10gc1lk0gc1m30gc2ak0gc2b30gc2bl0gc2c40gc2cn0gc2d60gc2do0gc2e70gc2eq0gc2f90gc2fr0gc2ga0gc2gt0gc2hc0gc2hu0gc2id0gc2iw0gc2jf0gc2jx0gc2kg0gs0ud0gs0uv0gs0ve0gs0vw0gs0we0gs0wx0gs0xf0gs0xx0gs0yg0gs0yy0gs0zh0gs0zz0gs1iu0gs1jd0gs1jv0gs1ke0gs1kw0gs1le0gs1lx0gs1mf0gs2ae0gs2ax0gs2bf0gs2bx0gs2cg0gs2cy0gs2dh0gs2dz0gs2eh0gs2f00gs2fi0gs2g00gs2gj0gs2h10gs2hj0gs2i20gs2ik0gs2j30gs2jl0gs2k30h80ue0h80ux0h80vf0h80vx0h80wf0h80wx0h80xf0h80xx0h80yf0h80yx0h80zf0h80zx0h810g0h81ij0h81j10h81jj0h81k10h81kj0h81l10h81lj0h81m10h81mk0h82a60h82ao0h82b60h82bo0h82c60h82co0h82d60h82do0h82e70h82ep0h82f70h82fp0h82g70h82gp0h82h70h82hp0h82i70h82ip0h82j70h82jq0h82k80ho0ug0ho0uy0ho0vg0ho0vy0ho0wf0ho0wx0ho0xf0ho0xx0ho0yf0ho0yw0ho0ze0ho0zw0ho10e0ho1i70ho1ip0ho1j70ho1jp0ho1k70ho1kp0ho1l60ho1lo0ho1m60ho1mo0ho29y0ho2af0ho2ax0ho2bf0ho2bx0ho2cf0ho2cw0ho2de0ho2dw0ho2ee0ho2ew0ho2fe0ho2fv0ho2gd0ho2gv0ho2hd0ho2hv0ho2ic0ho2iu0ho2jc0ho2ju0ho2kc0i40un0i40v50i40vm0i40w40i40wm0i40x30i40xl0i40y20i40yk0i40z20i40zj0i41010i410j0i41i60i41io0i41j50i41jn0i41k50i41km0i41l40i41lm0i41m30i41ml0i41n20i41qi0i41r00i429m0i42a40i42am0i42b30i42bl0i42c20i42ck0i42d20i42dj0i42e10i42ej0i42f00i42fi0i42g00i42gh0i42gz0i42hh0i42hy0i42ig0i42iy0i42jf0i42jx0ik0uo0ik0v60ik0vn0ik0w50ik0wm0ik0x30ik0xl0ik0y20ik0yj0ik0z10ik0zi0ik1000ik10h0ik10y0ik11g0ik1id0ik1iu0ik1jb0ik1jt0ik1ka0ik1kr0ik1l90ik1lq0ik1m80ik1mp0ik1n60ik1no0ik1qk0ik1r20ik29w0ik2ad0ik2av0ik2bc0ik2bt0ik2cb0ik2cs0ik2da0ik2dr0ik2e80ik2eq0ik2f70ik2fp0ik2g60ik2gn0ik2h50ik2hm0ik2i30ik2il0ik2j20ik2jk0j00uv0j00vc0j00vt0j00wb0j00ws0j00x90j00xq0j00y80j00yp0j00z60j00zn0j01040j010m0j01130j011k0j01210j012j0j01ib0j01is0j01j90j01jr0j01k80j01kp0j01l60j01lo0j01m50j01mm0j01n30j01nk0j01qg0j01qx0j02a20j02aj0j02b10j02bi0j02bz0j02cg0j02cx0j02df0j02dw0j02ed0j02eu0j02fc0j02ft0j02ga0j02gr0j02h80j02hq0j02i70j02io0j02j50jg0uk0jg0v20jg0vj0jg0w00jg0wh0jg0wy0jg0xf0jg0xw0jg0yd0jg0yu0jg0zb0jg0zs0jg1090jg10q0jg1170jg11o0jg1250jg12n0jg1hs0jg1ia0jg1ir0jg1j80jg1jp0jg1k60jg1kn0jg1l40jg1ll0jg1m20jg1mj0jg1n00jg1nh0jg1qt0jg1ra0jg2b60jg2bn0jg2c40jg2cl0jg2d30jg2dk0jg2e10jg2ei0jg2ez0jg2fg0jg2fx0jg2ge0jg2gv0jg2hc0jg2ht0jg2ia0jg2ir0jw0ur0jw0v80jw0vp0jw0w60jw0wn0jw0x40jw0xk0jw0y10jw0yi0jw0yz0jw0zg0jw0zx0jw10e0jw10v0jw11c0jw11t0jw1290jw12q0jw1hr0jw1i80jw1ip0jw1j60jw1jn0jw1k40jw1kl0jw1l20jw1li0jw1lz0jw1mg0jw1mx0jw1ne0jw1nv0jw1qo0jw1r50jw1rm0jw2ca0jw2cr0jw2d80jw2dp0jw2e50jw2em0jw2f30jw2fk0jw2g10jw2gi0jw2gz0jw2hg0jw2hx0jw2ie0kc0u00kc0uh0kc0ux0kc0ve0kc0vv0kc0wc0kc0ws0kc0x90kc0xq0kc0y70kc0yn0kc0z40kc0zl0kc1020kc10i0kc10z0kc11g0kc11x0kc12d0kc12u0kc1h90kc1hq0kc1i70kc1in0kc1j40kc1jl0kc1k20kc1ki0kc1kz0kc1lg0kc1lx0kc1md0kc1mu0kc1nb0kc1ns0kc1o80kc1op0kc1qk0kc1r10kc1ri0kc2cf0kc2cw0kc2dd0kc2dt0kc2ea0kc2er0kc2f80kc2fo0kc2g50kc2hj0kc2i00kc2rs0ks0t90ks0tq0ks0u70ks0un0ks0v40ks0vk0ks0w10ks0wi0ks0wy0ks0xf0ks0xv0ks0yc0ks0yt0ks0z90ks0zq0ks1060ks10n0ks1130ks11k0ks1210ks12h0ks12y0ks1hp0ks1i50ks1im0ks1j20ks1jj0ks1k00ks1kg0ks1kx0ks1ld0ks1lu0ks1mb0ks1mr0ks1n80ks1no0ks1o50ks1om0ks1p20ks1rd0ks1ru0ks2d10ks2dh0ks2dy0ks2ef0ks2ev0ks2fc0ks2hn0ks2i30l80t00l80tg0l80tx0l80ud0l80uu0l80va0l80vq0l80w70l80wn0l80x40l80xk0l80y10l80yh0l80yy0l80ze0l80zu0l810b0l810r0l81180l811o0l81250l812l0l81310l81ho0l81i40l81ik0l81j10l81jh0l81jy0l81ke0l81kv0l81lb0l81lr0l81m80l81mo0l81n50l81nl0l81o20l81oi0l81oz0l81rp0l82ej0l82f00l82fg0l82hq0lo0sv0lo0tb0lo0ts0lo0u80lo0up0lo0v50lo0vl0lo0w20lo0wi0lo0wy0lo0xf0lo0xv0lo0yb0lo0ys0lo0z80lo0zp0lo1050lo10l0lo1120lo11i0lo11y0lo12f0lo12v0lo13b0lo1hv0lo1ib0lo1is0lo1j80lo1jp0lo1k50lo1kl0lo1l20lo1li0lo1ly0lo1mf0lo1mv0lo1nb0lo1ns0lo1o80lo1op0lo1p50lo2f20m40sq0m40t70m40tn0m40u30m40uk0m40v00m40vg0m40vw0m40wd0m40wt0m40x90m40xq0m40y60m40ym0m40z20m40zj0m40zz0m410f0m410w0m411c0m411s0m41280m412p0m41350m413l0m41i30m41ij0m41iz0m41jf0m41jw0m41kc0m41ks0m41l90m41lp0m41m50m41mm0m41n20m41ni0m41ny0m41of0m41ov0m42jn0mk0s60mk0sm0mk0t20mk0ti0mk0ty0mk0uf0mk0uv0mk0vb0mk0vr0mk0w70mk0wo0mk0x40mk0xk0mk0y00mk0yh0mk0yx0mk0zd0mk0zt0mk1090mk10q0mk1160mk11m0mk1220mk12i0mk12z0mk13f0mk13v0mk1hu0mk1ia0mk1iq0mk1j60mk1jn0mk1k30mk1kj0mk1kz0mk1lg0mk1lw0mk1mc0mk1ms0mk1n80mk1np0mk1o50mk1ol0mk2ao0mk2bk0mk2cx0mk2hf0mk2is0mk2j80n00s10n00sh0n00sx0n00td0n00tu0n00ua0n00uq0n00v60n00vm0n00w20n00wi0n00wz0n00xf0n00xv0n00yb0n00yr0n00z70n00zn0n01040n010k0n01100n011g0n011w0n012c0n012s0n01390n013p0n01450n01hl0n01i10n01ih0n01iy0n01je0n01ju0n01ka0n01kq0n01l60n01lm0n01m30n01mj0n01mz0n01nf0n01nv0n01ob0n01or0n027l0n02820n028i0n028y0n02gk0n02h00n02hh0n02hx0n02id0n02it0ng0rw0ng0sd0ng0st0ng0t90ng0tp0ng0u50ng0ul0ng0v10ng0vh0ng0vx0ng0wd0ng0wt0ng0x90ng0xp0ng0y50ng0ym0ng0z20ng0zi0ng0zy0ng10e0ng10u0ng11a0ng11q0ng1260ng12m0ng1320ng13i0ng13y0ng1ht0ng1i90ng1ip0ng1j50ng1jl0ng1k10ng1kh0ng1kx0ng1ld0ng1lt0ng1m90ng1mp0ng1n50ng1nm0ng1o20ng1oi0ng2790ng2b90ng2gm0ng2h20ng2hi0ng2hy0ng2ie0ng2jb0ng2jr0nw0rw0nw0sd0nw0st0nw0t90nw0tp0nw0u50nw0ul0nw0v10nw0vh0nw0vx0nw0wd0nw0wt0nw0x90nw0xp0nw0y50nw0ym0nw0z20nw0zi0nw0zy0nw10e0nw10u0nw11a0nw11q0nw1260nw12m0nw1320nw1hd0nw1ht0nw1i90nw1ip0nw1j50nw1jl0nw1k10nw1kh0nw1kx0nw1ld0nw1lt0nw1m90nw1mp0nw1n50nw1nm0nw1o20nw1oi0nw1oy0nw26t0nw2790nw29x0nw2b90nw2fq0nw2g60nw2gm0nw2h20nw2hi0nw2hy0oc0s80oc0so0oc0t40oc0tk0oc0u00oc0ug0oc0uw0oc0vc0oc0vs0oc0w80oc0wo0oc0x40oc0xk0oc0y00oc0yg0oc0yw0oc0zc0oc0zs0oc1080oc10o0oc1140oc11k0oc1h40oc1hk0oc1i00oc1ig0oc1iw0oc1jc0oc1js0oc1k80oc1ko0oc1l40oc1lk0oc1m00oc1mg0oc1mw0oc1nc0oc1ns0oc1o80oc1oo0oc1p40oc26g0oc26w0oc28o0oc2940oc29k0oc2a00oc2bc0oc2bs0oc2g80oc2go0os0rs0os0s80os0so0os0t40os0tk0os0u00os0ug0os0uw0os0vc0os0vs0os0w80os0wo0os0x40os0xk0os0y00os0yg0os0yw0os0zc0os0zs0os1080os10o0os1go0os1h40os1hk0os1i00os1ig0os1iw0os1jc0os1js0os1k80os1ko0os1l40os1lk0os1m00os1mg0os1mw0os1nc0os1ns0os1o80os1oo0os1p40os1pk0os2600os26g0os28o0os2940os29k0os2a00os2ag0os2bc0os2c80os2ew0p80rs0p80s80p80so0p80t40p80tk0p80u00p80ug0p80uw0p80vc0p80vs0p80w80p80wo0p80x40p80xk0p80y00p80yg0p80yw0p80zc0p80zs0p81go0p81h40p81hk0p81i00p81ig0p81iw0p81jc0p81js0p81k80p81ko0p81l40p81lk0p81m00p81mg0p81mw0p81nc0p81ns0p81o80p81oo0p81p40p81pk0p81q00p825k0p82600p826g0p828o0p82940p829k0p82a00p82ag0p82bs0p82c80p82dk0po0s80po0so0po0t40po0tk0po0u00po0ug0po0uw0po0vc0po0vs0po0w80po0wo0po0x40po0xk0po0y00po0yg0po0yw0po0zc0po0zs0po1h40po1hk0po1i00po1ig0po1iw0po1jc0po1js0po1k80po1ko0po1l40po1lk0po1m00po1mg0po1mw0po1nc0po1ns0po1o80po1oo0po1p40po1pk0po1q00po1qg0po25k0po26g0po2940po29k0po2a00po2ag0q40st0q40t90q40tp0q40u50q40ul0q40v10q40vh0q40vx0q40wd0q40wt0q40x90q40xp0q40y50q40ym0q40z20q40zi0q41gw0q41hd0q41ht0q41i90q41ip0q41j50q41jl0q41k10q41kh0q41kx0q41ld0q41lt0q41m90q41mp0q41n50q41nm0q41o20q41oi0q41oy0q41pe0q41pu0q41qa0q41qq0q41r60q42500q426d0q429x0q42ad0qk0st0qk0t90qk0tp0qk0u50qk0ul0qk0v10qk0vh0qk0vx0qk0wd0qk0wt0qk0x90qk0xp0qk0y50qk0ym0qk0z20qk1bk0qk1c00qk1cg0qk1cw0qk1dc0qk1ds0qk1fk0qk1g00qk1gg0qk1gw0qk1hd0qk1ht0qk1i90qk1ip0qk1j50qk1jl0qk1k10qk1kh0qk1kx0qk1ld0qk1lt0qk1m90qk1mp0qk1n50qk1nm0qk1o20qk1oi0qk1oy0qk1pe0qk1pu0qk1qa0qk1qq0qk1r60qk25w0qk26d0qk2ad0qk2at0r00sh0r00sx0r00td0r00tu0r00ua0r00uq0r00v60r00vm0r00w20r00wi0r00wz0r00xf0r01av0r01bb0r01br0r01c70r01co0r01d40r01dk0r01e00r01eg0r01ew0r01fc0r01ft0r01g90r01gp0r01h50r01hl0r01i10r01ih0r01iy0r01je0r01ju0r01ka0r01kq0r01l60r01lm0r01m30r01mj0r01mz0r01nf0r01nv0r01ob0r01or0r01p80r01po0r01q40r01qk0r01r00r01rg0r020f0r025t0r02cj0r02cz0rg0qt0rg0r90rg0rp0rg0s60rg0t20rg0ti0rg0ty0rg0uf0rg0uv0rg0vb0rg0vr0rg0w70rg0wo0rg0x40rg1am0rg1b30rg1bj0rg1bz0rg1cf0rg1cv0rg1dc0rg1ds0rg1e80rg1eo0rg1f50rg1fl0rg1g10rg1gh0rg1gx0rg1he0rg1hu0rg1ia0rg1iq0rg1j60rg1jn0rg1k30rg1kj0rg1kz0rg1lg0rg1lw0rg1mc0rg1ms0rg1n80rg1np0rg1o50rg1ol0rg1p10rg1pi0rg1py0rg1qe0rg1qu0rg1ra0rg1rr0rg1ze0rg20b0rg25p0rg2ao0rg2cx0rw0qh0rw0t70rw0tn0rw0u30rw0uk0rw0v00rw0vg0rw0wd0rw1ae0rw1au0rw1ba0rw1br0rw1c70rw1cn0rw1d30rw1dk0rw1e00rw1eg0rw1ex0rw1fd0rw1ft0rw1g90rw1gq0rw1h60rw1hm0rw1i30rw1ij0rw1iz0rw1jf0rw1jw0rw1kc0rw1ks0rw1l90rw1lp0rw1m50rw1mm0rw1n20rw1ni0rw1ny0rw1of0rw1ov0rw1pb0rw1ps0rw1q80rw1qo0rw1r40rw1rl0rw1s10rw1za0rw1zq0rw2060rw27f0rw2ce0sc0q50sc0ql0sc19p0sc1a50sc1al0sc1b20sc1bi0sc1by0sc1cf0sc1cv0sc1db0sc1ds0sc1e80sc1ep0sc1f50sc1fl0sc1g20sc1gi0sc1gy0sc1hf0sc1hv0sc1ib0sc1is0sc1j80sc1jp0sc1k50sc1kl0sc1l20sc1li0sc1ly0sc1mf0sc1mv0sc1nb0sc1ns0sc1o80sc1op0sc1p50sc1pl0sc1z50sc1zl0sc2020sc25i0sc26v0sc27b0sc27s0sc2880sc2cs0ss0pc0ss0pt0ss0q90ss0qq0ss19g0ss19w0ss1ac0ss1at0ss1b90ss1bq0ss1c60ss1cn0ss1d30ss1dk0ss1e00ss1eg0ss1ex0ss1fd0ss1fu0ss1ga0ss1gr0ss1h70ss1ho0ss1i40ss1ik0ss1j10ss1jh0ss1jy0ss1ke0ss1kv0ss1lb0ss1lr0ss1m80ss1mo0ss1n50ss1nl0ss1o20ss1oi0ss1oz0ss1pf0ss1qc0ss1qs0ss1z00ss1zh0ss1zx0ss25e0ss25v0ss26b0ss26s0ss2780ss27o0ss2850ss2c90t80o70t80oo0t80p40t80pl0t80q10t80qi0t819e0t819v0t81ab0t81as0t81b80t81bp0t81c60t81cm0t81d30t81dj0t81e00t81eh0t81ex0t81fe0t81fu0t81gb0t81gs0t81h80t81hp0t81i50t81im0t81j20t81jj0t81k00t81kg0t81kx0t81ld0t81lu0t81mb0t81mr0t81n80t81no0t81o50t81om0t81p20t81pz0t81qg0t81qx0t81rd0t81ru0t81yr0t81z70t81zo0t82040t82570t825n0t82640t826l0t82710t827i0t827y0t82bn0to0mk0to0n10to0ni0to0ny0to0of0to0ow0to0pd0to19t0to1aa0to1ar0to1b80to1bo0to1c50to1cm0to1d30to1dj0to1e00to1eh0to1ex0to1fe0to1fv0to1gc0to1gs0to1h90to1hq0to1i70to1in0to1j40to1jl0to1k20to1ki0to1kz0to1lg0to1lx0to1md0to1mu0to1nb0to1ns0to1o80to1op0to1q30to1qk0to1r10to1ri0to1ry0to1sf0to1sw0to1yh0to1yx0to1ze0to1zv0to20c0to20s0to24i0to25g0to25x0to26d0to26u0to27b0to27s0to2bi0to2by0u40ld0u40lu0u40mb0u40ms0u40n90u40o60u40on0u40p40u40pl0u40sf0u40tc0u40tt0u40ua0u40vp0u419s0u41a90u41aq0u41b70u41bn0u41c40u41cl0u41d20u41dj0u41e00u41eh0u41ey0u41ff0u41fw0u41gd0u41gt0u41ha0u41hr0u41i80u41ip0u41j60u41jn0u41k40u41kl0u41l20u41li0u41lz0u41mg0u41mx0u41ne0u41nv0u41oc0u41pr0u41q70u41qo0u41r50u41rm0u41s30u41sk0u41t10u41ti0u41yo0u41z50u41zl0u42020u420j0u42100u424a0u424r0u42580u425p0u42660u426n0u42740uk06v0uk0l30uk0lk0uk0m10uk0mi0uk0mz0uk0ow0uk0pd0uk0so0uk0t50uk19q0uk1a80uk1ap0uk1b60uk1bn0uk1c40uk1cl0uk1d20uk1dj0uk1e00uk1eh0uk1ey0uk1ff0uk1fw0uk1gd0uk1gu0uk1hb0uk1hs0uk1ia0uk1ir0uk1j80uk1jp0uk1k60uk1kn0uk1l40uk1ll0uk1m20uk1mj0uk1n00uk1nh0uk1ny0uk1pd0uk1pv0uk1qc0uk1qt0uk1ra0uk1rr0uk1s80uk1sp0uk1t60uk1tn0uk1ye0uk1yv0uk1zc0uk1zt0uk20a0uk20r0uk2180uk21p0uk2420uk24j0uk2510uk25i0uk25z0uk26g0uk26x0uk27e0v00kt0v00lb0v00ls0v00m90v00mq0v00s00v00sh0v019p0v01a60v01an0v01b50v01bm0v01c30v01ck0v01d20v01dj0v01e00v01eh0v01ey0v01fg0v01fx0v01ge0v01gv0v01hd0v01hu0v01ib0v01is0v01j90v01jr0v01k80v01kp0v01l60v01lo0v01m50v01mm0v01n30v01nk0v01o20v01p00v01ph0v01pz0v01qg0v01qx0v01re0v01rw0v01sd0v01su0v01tb0v01ts0v01ua0v01xm0v01y30v01yl0v01z20v01zj0v02000v020i0v020z0v021g0v021x0v023u0v024b0v024t0v025a0v025r0v02680v026p0v02770v027o0v028m0v02940vg0jk0vg0kj0vg0l10vg0li0vg0lz0vg0mh0vg19n0vg1a50vg1am0vg1b40vg1bl0vg1c20vg1ck0vg1d10vg1dj0vg1e00vg1eh0vg1ez0vg1fg0vg1fy0vg1gf0vg1gw0vg1he0vg1hv0vg1id0vg1iu0vg1jb0vg1jt0vg1ka0vg1kr0vg1l90vg1lq0vg1m80vg1mp0vg1n60vg1no0vg1p40vg1pl0vg1q30vg1qk0vg1r20vg1rj0vg1s00vg1si0vg1sz0vg1th0vg1ty0vg1xc0vg1xt0vg1ya0vg1ys0vg1z90vg1zr0vg2080vg20p0vg2170vg21o0vg2260vg22n0vg2340vg23m0vg2430vg24l0vg2520vg25j0vg2610vg26i0vg26z0vg27h0vg27y0vg28g0vg28x0vg29e0vg29w0vg2ad0vw0iv0vw0kc0vw0ku0vw0lc0vw0lt0vw0mb0vw0mt0vw1ac0vw1at0vw1bb0vw1bt0vw1ca0vw1cs0vw1da0vw1dr0vw1e90vw1eq0vw1f80vw1fq0vw1g70vw1gp0vw1h70vw1ho0vw1i60vw1io0vw1j50vw1jn0vw1k50vw1km0vw1l40vw1lm0vw1m30vw1ml0vw1n20vw1nk0vw1oj0vw1p10vw1pj0vw1q00vw1qi0vw1r00vw1rh0vw1rz0vw1tg0vw1wv0vw1xd0vw1xv0vw1yc0vw1yu0vw1zc0vw1zt0vw20b0vw20t0vw21a0vw21s0vw22a0vw22r0vw2390vw23q0vw2480vw24q0vw2570vw25p0vw2670vw26o0vw2760vw27o0vw2850vw28n0vw2950vw29m0vw2a40vw2am0wc0k20wc0kk0wc0l10wc0lj0wc0m10wc0mj0wc0rh0wc1aa0wc1as0wc1ba0wc1bs0wc1ca0wc1cr0wc1d90wc1dr0wc1e90wc1er0wc1f90wc1fq0wc1g80wc1gq0wc1h80wc1hq0wc1i70wc1ip0wc1j70wc1jp0wc1k70wc1kp0wc1l60wc1lo0wc1m60wc1mo0wc1n60wc1o50wc1on0wc1p50wc1pn0wc1q50wc1qm0wc1r40wc1rm0wc1u30wc1ul0wc1v30wc1vl0wc1w20wc1wk0wc1x20wc1xk0wc1y20wc1yk0wc1z10wc1zj0wc2010wc20j0wc2110wc21j0wc2200wc22i0wc2300wc23i0wc2400wc24h0wc24z0wc25h0wc25z0wc26h0wc26z0wc27g0wc27y0wc28g0wc28y0wc29g0wc29y0wc2af0wc2ax0ws0ic0ws0jc0ws0jv0ws0kd0ws0kv0ws0ld0ws0lv0ws0md0ws0mv0ws0re0ws1ah0ws1az0ws1bi0ws1c00ws1ci0ws1d00ws1di0ws1e00ws1ei0ws1f00ws1fi0ws1g00ws1gi0ws1h10ws1hj0ws1i10ws1ij0ws1j10ws1jj0ws1k10ws1kj0ws1l10ws1lj0ws1m10ws1mk0ws1n20ws1o20ws1ok0ws1p20ws1pk0ws1q20ws1qk0ws1r20ws1sl0ws1t30ws1tl0ws1u30ws1ul0ws1v30ws1vl0ws1w30ws1wl0ws1x30ws1xm0ws1y40ws1ym0ws1z40ws1zm0ws2040ws20m0ws2140ws21m0ws2240ws22m0ws2350ws23n0ws2450ws24n0ws2550ws25n0ws2650ws26n0ws2750ws27n0ws2850ws28o0ws2960ws29o0ws2a60ws2ao0ws2b60x80i40x80j50x80jn0x80k60x80ko0x80l60x80lp0x80m70x80mp0x80n80x80nq0x80or0x80rb0x81bp0x81c80x81cq0x81d80x81dr0x81e90x81es0x81fa0x81fs0x81gb0x81gt0x81hb0x81hu0x81ic0x81iu0x81jd0x81jv0x81ke0x81kw0x81le0x81lx0x81mf0x81mx0x81ng0x81ny0x81oh0x81oz0x81ph0x81q00x81qi0x81r00x81s10x81sj0x81t20x81tk0x81u30x81ul0x81v30x81vm0x81w40x81wm0x81x50x81xn0x81y60x81yo0x81z60x81zp0x82070x820p0x82180x821q0x82280x822r0x82390x823s0x824a0x824s0x825b0x825t0x826b0x826u0x827c0x827u0x828d0x828v0x829e0x829w0x82ae0x82ax0x82bf0xo0hz0xo0j00xo0jj0xo0k20xo0kl0xo0l30xo0lm0xo0m50xo0mo0xo0n60xo0np0xo0o80xo0or0xo0p90xo0ps0xo0qb0xo0qu0xo0rc0xo1bo0xo1c60xo1cp0xo1d80xo1dr0xo1e90xo1es0xo1fb0xo1fu0xo1gc0xo1gv0xo1he0xo1hx0xo1if0xo1k00xo1ki0xo1l10xo1lk0xo1ml0xo1nn0xo1o60xo1oo0xo1p70xo1pq0xo1q90xo1qr0xo1ra0xo1rt0xo1sc0xo1su0xo1td0xo1tw0xo1uf0xo1ux0xo1vg0xo1vz0xo1wi0xo1x00xo1xj0xo1y20xo1yl0xo1z30xo1zm0xo2050xo20o0xo2160xo21p0xo2280xo22r0xo2390xo23s0xo24b0xo24u0xo25c0xo25v0xo26e0xo26x0xo27f0xo27y0xo28h0xo2900xo29i0xo2a10xo2ak0xo2b30xo2bl0y40hq0y40i90y40is0y40jb0y40ju0y40kd0y40kw0y40lf0y40ly0y40mi0y40n10y40nk0y40o30y40om0y40p50y40po0y40q70y40qq0y40r90y40rs0y41bw0y41cf0y41cy0y41dh0y41e00y41ej0y41f20y41fl0y41g40y41gn0y41h60y41hp0y41o20y41ol0y41p40y41pn0y41q60y41qp0y41r80y41rr0y41sa0y41st0y41tc0y41tv0y41ue0y41uy0y41vh0y41w00y41wj0y41x20y41xl0y41y40y41yn0y41z60y41zp0y42080y420r0y421a0y421t0y422c0y422v0y423e0y423x0y424g0y424z0y425i0y42620y426l0y42740y427n0y42860y428p0y42980y429r0y42aa0y42at0y42bc0y42ei0yk0gy0yk0hh0yk0i00yk0ik0yk0j30yk0jm0yk0k60yk0kp0yk0l90yk0ls0yk0mb0yk0mv0yk0ne0yk0nx0yk0oh0yk0p00yk0pj0yk0q30yk0qm0yk0r50yk0rp0yk0s80yk1co0yk1d70yk1dq0yk1ea0yk1et0yk1fc0yk1fw0yk1gf0yk1oh0yk1p10yk1pk0yk1q30yk1qn0yk1r60yk1rq0yk1s90yk1ss0yk1tc0yk1tv0yk1ue0yk1uy0yk1vh0yk1w00yk1wk0yk1x30yk1xm0yk1y60yk1yp0yk1z90yk1zs0yk20b0yk20v0yk21e0yk21x0yk22h0yk2300yk23j0yk2430yk24m0yk2550yk25p0yk2680yk26r0yk27b0yk27u0yk28e0yk28x0yk29g0yk2a00yk2aj0yk2b20yk2eu0yk2fx0z00gr0z00hb0z00hv0z00if0z00iy0z00ji0z00k20z00km0z00l60z00lp0z00m90z00mt0z00nd0z00nw0z00og0z00p00z00pk0z00q40z00qn0z00r70z00rr0z00sb0z00su0z01ea0z01eu0z01fd0z01fx0z01gh0z01o60z01oq0z01p90z01pt0z01qd0z01qx0z01rh0z01s00z01sk0z01t40z01to0z01u80z01ur0z01vb0z01vv0z01wf0z01wy0z01xi0z01y20z01ym0z01z60z01zp0z02090z020t0z021d0z021w0z022g0z02300z023k0z02440z024n0z02570z025r0z026b0z026u0z027e0z027y0z028i0z02920z029l0z02a50z02ap0z02b90z02dg0z02g70z02gr0zg0g00zg0gl0zg0h50zg0hp0zg0i90zg0iu0zg0je0zg0jy0zg0ki0zg0l20zg0ln0zg0m70zg0mr0zg0nb0zg0nw0zg0og0zg0p00zg0pk0zg0q40zg0qp0zg0r90zg0rt0zg0sd0zg0sy0zg1c10zg1cl0zg1d60zg1dq0zg1hn0zg1i80zg1kh0zg1ll0zg1m50zg1mp0zg1na0zg1nu0zg1oe0zg1oy0zg1pj0zg1q30zg1qn0zg1r70zg1tg0zg1u00zg1ul0zg1v50zg1vp0zg1w90zg1wu0zg1xe0zg1xy0zg1yi0zg1z20zg1zn0zg2070zg20r0zg21b0zg21w0zg22g0zg2300zg23k0zg2440zg24p0zg2590zg25t0zg26d0zg26y0zg27i0zg2820zg28m0zg2960zg29r0zg2ab0zg2av0zg2d40zg2do0zg2gh0zg2h20zw0ft0zw0ge0zw0gy0zw0hj0zw0i40zw0io0zw0j90zw0ju0zw0ke0zw0kz0zw0lk0zw0m50zw0mp0zw0na0zw0nv0zw0of0zw0p00zw0pl0zw0q50zw0qq0zw0rb0zw0rv0zw0sg0zw0t10zw1bf0zw1c00zw1ck0zw1d50zw1dq0zw1k10zw1lr0zw1mc0zw1mx0zw1nh0zw1o20zw1on0zw1p70zw1ps0zw1qd0zw1qy0zw1ri0zw1t80zw1tt0zw1ue0zw1uy0zw1vj0zw1w40zw1wo0zw1x90zw1xu0zw1ye0zw1yz0zw1zk0zw2050zw20p0zw21a0zw21v0zw22f0zw2300zw23l0zw2450zw24q0zw25b0zw25v0zw26g0zw2710zw27m0zw2860zw28r0zw29c0zw29w0zw2ah0zw2dc0zw2hd10c0fl10c0g610c0gs10c0hd10c0hy10c0ij10c0j410c0jp10c0kb10c0kw10c0lh10c0m210c0mn10c0n810c0nu10c0of10c0p010c0pl10c0q610c0qs10c0rd10c0ry10c0sj10c0t410c0tp10c1by10c1cj10c1d410c1dp10c1gn10c1if10c1jl10c1k610c1ld10c1mj10c1n410c1np10c1ob10c1ow10c1ph10c1q210c1qn10c1r810c1tl10c1u610c1us10c1vd10c1vy10c1wj10c1x410c1xp10c1yb10c1yw10c1zh10c20210c20n10c21810c21u10c22f10c23010c23l10c24610c24s10c25d10c25y10c26j10c27410c27p10c28b10c28w10c29h10c2a210c2an10c2b810c2cf10c2d010c2dl10c2h410s0fz10s0gk10s0h610s0hs10s0id10s0iz10s0jl10s0k710s0ks10s0le10s0m010s0ml10s0n710s0nt10s0oe10s0p010s0pm10s0q710s0qt10s0rf10s0s010s0sm10s0t810s0tt10s1bw10s1ci10s1d310s1dp10s1eb10s1hb10s1hx10s1jq10s1kc10s1kx10s1lj10s1pr10s1qd10s1qy10s1sr10s1td10s1tz10s1uk10s1v610s1vs10s1wd10s1wz10s1xl10s1y710s1ys10s1ze10s20010s20l10s21710s21t10s22e10s23010s23m10s24710s24t10s25f10s26010s26m10s27810s27t10s28f10s29110s29n10s2a810s2au10s2bg10s2c110s2cn10s2d910s2du10s2gv1180fr1180gd1180gz1180hl1180i81180iu1180jg1180k21180ko1180lb1180lx1180mj1180n51180ns1180oe1180p01180pm1180q81180qv1180rh1180s31180sp1180tc1180ty1180uk1180vs1181dp1181eb1181ex1181fk1181g61181gs1181he1181in1181j91181jv1181kh1181l41181lq1181pf1181q11181qo1181si1181t41181tr1181ud1181uz1181vl1181w81181wu1181xg1181y21181yo1181zb1181zx11820j11821511821s11822e11823011823m11824811824v11825h11826311826p11827c11827y11828k11829611829s1182af1182b11182bn1182c91182cw1182di1182e41182eq1182fc1182ht11o0fm11o0g911o0gw11o0hj11o0i611o0is11o0jf11o0k211o0kp11o0lc11o0lz11o0mm11o0n911o0nw11o0oj11o0p611o0pt11o0qg11o0r311o0rp11o0sc11o0sz11o0tm11o0u911o0uw11o0vj11o0w611o0wt11o1e011o1en11o1fa11o1fx11o1gk11o1h711o1ih11o1j311o1jq11o1kd11o1l011o1ln11o1ma11o1nk11o1ou11o1ph11o1q411o1qr11o1ta11o1tx11o1uk11o1v711o1vu11o1wh11o1x411o1xr11o1ye11o1z111o1zo11o20b11o20x11o21k11o22711o22u11o23h11o24411o24r11o25e11o26111o26o11o27b11o27y11o28l11o29811o29u11o2ah11o2b411o2br11o2ce11o2d111o2do11o2eb11o2ey11o2fl1240g01240go1240hc1240hz1240in1240ja1240jy1240kl1240l91240lw1240mk1240n71240nv1240oi1240p61240pt1240qh1240r41240rs1240sg1240t31240tr1240v21240vp1241dc1241e01241eo1241fb1241fz1241gm1241ha1241hx1241il1241j81241jw1241kj1241l71241lu1241mi1241n51241nt1241og1241p41241ps1241qf1241r31241rq1241se1241t11241tp1241uc1241v01241vn1241wb1241wy1241xm1241y91241yx1241zk12420812420w12421j12422712422u12423i12424512424t12425g12426412426r12427f12428212428q12429d1242a11242ao1242bc1242c01242cn1242db1242dy1242em1242f91242fx12k0f712k0gk12k0h812k0hx12k0il12k0j912k0jy12k0km12k0la12k0lz12k0mn12k0nb12k0o012k0oo12k0pc12k0q012k0qp12k0rd12k0s112k0sq12k0te12k0u212k0ur12k0vf12k0w312k0y412k0yt12k1d012k1do12k1ec12k1f012k1fp12k1gd12k1h112k1hq12k1ie12k1j212k1jr12k1kf12k1l312k1ls12k1mg12k1n412k1nt12k1oh12k1p512k1pu12k1qi12k1r612k1rv12k1sj12k1t712k1tw12k1uk12k1v812k1vx12k1wl12k1x912k1xy12k1ym12k1za12k1zz12k20n12k21b12k22012k22o12k23c12k24012k24p12k25d12k26112k26q12k27e12k28212k28r12k29f12k2a312k2as12k2bg12k2c412k2ct12k2dh12k2e512k2eu12k2fi12k2g612k2gv12k2hj1300fq1300gg1300h51300hu1300ij1300j81300jx1300kn1300lc1300m11300mq1300nf1300o51300ou1300pj1300q81300qx1300rm1300sc1300t11300tq1300uf1300v41300vt1300wj1300x81301cm1301ep1301fe1301g41301gt1301hi1301i71301iw1301jl1301kb1301l01301lp1301me1301n31301ns1301oi1301p71301pw1301ql1301ra1301rz1301sp1301te1301u31301us1301vh1301w71301ww1301xl1301ya1301yz1301zo13020e13021313021s13022h13023613023v13024l13025a13025z13026o13027d13028313028s13029h1302a61302av1302bk1302ca1302cz1302do1302ed1302f21302fr1302gh1302hv13g0er13g0fh13g0g713g0gx13g0hn13g0ic13g0j213g0js13g0ki13g0l813g0ly13g0mo13g0ne13g0o413g0ou13g0pj13g0q913g0qz13g0sf13g0t513g0tv13g0ul13g0vb13g0w113g0wq13g0xg13g0y613g1bu13g1ck13g1da13g1e013g1fg13g1g613g1gw13g1hl13g1ib13g1j113g1jr13g1kh13g1l713g1lx13g1mn13g1nd13g1o313g1os13g1pi13g1q813g1qy13g1ro13g1se13g1t413g1tu13g1uk13g1va13g1vz13g1wp13g1xf13g1y513g1yv13g1zl13g20b13g21113g21r13g22h13g23613g23w13g24m13g25c13g26213g26s13g27i13g28813g28y13g29o13g2ad13g2b313g2bt13g2cj13g2d913g2dz13g2ep13g2ff13g2g513g2gv13g2hk13g2lw13w0d213w0ek13w0fb13w0g213w0gs13w0hj13w0ia13w0j113w0js13w0kj13w0la13w0m113w0mr13w0ni13w0o913w0p013w0pr13w0qi13w0sq13w0th13w0u813w0uz13w0vq13w0wh13w0x813w0xy13w1be13w1c513w1dn13w1gm13w1hd13w1i413w1iv13w1jl13w1kc13w1l313w1lu13w1ml13w1nc13w1o313w1ou13w1pk13w1qb13w1r213w1rt13w1sk13w1tb13w1u213w1us13w1vj13w1wa13w1x113w1xs13w1yj13w1za13w20113w20r13w21i13w22913w23013w23r13w24i13w25913w25z13w26q13w27h13w28813w28z13w29q13w2ah13w2b813w2by13w2cp13w2dg13w2e713w2ey13w2fp13w2gg13w2lo13w2mf14c05314c0do14c0eg14c0f814c0g114c0gt14c0hl14c0id14c0j514c0jx14c0kp14c0lh14c0ma14c0n214c0nu14c0om14c0pe14c0q614c0qy14c0sj14c0tb14c0u314c0uv14c0vn14c0wf14c0x714c1cu14c1kn14c1lf14c1m714c1mz14c1ns14c1ok14c1pc14c1q414c1qw14c1ro14c1sg14c1t814c1u114c1ut14c1vl14c1wd14c1x514c1xx14c1yp14c1zh14c20a14c21214c21u14c22m14c23e14c24614c24y14c25q14c26j14c27b14c28314c28v14c29n14c2af14c2b714c2bz14c2cs14c2dk14c2ec14c2f414c2ld14c2m514c2mx14s06414s0df14s0e814s0f114s0fv14s0go14s0hh14s0ib14s0j414s0jx14s0kq14s0lk14s0md14s0n614s0nz14s0ot14s0sv14s0to14s0ui14s0vb14s0w414s1cd14s1d714s1gg14s1i214s1ki14s1lb14s1m514s1my14s1nr14s1ok14s1pe14s1q714s1r014s1ru14s1sn14s1tg14s1u914s1v314s1vw14s1wp14s1xi14s1yc14s1z514s1zy14s20s14s21l14s22e14s23714s24114s24u14s25n14s26g14s27a14s28314s28w14s29p14s2aj14s2bc14s2c514s2cz14s2ds14s2el14s2fe14s2g814s2lw14s2mq15806d1580771580ca1580d51580dz1580eu1580fo1580gj1580hd1580i81580j21580jx1580kr1580lm1580mg1580nb1580o51580se1580t91580u31580uy1580vs1581cq1581g41581ht1581l71581m21581mw1581nr1581ol1581pg1581qa1581r51581rz1581su1581to1581uj1581vd1581w81581x21581xx1581yr1581zm15820g15821b15822515823015823v15824p15825k15826e15827915828315828y15829s1582an1582bh1582cc1582d61582e11582ev1582fq1582gk1582mi15o04x15o05t15o06p15o08h15o0b615o0c215o0cy15o0du15o0eq15o0fn15o0gj15o0hf15o0ib15o0j715o0k315o0kz15o0lw15o0ms15o0no15o0t115o0tx15o1g815o1h515o1i115o1ix15o1mh15o1ne15o1oa15o1p615o1q215o1qy15o1ru15o1sq15o1tn15o1uj15o1vf15o1wb15o1x715o1y315o1yz15o1zw15o20s15o21o15o22k15o23g15o24c15o25815o26515o27115o27x15o28t15o29p15o2al15o2bh15o2ce15o2da15o2e615o2f215o2fy15o2gu15o2hq15o2in15o2jj15o2kf15o2n316404716405516406316407016407y16408w16409t1640ar1640bp1640cm1640dk1640eh1640ff1640gd1640ha1640i81640j61640k31640l11640lz1640mw1640nu1640si1640tg16410x16411v1641fv1641gt1641hr1641io1641kk1641lh1641mf1641nc1641oa1641p81641q51641r31641s11641sy1641tw1641uu1641vr1641wp1641xn1641yk1641zi16420f16421d16422b16423816424616425416426116426z16427x16428u16429s1642aq1642bn1642cl1642dj1642eg1642fe1642gb1642h91642i71642j41642k21642l01642mv1642nt1642oq1642po16k04g16k05g16k06g16k07f16k08f16k09f16k0ae16k0be16k0ce16k0dd16k0ed16k0fc16k0gc16k0hc16k0ib16k0jb16k0kb16k0la16k0ma16k0na16k0o916k0q916k0u716k10516k11516k12416k1gz16k1hz16k1iy16k1ky16k1lx16k1mx16k1nw16k1ow16k1pw16k1qv16k1rv16k1sv16k1tu16k1uu16k1vu16k1wt16k1xt16k1yt16k1zs16k20s16k21r16k22r16k23r16k24q16k25q16k26q16k27p16k28p16k29p16k2ao16k2bo16k2co16k2dn16k2en16k2fm16k2gm16k2hm16k2il16k2jl16k2kl16k2lk16k2mk16k2nk16k2oj16k2pj16k2qj16k2ri17001k17004p17005q17006s17007t17008v17009w1700ay1700bz1700d11700e21700f41700g51700h71700i81700ja1700kb1700ld1700me1700ng1700oh1700pj1700qk1700sn1700tp1700uq1700zy17010z17012117018a17019b1701hn1701ip1701jq1701lt1701mv1701pz1701r11701s21701t41701u51701v71701w81701xa1701yb1701zd17020e17021g17022h17023j17024k17025m17026n17027p17028q17029s1702at1702bv1702cw1702dy1702ez1702g11702h21702i41702j51702k71702l81702ma1702nb1702od1702pe1702qg1702rh17g00k17g01o17g05017g06417g07817g08c17g09g17g0ak17g0bo17g0cs17g0dw17g0f017g0g417g0h817g0ic17g0jg17g0kk17g0lo17g0ms17g0nw17g0p017g0q417g0uk17g0vo17g10417g11817g12c17g13g17g1hw17g1j017g1k417g1l817g1mc17g1ok17g1po17g1qs17g1rw17g1t017g1u417g1v817g1wc17g1xg17g1yk17g1zo17g20s17g21w17g23017g24417g25817g26c17g27g17g28k17g29o17g2as17g2bw17g2d017g2e417g2f817g2gc17g2hg17g2ik17g2jo17g2ks17g2lw17g2n017g2o417g2p817g2qc17g2rg17w00l17w04617w05d17w06k17w07r17w08x17w0a417w0bb17w0ci17w0dp17w0ew17w0g317w0h917w0ku17w0n817w0of17w0qs17w0ud17w0vk17w10b17w11i17w12p17w13w17w15317w1jd17w1kk17w1lr17w1mx17w1o417w1qi17w1sw17w1u317w1v917w1wg17w1xn17w1yu17w20117w21817w22f17w23l17w24s17w25z17w27617w28d17w29k17w2ar17w2bx17w2d417w2eb17w2fi17w2gp17w2hw17w2j317w2k917w2lg17w2mn17w2nu17w2p117w2q817w2rf18c05s18c07218c08c18c09m18c0aw18c0dh18c0er18c0g118c0il18c0jv18c0l618c0mg18c0nq18c0qa18c0su18c0u518c0z918c10j18c11u18c13418c14e18c15o18c16y18c1js18c1l218c1mc18c1vb18c1xv18c1z618c20g18c21q18c23018c24a18c25k18c26u18c28518c29f18c2ap18c2bz18c2d918c2ej18c2fu18c2h418c2ie18c2jo18c2ky18c2m818c2ni18c2q318s0fr18s0ii18s0jv18s0nz18s0qq18s0s318s0tg18s10b18s11o18s13118s14f18s15s18s17518s1t218s1x618s1yk18s1zx18s21a18s22o18s24118s25e18s26s18s28518s29i18s2aw18s2c918s2dm18s2f018s2gd18s2hq18s2j31980fo1980io1980k51980ln1980z319810k19812219813k19815219816j1981sx1981xf19820e19821w19823d19824v19826d19827v19829c1982au1982cc19o0z919o10w19o12j19o14619o15t19o17g19o22l19o24819o25v19o27i1a40y91a41041a411z1a413t1a415o1a417j1a41vl1a426p1a428k1ak0hq1ak0q21ak0s51ak0wb1ak0ye1ak10h1ak12k1ak14n1ak16q1b00p01b00re1b00w51b00yj1b010x1b013a1b015o1b01821b01hl1b025e1bg0nm1bg0qe1bg0t61bg0vy1bg0yq1bg11i1bg14a1bg1721bg24e1bw0sc1bw0vo1bw12c1bw15o';
+/* ---------- markets globe: dotted earth, drag to spin, cities + agencies ---------- */
+const MARKETS = [
+  {id:'apac', name:'Asia Pacific', col:'#5FA8A0', view:[162,-16], line:'Fast, scrappy, digital-first. Big sports and retail brands on tight timelines.', cities:[
+    {n:'Sydney', c:'Australia', ll:[-33.87,151.21], jobs:[['2017–18','Fox Sports Australia','Digital Creative Director'],['2016–17','UBT Global','Digital Creative Director'],['2014–15','Ursa Clemenger','Digital Art Director'],['2012–14','Pusher','Digital Art Director']]},
+    {n:'Melbourne', c:'Australia', ll:[-37.81,144.96], jobs:[['2006–09','Agencies','Digital Designer']]},
+    {n:'Wellington', c:'New Zealand', ll:[-41.29,174.78], jobs:[['2006–09','Agencies','Digital Designer']]}]},
+  {id:'sam', name:'South America', col:'#C98A6E', view:[-70,-24], line:'Idea-led network agencies. Award-winning integrated campaigns for TV and global brands.', cities:[
+    {n:'Santiago', c:'Chile', ll:[-33.45,-70.67], jobs:[['2011–12','Tribal DDB','Digital Art Director'],['2010–11','MRM McCann','Digital Art Director']]}]},
+  {id:'eu', name:'Europe', col:'#6E93C9', view:[12,50], line:'In-house and brand-side. Building creative platforms that run across the Nordics.', cities:[
+    {n:'Oslo', c:'Norway', ll:[59.91,10.75], jobs:[['2021–now','NutraQ / VitaeLab','Creative Director'],['2019–21','Gelato','In-house Art Director'],['2018–now','Freelance','Digital CD · UX/UI']]}]}
+];
+const ROUTE = [['Wellington','Melbourne'],['Melbourne','Sydney'],['Sydney','Santiago'],['Sydney','Oslo']];
+function initGlobe(){
+  const cv = document.getElementById('globe'); if (!cv || cv.dataset.on) return; cv.dataset.on = 1;
+  const ctx = cv.getContext('2d'), D = Math.PI / 180;
+  const raw = GLOBE_DOTS, dots = [];
+  for (let i = 0; i < raw.length; i += 6) { const la = (parseInt(raw.substr(i,3),36) / 10 - 90) * D, lo = (parseInt(raw.substr(i+3,3),36) / 10 - 180) * D; dots.push([Math.cos(la)*Math.cos(lo), Math.cos(la)*Math.sin(lo), Math.sin(la)]); }
+  const vec = ([la, lo]) => [Math.cos(la*D)*Math.cos(lo*D), Math.cos(la*D)*Math.sin(lo*D), Math.sin(la*D)];
+  const cities = MARKETS.flatMap(m => m.cities.map(c => Object.assign(c, {m, v: vec(c.ll)})));
+  const byName = Object.fromEntries(cities.map(c => [c.n, c]));
+  const arcs = ROUTE.map(([a, b]) => { const A = byName[a].v, B = byName[b].v, om = Math.acos(Math.min(1, A[0]*B[0]+A[1]*B[1]+A[2]*B[2])), pts = [];
+    for (let k = 0; k <= 48; k++) { const t = k / 48, s1 = Math.sin((1-t)*om) / Math.sin(om), s2 = Math.sin(t*om) / Math.sin(om), h = 1 + Math.sin(Math.PI*t) * Math.min(.2, .04 + om * .07);
+      pts.push([(A[0]*s1 + B[0]*s2)*h, (A[1]*s1 + B[1]*s2)*h, (A[2]*s1 + B[2]*s2)*h]); } return pts; });
+  let lon = MARKETS[0].view[0], lat = MARKETS[0].view[1], vx = 0, vy = 0, drag = null, fly = null, sel = MARKETS[0], hot = null, hotM = null, W = 0, H = 0, R = 0, dpr = 1, raf = 0, visible = false;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function P(v){ const cl = Math.cos(-lon*D), sl = Math.sin(-lon*D), x = v[0]*cl - v[1]*sl, y = v[0]*sl + v[1]*cl, z = v[2], cp = Math.cos(lat*D), sp = Math.sin(lat*D);
+    return [W/2 + R*y, H/2 - R*(-x*sp + z*cp), x*cp + z*sp]; }
+  function size(){ const r = cv.getBoundingClientRect(); dpr = Math.min(2, devicePixelRatio || 1); W = r.width; H = r.height; R = Math.min(W, H) / 2 / 1.24; cv.width = W * dpr; cv.height = H * dpr; }
+  function draw(t){
+    ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    const g = ctx.createRadialGradient(W/2 - R*.35, H/2 - R*.4, R*.1, W/2, H/2, R);
+    g.addColorStop(0, '#13243D'); g.addColorStop(1, '#081222');
+    ctx.beginPath(); ctx.arc(W/2, H/2, R, 0, 7); ctx.fillStyle = g; ctx.fill();
+    ctx.lineWidth = 1; ctx.strokeStyle = 'rgba(110,147,201,.22)'; ctx.stroke();
+    for (const d of dots) { const [x, y, z] = P(d);
+      if (z < 0) { if (z > -.35) continue; ctx.fillStyle = 'rgba(154,168,191,.05)'; ctx.fillRect(x-.6, y-.6, 1.2, 1.2); continue; }
+      ctx.fillStyle = `rgba(154,168,191,${(.18 + z*.55).toFixed(2)})`; const s = .9 + z*.9; ctx.fillRect(x - s/2, y - s/2, s, s); }
+    ctx.lineWidth = 1.4; ctx.setLineDash([3, 4]); ctx.lineDashOffset = reduce ? 0 : -t / 60;
+    arcs.forEach(pts => { ctx.beginPath(); let on = false;
+      for (const p of pts) { const [x, y, z] = P(p); const front = z > 0 || Math.hypot(x - W/2, y - H/2) > R + 1; if (front) { on ? ctx.lineTo(x, y) : ctx.moveTo(x, y); on = true; } else on = false; }
+      ctx.strokeStyle = 'rgba(232,6,135,.55)'; ctx.stroke(); });
+    ctx.setLineDash([]);
+    const pulse = reduce ? .5 : (t / 1400) % 1;
+    for (const c of cities) { const [x, y, z] = P(c.v); c.sx = x; c.sy = y; c.vis = z > 0.05; if (!c.vis) continue;
+      const on = c.m === sel, a = .35 + z * .65;
+      if (on) { ctx.beginPath(); ctx.arc(x, y, 5 + pulse * 14, 0, 7); ctx.strokeStyle = `rgba(232,6,135,${(1 - pulse) * .7})`; ctx.lineWidth = 1.5; ctx.stroke(); }
+      ctx.beginPath(); ctx.arc(x, y, on ? 5 : 4, 0, 7); ctx.fillStyle = c.m.col; ctx.globalAlpha = a; ctx.fill(); ctx.globalAlpha = 1;
+      ctx.lineWidth = 2; ctx.strokeStyle = on ? '#E80687' : '#060F1F'; ctx.stroke();
+      ctx.font = `${on || c === hot ? 600 : 500} 11px "IBM Plex Mono", monospace`; ctx.fillStyle = on || c === hot ? '#F2EEE5' : 'rgba(242,238,229,.6)';
+      const left = c.n === 'Melbourne'; ctx.textAlign = left ? 'right' : 'left'; ctx.fillText(c.n.toUpperCase(), x + (left ? -10 : 10), y + (c.n === 'Wellington' ? 12 : 4)); }
+    // markets hidden behind the curvature get a hint on the rim, pointing the way round
+    for (const m of MARKETS) { m.hint = null; if (m.cities.some(c => c.vis)) continue;
+      const c0 = m.cities[0]; let dx = c0.sx - W/2, dy = c0.sy - H/2, L = Math.hypot(dx, dy); if (L < 1) { dx = 0; dy = -1; L = 1; } dx /= L; dy /= L;
+      const bx = W/2 + dx*(R+7), by = H/2 + dy*(R+7), tx = W/2 + dx*(R+17), ty = H/2 + dy*(R+17), px = -dy*5, py = dx*5;
+      const bob = reduce ? 0 : Math.sin(t / 420) * 1.5;
+      ctx.beginPath(); ctx.moveTo(tx + dx*bob, ty + dy*bob); ctx.lineTo(bx + px + dx*bob, by + py + dy*bob); ctx.lineTo(bx - px + dx*bob, by - py + dy*bob); ctx.closePath();
+      ctx.fillStyle = m.col; ctx.fill();
+      const lx = W/2 + dx*(R+26), ly = H/2 + dy*(R+26), name = c0.n.toUpperCase() + (m.cities.length > 1 ? ' +' + (m.cities.length - 1) : '');
+      ctx.font = '500 10.5px "IBM Plex Mono", monospace'; ctx.textBaseline = 'middle'; ctx.textAlign = Math.abs(dx) < .35 ? 'center' : dx > 0 ? 'left' : 'right';
+      ctx.fillStyle = m === hotM ? '#F2EEE5' : 'rgba(242,238,229,.7)'; ctx.fillText(name, lx, ly + (Math.abs(dx) < .35 ? dy * 4 : 0)); ctx.textBaseline = 'alphabetic';
+      m.hint = [W/2 + dx*(R+20), H/2 + dy*(R+20)]; }
+    const sh = ctx.createRadialGradient(W/2, H/2, R*.7, W/2, H/2, R*1.02); sh.addColorStop(0, 'rgba(6,15,31,0)'); sh.addColorStop(1, 'rgba(6,15,31,.55)');
+    ctx.beginPath(); ctx.arc(W/2, H/2, R, 0, 7); ctx.fillStyle = sh; ctx.fill();
+  }
+  function loop(t){ raf = 0;
+    if (fly) { const k = Math.min(1, (t - fly.t0) / fly.d), e = k < .5 ? 4*k*k*k : 1 - Math.pow(-2*k + 2, 3) / 2; lon = fly.l0 + fly.dl * e; lat = fly.a0 + (fly.a1 - fly.a0) * e; if (k >= 1) fly = null; }
+    else if (!drag && (Math.abs(vx) > .01 || Math.abs(vy) > .01)) { lon -= vx; lat = Math.max(-70, Math.min(70, lat + vy)); vx *= .94; vy *= .94; }
+    draw(t); if (visible) raf = requestAnimationFrame(loop); }
+  const kick = () => { if (!raf && visible) raf = requestAnimationFrame(loop); };
+  function flyTo(l, a){ let dl = ((l - lon) % 360 + 540) % 360 - 180; fly = {t0: performance.now(), d: reduce ? 1 : 1100, l0: lon, dl, a0: lat, a1: a}; vx = vy = 0; kick(); }
+  function pick(m, city){ sel = m; const v = city ? [city.ll[1], Math.max(-55, Math.min(60, city.ll[0]))] : m.view; flyTo(v[0], v[1]); renderInfo(city); }
+  function renderInfo(city){
+    document.querySelectorAll('.gl-tab').forEach(b => b.classList.toggle('on', b.dataset.m === sel.id));
+    const box = document.getElementById('glInfo');
+    box.innerHTML = `<p class="gl-line">${sel.line}</p>` + sel.cities.map(c => `<div class="gl-city${c === city ? ' on' : ''}"><button type="button" class="gl-cname" data-c="${c.n}"><i style="background:${sel.col}"></i>${c.n}<span>${c.c}</span></button>
+      <ul>${c.jobs.map(j => `<li><span class="mono">${j[0]}</span><b>${j[1]}</b><em>${j[2]}</em></li>`).join('')}</ul></div>`).join('');
+  }
+  document.getElementById('glTabs').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) pick(MARKETS.find(m => m.id === b.dataset.m)); });
+  document.getElementById('glInfo').addEventListener('click', e => { const b = e.target.closest('[data-c]'); if (b) pick(sel, byName[b.dataset.c]); });
+  const hit = (ex, ey) => { const r = cv.getBoundingClientRect(), x = ex - r.left, y = ey - r.top; return cities.find(c => c.vis && Math.hypot(c.sx - x, c.sy - y) < 14) || MARKETS.find(m => m.hint && Math.hypot(m.hint[0] - x, m.hint[1] - y) < 26); };
+  cv.addEventListener('pointerdown', e => { drag = {x: e.clientX, y: e.clientY, moved: 0}; fly = null; cv.setPointerCapture(e.pointerId); cv.classList.add('grab'); kick(); });
+  cv.addEventListener('pointermove', e => {
+    if (!drag) { const h = hit(e.clientX, e.clientY), hc = h && h.cities ? null : h, hm = h && h.cities ? h : null; if (hc !== hot || hm !== hotM) { hot = hc; hotM = hm; cv.style.cursor = h ? 'pointer' : ''; kick(); } return; }
+    const k = 180 / (Math.PI * R), dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag.moved += Math.abs(dx) + Math.abs(dy);
+    vx = dx * k; vy = dy * k; lon -= vx; lat = Math.max(-70, Math.min(70, lat + vy)); drag.x = e.clientX; drag.y = e.clientY; });
+  const up = e => { if (!drag) return; const c = drag.moved < 6 && hit(e.clientX, e.clientY); drag = null; cv.classList.remove('grab'); if (c) c.cities ? pick(c) : pick(c.m, c); kick(); };
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', up);
+  new ResizeObserver(() => { size(); draw(performance.now()); }).observe(cv);
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; kick(); }).observe(cv);
+  size(); renderInfo(); draw(0);
+  // intro: open on Asia Pacific, then a slow settle so it reads as 3D
+  if (!reduce) { lon = 110; lat = -10; flyTo(MARKETS[0].view[0], MARKETS[0].view[1]); }
+}
+
+const DL_ICON = '<svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8M4.5 6.5 8 10l3.5-3.5M2.5 13.5h11"/></svg>';
+/* career numbers drawn as editing-software scopes (Lumetri-style): slider, colour wheel, level meter, histogram */
+const CTRY = {anz:['AU · NZ','#5FA8A0'], cl:['Chile','#C98A6E'], au:['Australia','#5FA8A0'], no:['Norway','#6E93C9']};
+const SPANS = [[2006,2010,'anz'],[2010,2012.5,'cl'],[2012.5,2019,'au'],[2019,2026.9,'no']];
+const SCOPES = (() => {
+  const x = y => ((y - 2006) / 21 * 100).toFixed(2) + '%';
+  const yrs = `<div class="sc-track">${SPANS.map(([a,b,c]) => `<i style="left:${x(a)};width:calc(${x(b)} - ${x(a)});background:${CTRY[c][1]}" title="${CTRY[c][0]} ${a|0}–${Math.min(2026,b|0)}"></i>`).join('')}<b class="sc-thumb" style="left:${x(2026.9)}"></b></div>
+    <div class="sc-ticks">${Array.from({length:21},(_, i) => `<i${i % 5 === 4 ? ' class="maj"' : ''}></i>`).join('')}</div>
+    <div class="sc-axis mono"><span>2006</span><span>2016</span><span>2026</span></div>`;
+  const pts = [['NO',-62,.78,'#6E93C9'],['AU',150,.72,'#5FA8A0'],['NZ',118,.84,'#7FC4BB'],['CL',210,.64,'#C98A6E']];
+  const wheel = `<div class="sc-wheel"><span class="cross"></span>${pts.map(([l,a,r,c]) => { const rad = a * Math.PI / 180; return `<span class="pt" style="left:${(50 + Math.cos(rad) * r * 46).toFixed(1)}%;top:${(50 + Math.sin(rad) * r * 46).toFixed(1)}%;--c:${c}"><em class="mono">${l}</em></span>`; }).join('')}</div>`;
+  const meter = `<div class="sc-meter">${Array.from({length:12},(_, i) => `<i class="${i < 10 ? 'on' : ''}" style="--h:${30 + i * 6}%"></i>`).join('')}</div>`;
+  const per = {}; AW.forEach(a => { per[a[0]] = (per[a[0]] || 0) + (/×2/.test(a[1]) ? 2 : 1); });
+  const hist = `<div class="sc-hist">${Array.from({length:21},(_, i) => { const n = per[2006 + i] || 0; return `<i style="height:${n ? 18 + n * 26 : 4}%"${n ? ' class="pk"' : ''} title="${2006 + i}${n ? ' · ' + n + ' awards' : ''}"></i>`; }).join('')}</div><div class="sc-axis mono"><span>2006</span><span>peak 2010–11</span><span>2026</span></div>`;
+  const card = (lbl, val, viz, cap) => `<div class="scope"><div class="sc-head mono"><span>${lbl}</span><b>${val}</b></div>${viz}<p class="sc-cap">${cap}</p></div>`;
+  return card('Experience', '18+ yrs', yrs, `<span class="lg">${['anz','cl','no'].map(c => `<span><i style="background:${CTRY[c][1]}"></i>${c === 'anz' ? 'Australia · NZ' : CTRY[c][0]}</span>`).join('')}</span>`)
+    + card('Countries', '4', wheel, '3 continents: Asia Pacific, South America, Europe')
+    + card('Studios', '10', meter, 'Agencies, studios and brands')
+    + card('Awards', '6', hist, 'Grand Prix, Gold, Silver and more');
+})();
 $('#aboutBody').innerHTML = `
   <div class="about-grid">
-    <div><img class="about-photo" src="media/intro-me-v2.jpg" alt="Raul Muñoz"><h2>18 years. Four countries. Every medium.</h2>
+    <div><img class="about-photo" src="media/about-me.jpg" alt="Raul Muñoz"><h2>18 years. Four countries. Every medium.</h2>
       <p>Creative Director with experience across in-house, agency and freelance roles in Norway, Australia, Chile and New Zealand. Builds creative platforms and leads integrated work across TV, digital and social, and still makes the work by hand.</p>
       <p class="todo">Final bio copy to be written.</p></div>
     <div><p class="eyebrow">Capabilities</p><div class="caps">
@@ -1303,15 +1541,26 @@ $('#aboutBody').innerHTML = `
       <div><h4>Moving image</h4><p>Film direction, shooting, editing, animation</p></div>
       <div><h4>Craft</h4><p>Illustration, painting, photography, drone</p></div></div></div>
   </div>
+  <div class="dash dash-globe">
+    <section class="dash-card globe-card">
+      <div class="gl-stage"><canvas id="globe" aria-label="Interactive globe of the cities Raul has worked in. Drag to spin."></canvas><p class="gl-hint mono">Drag to spin · tap a city</p></div>
+      <div class="gl-side">
+        <p class="eyebrow">Markets · 3 continents · 5 cities</p>
+        <h4>Three continents. Three ways of working.</h4>
+        <p class="gl-intro">Not just a move next door. Asia Pacific, South America and Europe each have their own culture, audiences and way of making work, and I've led creative in all three.</p>
+        <div class="gl-tabs" id="glTabs">${MARKETS.map(m => `<button type="button" class="gl-tab" data-m="${m.id}"><i style="background:${m.col}"></i>${m.name}</button>`).join('')}</div>
+        <div class="gl-info" id="glInfo"></div>
+      </div>
+    </section>
+  </div>
   <div class="dash">
-    <div class="stats">${STATS.map(s => `<div class="stat"><b>${s[0]}</b><span>${s[1]}</span></div>`).join('')}</div>
+    <div class="scopes">${SCOPES}</div>
     <div class="dash-grid">
-      <section class="dash-card"><p class="eyebrow">Experience</p><ul class="xp">${XP.map(x => `<li><span class="yr">${x[0]}</span><span class="rl"><b>${x[1]}</b><span>${x[2]}</span></span><span class="tg"><i style="background:${CT[x[3]][2]}"></i>${CT[x[3]][1]}</span></li>`).join('')}</ul></section>
+      <section class="dash-card cv-card"><p class="eyebrow">Experience</p><h4>Full career, 2006–2026</h4><p>Every role, studio and brand, from New Zealand and Chile to Australia and Norway, in a one-page CV.</p>
+        <a class="chip-btn" href="CV/Raul_Munoz_CV.pdf" download="Raul_Munoz_CV.pdf" target="_blank" rel="noopener">${DL_ICON}Download CV · PDF</a></section>
       <section class="dash-card"><p class="eyebrow">Awards</p><ul class="aw">${AW.map(a => `<li><span class="yr">${a[0]}</span><span><b>${a[1]}</b><small>${a[2]}</small></span></li>`).join('')}</ul></section>
     </div>
-  </div>
-  <div id="contactSec"><p class="eyebrow" style="padding:0 max(16px, env(safe-area-inset-left,0px)); margin:8px 0">Contact</p>
-    <div class="contact"><span class="addr" id="addr">lulokoba@gmail.com</span><button type="button" class="chip-btn" id="copyBtn">Copy email</button><span class="chip-btn ghost" style="cursor:default">CV download · later</span></div></div>`;
+  </div>`;
 const hideTip = () => {};
 $('#copyBtn').onclick = () => {
   const b = $('#copyBtn');
@@ -1319,12 +1568,12 @@ $('#copyBtn').onclick = () => {
   try { navigator.clipboard.writeText('lulokoba@gmail.com').then(done, () => selAddr()); } catch(_) { selAddr(); }
 };
 function selAddr(){ const r = document.createRange(); r.selectNodeContents($('#addr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
-const about = $('#about');
-function openAbout(toContact){ stopPlay(); closeDrawers(); about.hidden = false; lock(); about.querySelector('.close').focus({preventScroll:true});
-  const body = $('#aboutBody'); if (toContact) setTimeout(() => body.scrollTo({top: $('#contactSec').offsetTop - 20, behavior: reduce?'auto':'smooth'}), 60); else body.scrollTop = 0; }
-function closeDrawers(){ const was = !bin.hidden || !about.hidden; bin.hidden = true; about.hidden = true; hideTip(); lock(); if (was && view.hidden) refreshStage(); }
+const about = $('#about'), contact = $('#contact');
+function openAbout(toContact){ if (toContact) return openContact(); stopPlay(); closeDrawers(); about.hidden = false; lock(); about.querySelector('.close').focus({preventScroll:true}); $('#aboutBody').scrollTop = 0; initGlobe(); }
+function openContact(){ stopPlay(); closeDrawers(); contact.hidden = false; lock(); contact.querySelector('.close').focus({preventScroll:true}); }
+function closeDrawers(){ const was = !bin.hidden || !about.hidden || !contact.hidden; bin.hidden = true; about.hidden = true; contact.hidden = true; hideTip(); lock(); if (was && view.hidden) refreshStage(); }
 document.querySelectorAll('.drawer [data-close]').forEach(b => b.addEventListener('click', closeDrawers));
-$('#btnWork').onclick = openBin; $('#btnAbout').onclick = () => openAbout(false); $('#btnContact').onclick = () => openAbout(true);
+$('#btnWork').onclick = openBin; $('#btnAbout').onclick = () => openAbout(false); $('#btnContact').onclick = openContact;
 
 /* ---------- keyboard ---------- */
 addEventListener('keydown', e => {
@@ -1332,7 +1581,7 @@ addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     if (!lb.hidden) return closeLb();
     if (!view.hidden) return closeProject();
-    if (!bin.hidden || !about.hidden) return closeDrawers();
+    if (!bin.hidden || !about.hidden || !contact.hidden) return closeDrawers();
   }
   if (!lb.hidden) { if (e.key === 'ArrowRight') lbGo(1); if (e.key === 'ArrowLeft') lbGo(-1); return; }
   if (anyOpen()) return;
