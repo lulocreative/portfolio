@@ -518,6 +518,101 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .ov-lock{display:inline-flex; align-items:center; gap:8px; margin:0 0 12px; padding:6px 12px; border-radius:999px; background:rgba(6,15,31,.55); border:1px solid rgba(255,255,255,.14); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:#F2EEE5; backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
 .ov-lock i{width:7px; height:7px; border-radius:50%; background:#E5533D; animation:recBlink 1.4s steps(2,start) infinite}
 
+/* ---------- mobile: hand coach-mark showing the timeline can be dragged ---------- */
+.tl-hint{display:none}
+@media (max-width:820px){
+  .tl-hint{display:block; position:absolute; left:0; right:0; top:0; bottom:0; pointer-events:none; opacity:0; transition:opacity .35s; z-index:5}
+  .tl-hint.show{opacity:1}
+  .tl-hand{position:absolute; left:calc(64% - 15px); top:calc(38% - 2px); width:34px; height:42px; filter:drop-shadow(0 6px 14px rgba(0,0,0,.55)); animation:handDrag 2.2s cubic-bezier(.45,0,.25,1) both}
+  .tl-tap{position:absolute; left:64%; top:38%; width:22px; height:22px; margin:-11px 0 0 -11px; border-radius:50%; background:rgba(232,6,135,.35); border:2px solid #E80687; animation:handTap 2.2s cubic-bezier(.45,0,.25,1) both}
+  .tl-trail{position:absolute; top:calc(38% - 2px); left:calc(64% - 112px); width:112px; height:4px; border-radius:2px; background:linear-gradient(90deg, rgba(232,6,135,0), rgba(232,6,135,.7)); transform-origin:right center; animation:handTrail 2.2s cubic-bezier(.45,0,.25,1) both}
+  .tl-hint-lbl{position:absolute; right:12px; top:-31px; padding:5px 12px; border-radius:999px; background:rgba(6,15,31,.82); border:1px solid var(--line-2); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg); white-space:nowrap}
+}
+@keyframes handDrag{0%{transform:translateX(0) scale(1); opacity:0} 10%{opacity:1; transform:translateX(0) scale(1)} 22%{transform:translateX(0) scale(.88)} 70%{transform:translateX(-112px) scale(.88)} 80%{transform:translateX(-112px) scale(1); opacity:1} 100%{transform:translateX(-112px) scale(1); opacity:0}}
+@keyframes handTap{0%,18%{transform:translateX(0) scale(0); opacity:0} 24%{transform:translateX(0) scale(1); opacity:1} 70%{transform:translateX(-112px) scale(1); opacity:1} 80%,100%{transform:translateX(-112px) scale(1.6); opacity:0}}
+@keyframes handTrail{0%,24%{transform:scaleX(0); opacity:0} 30%{opacity:1} 70%{transform:scaleX(1) translateX(0); opacity:1} 90%,100%{transform:scaleX(1); opacity:0}}
+/* peek: the clips slide under the finger and spring back; the playhead and the reel stay put */
+@media (max-width:820px){ .lanes-inner.peek #laneWrap, .lanes-inner.peek #ruler{animation:tlPeek 2.2s cubic-bezier(.45,0,.25,1) both} }
+@keyframes tlPeek{0%,22%{transform:translateX(0)} 70%{transform:translateX(-112px)} 76%{transform:translateX(-112px); animation-timing-function:cubic-bezier(.3,1.5,.5,1)} 96%,100%{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.tl-hand,.tl-tap,.tl-trail,.lanes-inner.peek #laneWrap,.lanes-inner.peek #ruler{animation:none}}
+
+/* ---------- visual case-study pages ---------- */
+.vx{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); background:var(--vd)}
+.vx-t{position:relative; aspect-ratio:1; overflow:hidden; display:block; width:100%; padding:0; border:0; text-align:left; color:inherit}
+.vx-t.full{grid-column:1/-1; aspect-ratio:16/9}
+.vx-img img,.vx-hero > img,.vx-next img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+.vx-img:hover img,.vx-next:hover img{transform:scale(1.03)}
+.vx-img.tall{aspect-ratio:4/5}
+.vx-lbl{position:absolute; top:18px; left:22px; right:22px; z-index:2; display:flex; justify-content:space-between; gap:12px; font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.78; pointer-events:none}
+.vx-hero{aspect-ratio:auto !important; min-height:min(86vh, 56.25vw + 120px); display:flex; align-items:flex-end}
+.vx-hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 30%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.72))}
+.vx-hero-in{position:relative; z-index:2; width:100%; padding:0 clamp(20px,5vw,72px) clamp(24px,5vw,56px); color:#fff}
+.vx-h1{margin:0 0 clamp(18px,3vw,34px); font-family:var(--f-head); font-weight:700; font-size:clamp(48px,9vw,132px); line-height:.9; letter-spacing:-.04em; text-transform:uppercase}
+.vx-slate{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; border-top:1px solid rgba(255,255,255,.35)}
+.vx-slate div{position:relative; padding:12px 18px 0 0; display:flex; flex-direction:column; gap:4px}
+.vx-slate span{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.7}
+.vx-slate b{font-family:var(--f-head); font-weight:500; font-size:clamp(13px,1.3vw,16px); letter-spacing:0}
+.vx-slate i{position:absolute; top:6px; right:14px; font-style:normal; color:var(--cta); font-size:15px}
+.vx-panel{display:flex; flex-direction:column; justify-content:center; padding:clamp(28px,8%,80px)}
+.vx-state{margin:0; font-family:var(--f-head); font-weight:500; font-size:clamp(24px,3.2vw,46px); line-height:1.08; letter-spacing:-.02em; text-wrap:balance}
+.vx-small{margin:22px 0 0; font-size:13px; opacity:.72}
+.vx-list ul{list-style:none; margin:0; padding:0}
+.vx-list li{font-family:var(--f-head); font-weight:600; font-size:clamp(40px,6.4vw,92px); line-height:1.02; letter-spacing:-.03em; opacity:.32}
+.vx-list li.on{opacity:1}
+.vx-case{aspect-ratio:auto !important; padding:clamp(64px,9vw,130px) clamp(20px,6vw,90px)}
+.vx-case-in{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr); gap:clamp(28px,6vw,96px); align-items:start}
+.vx-eyebrow{margin:0 0 18px; font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; opacity:.6}
+.vx-quote{margin:0; font-family:var(--f-head); font-weight:600; font-size:clamp(30px,3.8vw,56px); line-height:1.02; letter-spacing:-.03em; text-wrap:balance; color:var(--vm)}
+.vx-case-txt p{margin:0 0 18px; font-size:clamp(16px,1.35vw,19px); line-height:1.6; max-width:38em}
+.vx-case-txt p:first-child::first-line{font-weight:600}
+@media (max-width:820px){.vx-case-in{grid-template-columns:minmax(0,1fr)}}
+.vx-umb{margin-bottom:clamp(56px,7vw,100px); padding-bottom:clamp(48px,6vw,88px); border-bottom:1px solid rgba(40,15,32,.18)}
+.vx-big{margin:0; font-family:var(--f-head); font-weight:700; font-size:clamp(56px,8vw,120px); line-height:.9; letter-spacing:-.045em; color:var(--vd)}
+.vx-by{display:inline-block; margin:22px 0 0; padding:6px 12px; border-radius:999px; background:var(--vm); color:var(--vi); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase}
+.vx-cols{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(20px,4vw,56px); margin-top:clamp(48px,6vw,88px); padding-top:28px; border-top:1px solid rgba(40,15,32,.18)}
+.vx-cols p:not(.vx-eyebrow){margin:0; font-size:15px; line-height:1.6}
+@media (max-width:820px){.vx-cols{grid-template-columns:minmax(0,1fr)}}
+.vx-img.fit{background:var(--vl)}
+.vx-img.fit img{object-fit:contain; padding:9%; box-sizing:border-box; filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
+.vx-hero-fit{display:grid !important; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); align-items:end}
+.vx-hero-fit::after{display:none}
+.vx-hero-fit .vx-hero-art{grid-column:2; grid-row:1; align-self:stretch; display:flex; align-items:center; justify-content:center; padding:72px 6% 48px}
+.vx-hero-fit .vx-hero-art img{max-width:100%; max-height:72vh; object-fit:contain; filter:drop-shadow(0 30px 50px rgba(0,0,0,.3))}
+.vx-hero-fit .vx-hero-in{grid-column:1; grid-row:1; padding-right:0}
+.vx-hero-fit .vx-h1{font-size:clamp(40px,6vw,92px)}
+.vx-hero-fit .vx-slate{grid-template-columns:repeat(3,minmax(0,1fr)); row-gap:14px}
+.vx-lm ul{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.vx-lm li{font-size:15px; line-height:1.45; padding-left:16px; position:relative}
+.vx-lm li::before{content:""; position:absolute; left:0; top:.6em; width:7px; height:7px; border-radius:2px; background:var(--vm)}
+.vx-lm{grid-template-columns:repeat(2,minmax(0,1fr)); margin-top:clamp(36px,4vw,56px)}
+.vx-qt{aspect-ratio:auto !important; padding:clamp(72px,10vw,150px) clamp(20px,6vw,90px)}
+.vx-qt .vx-quote{max-width:16em; font-size:clamp(34px,5vw,76px)}
+.vx-tri figcaption{display:none}
+@media (max-width:820px){ .vx-hero-fit{grid-template-columns:minmax(0,1fr)} .vx-hero-fit .vx-hero-art{grid-column:1; grid-row:1; padding:64px 10% 0} .vx-hero-fit .vx-hero-in{grid-row:2} .vx-lm{grid-template-columns:minmax(0,1fr)} }
+.vx-film{background:#000}
+.vx-film video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000}
+.vx-tri{aspect-ratio:auto !important; padding:clamp(56px,8vw,110px) clamp(20px,6vw,90px)}
+.vx-tri-in{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:clamp(10px,2vw,28px)}
+.vx-tri figure{margin:0; cursor:zoom-in}
+.vx-tri img{display:block; width:100%; aspect-ratio:9/16; object-fit:cover; border-radius:clamp(10px,1.4vw,22px)}
+.vx-tri figcaption{margin-top:12px; text-align:center; font-size:11px; letter-spacing:.16em; color:var(--vi)}
+.vx-sw{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); height:72%; margin-top:20px}
+.vx-sw div{display:flex; flex-direction:column; justify-content:flex-end; gap:4px; padding:12px 10px}
+.vx-sw b{font-family:var(--f-head); font-weight:600; font-size:clamp(11px,1vw,14px)}
+.vx-sw span{font-size:10px; opacity:.85}
+.vx-next{aspect-ratio:21/9 !important; cursor:pointer; background:var(--cta); transition:background .25s}
+.vx-next:hover{background:var(--cta-hover)}
+.vx-next-t{position:absolute; left:clamp(20px,5vw,72px); bottom:clamp(20px,5vw,56px); z-index:2; font-family:var(--f-head); font-weight:700; font-size:clamp(32px,6vw,84px); letter-spacing:-.03em; color:#0A2E42}
+@media (max-width:820px){
+  .vx{grid-template-columns:minmax(0,1fr)}
+  .vx-t.full{aspect-ratio:4/3}
+  .vx-hero{min-height:82vh}
+  .vx-slate{grid-template-columns:repeat(2,minmax(0,1fr)); row-gap:12px}
+  .vx-sw{height:auto; min-height:220px; grid-template-columns:repeat(5,minmax(0,1fr))}
+  .vx-sw div{padding:8px 6px} .vx-sw b{font-size:10px}
+  .vx-film{aspect-ratio:16/9 !important}
+}
+
 /* ---------- contact drawer ---------- */
 #contact .drawer-panel{width:min(720px,100%)}
 .ct-body{padding:clamp(28px,6vw,64px) clamp(20px,5vw,56px); display:flex; flex-direction:column; justify-content:center}
@@ -668,7 +763,7 @@ a.chip-btn{text-decoration:none}
   const done = () => {
     if (finished) return; finished = true; clearInterval(tick);
     st.textContent = steps[steps.length - 1]; bar.style.width = '100%';
-    setTimeout(() => { sp.classList.add('gone'); setTimeout(() => sp.remove(), 650); }, 320);
+    setTimeout(() => { sp.classList.add('gone'); setTimeout(() => { sp.remove(); window.__splashDone = true; dispatchEvent(new Event('splashdone')); }, 650); }, 320);
   };
   const wait = () => { const el = performance.now() - t0; if (el >= MIN && (loaded || el >= MAX)) done(); else setTimeout(wait, 120); };
   wait();
@@ -728,6 +823,9 @@ a.chip-btn{text-decoration:none}
             <div class="playhead" id="playhead"></div>
           </div>
         </div>
+        <div class="tl-hint" id="tlHint" aria-hidden="true"><span class="tl-trail"></span><span class="tl-tap"></span>
+          <svg class="tl-hand" viewBox="0 0 32 40"><path d="M11 4a3 3 0 0 1 6 0v13h1v-5a3 3 0 0 1 6 0v6h.5a3 3 0 0 1 5.5 1.6V28c0 6.6-4.6 11-11 11h-2.5c-3.6 0-6.4-1.6-8.4-4.6L3.3 27a3 3 0 0 1 4.9-3.4L11 27Z" fill="#F2EEE5" stroke="#060F1F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="tl-hint-lbl mono">Drag to explore</span></div>
       </div>
     </section>
   </div>
@@ -788,7 +886,7 @@ a.chip-btn{text-decoration:none}
       <a class="ct-mail" href="mailto:lulokoba@gmail.com" id="addr">lulokoba@gmail.com</a>
       <div class="ct-actions">
         <a class="chip-btn" href="mailto:lulokoba@gmail.com">Write an email</a>
-        <button type="button" class="chip-btn ghost" id="copyBtn">Copy email</button>
+        <button type="button" class="chip-btn ghost" id="copyBtn"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="5.5" y="5.5" width="8" height="8" rx="1.8"/><path d="M10.5 3.2V3a1.5 1.5 0 0 0-1.5-1.5H4A1.5 1.5 0 0 0 2.5 3v5A1.5 1.5 0 0 0 4 9.5h.3"/></svg><span>Copy email</span></button>
         <a class="chip-btn ghost" href="CV/Raul_Munoz_CV.pdf" download="Raul_Munoz_CV.pdf" target="_blank" rel="noopener">Download CV · PDF</a>
       </div>
     </div>
@@ -818,7 +916,14 @@ const SEGS = [
            ['w3','The sock squad',16/9,false,'media/vitaepro/still-03.jpg'],['w3','Gathering round',16/9,false,'media/vitaepro/still-04.jpg'],['w3','One more stretch',16/9,false,'media/vitaepro/still-06.jpg'],
            ['w3','Back to the room',16/9,false,'media/vitaepro/still-07.jpg'],['w3','Pack shot',16/9,false,'media/vitaepro/still-08.jpg']],
     led:['Campaign concept and creative platform','Large-scale production across 2 shoot days','Rollout for 5 markets and every channel','Alignment with marketing and market leads'],
-    made:['Storyboards','On-set direction','Final craft reviews']},
+    made:['Storyboards','On-set direction','Final craft reviews'],
+    visual:{dark:'#1F2E28', mid:'#42695D', light:'#CBE0D4', ink:'#F1F6F2',
+      slate:[['Campaign','Summer 2026'],['Client','VitaePro'],['Format','Film · social · print'],['Markets','5 markets'],['Shoot','2 days']],
+      quote:'One summer idea, produced once and rolled out to five markets.',
+      palette:[['Sage mist','#CBE0D4'],['Mint','#9DB8AC'],['Pine','#42695D'],['Driftwood','#81715E'],['Olive night','#48473A']],
+      blocks:[['hero','media/vitaepro/poster.jpg'],['idea','media/vitaepro/still-05.jpg'],['film'],['case'],
+              ['tri',[['Morning stiffness','media/vitaepro/still-01.jpg'],['The dresser opens','media/vitaepro/still-02.jpg'],['The sock squad','media/vitaepro/still-03.jpg']],'The story in three frames'],
+              ['palette','media/vitaepro/still-08.jpg'],['duo','media/vitaepro/still-04.jpg','media/vitaepro/still-06.jpg'],['full','media/vitaepro/still-07.jpg']]}},
   {id:'hanna-maria-greece', kind:'project', dur:12, title:'Hanna-Maria in Greece', client:'VitaePro (NutraQ)', year:'2024', role:'Director · DOP · Editor · Photographer', markets:'Finland',
     scale:'30s TV ad · shot on location in Greece', line:'A swimming world champion on TV. I filmed, edited and photographed it myself.', tracks:['film','dir'],
     led:['Concept and script','On-location direction with the talent'], made:['Filming, on land and underwater','Editing','Colour grade','Photoshoot'],
@@ -830,12 +935,40 @@ const SEGS = [
     photos:[['w6','Butterfly',1.5,false,'media/hanna-maria/photos/01-butterfly.jpg'],['w3','Beach portrait',1.5,false,'media/hanna-maria/photos/02-beach-portrait.jpg'],['w3','Beach stretch',1.5,false,'media/hanna-maria/photos/03-beach-lunge.jpg'],
             ['w3','On the shore',1.5,false,'media/hanna-maria/photos/04-beach-kneel.jpg'],['w3','Kayak',1.773,false,'media/hanna-maria/photos/05-kayak.jpg'],['w6','Underwater',1.773,false,'media/hanna-maria/photos/06-underwater.jpg'],
             ['w3','Training court',1.5,false,'media/hanna-maria/photos/07-training-court.jpg'],['w3','Workout',1.443,false,'media/hanna-maria/photos/08-workout.jpg'],
-            ['w3','Product in hand',1.5,false,'media/hanna-maria/photos/09-product-hand.jpg'],['w3','Product still life',1.5,false,'media/hanna-maria/photos/10-product-bag.jpg']]},
+            ['w3','Product in hand',1.5,false,'media/hanna-maria/photos/09-product-hand.jpg'],['w3','Product still life',1.5,false,'media/hanna-maria/photos/10-product-bag.jpg']],
+    visual:{dark:'#14292E', mid:'#437A86', light:'#E3D6CF', ink:'#EEF4F5',
+      slate:[['Talent','Hanna-Maria Hintsa'],['Location','Greece'],['Format','30s TV'],['Market','Finland'],['Year','2024']],
+      quote:'One person behind the camera, on land and underwater: direction, camera, edit and the photoshoot.',
+      palette:[['Pool teal','#437A86'],['Aegean','#95B0BB'],['Sand','#CEBFBB'],['Terracotta','#9D7F74'],['Deep water','#333834']],
+      blocks:[['hero','media/hanna-maria/photos/01-butterfly.jpg',{pos:'50% 40%'}],['idea','media/hanna-maria/still-03.jpg'],['film'],['case'],
+              ['list','media/hanna-maria/still-06.jpg',['Concept','Direction','Camera','Edit','+ Photography'],4,'Every role on this one, above and below the water.','Made by hand'],
+              ['tri',[['Beach','media/hanna-maria/photos/02-beach-portrait.jpg'],['Shore','media/hanna-maria/photos/04-beach-kneel.jpg'],['Stretch','media/hanna-maria/photos/03-beach-lunge.jpg']],'The photoshoot, shot by me'],
+              ['full','media/hanna-maria/photos/06-underwater.jpg'],['duo','media/hanna-maria/photos/07-training-court.jpg','media/hanna-maria/photos/08-workout.jpg'],
+              ['palette','media/hanna-maria/photos/09-product-hand.jpg',null,true],['full','media/hanna-maria/photos/05-kayak.jpg']]}},
   {id:'you-still-got-it', kind:'project', dur:12, title:'You Still Got It', client:'VitaePro (NutraQ)', year:'2025', role:'Creative Director', markets:'Norway',
-    scale:'30s TV ad · sales campaign', line:'A dance through the decades, from 1981 to today: you still got it.', tracks:['dir','film'],
-    led:['Campaign concept','Creative direction'], made:['TBC: tell me what you made hands-on'],
+    scale:'Integrated summer campaign · TV, digital, social, UGC', line:'A dance through the decades, from 1981 to today: you still got it.', tracks:['dir','film'],
+    led:['Umbrella campaign concept “Still got it?”','Creative direction'], made:['Campaign concept and copy','TV concept','Script','Storyboard'],
     seq:true, imgs:Array.from({length:48}, (_, i) => `media/still-got-it/seq/f${String(i + 1).padStart(3, '0')}.jpg`), gif:'media/still-got-it/still-got-it.gif',
     hero:['hero','TV ad · 30s (Norway)',16/9,true,'media/still-got-it/poster.jpg','video/still-got-it-2025.mp4'],
+    visual:{dark:'#280F20', mid:'#7B3044', light:'#CEB7AD', ink:'#F6E9E4', hero:'media/still-got-it/hero.jpg',
+      umbrella:{title:'Still got it?', by:'Concept, copy, script and storyboard by Raul Muñoz',
+        paras:['The umbrella idea for the whole summer campaign. Everyone has had a moment when they felt unstoppable: a big achievement, a time they radiated energy, a memory that still makes them smile. “Still got it?” invites people to rekindle those glory days and prove they haven’t gone anywhere.',
+               'It’s built on real customer stories: people who had to put down what they loved, and with VitaePro supporting their muscles and joints, picked it back up. One line carries every channel, from TV to social to the photo challenge: the best version of you isn’t behind you, it’s waiting to be rediscovered.']},
+      cols:[['The brief','Summer is VitaePro’s biggest sales moment. It used to ride on product reformulations, but new ingredients were running out. The brief: a summer campaign strong enough to drive sales on its own, built digital first.'],
+            ['The insight','When we invited Finnish customers to share their wellness moments, over 200 sent photos of getting back to what they love. Everyone has their glory days, and the best version of you isn’t behind you.'],
+            ['Two tracks','Conversion: instant recognition plus the strongest offer ever, over 70% off. Inspiration: real stories, nostalgia and charm, inviting people to share a photo of their active self, then or now, to win prizes.']],
+      concept:{quote:'With VitaePro, it’s never too late to show that you still got it.',
+        paras:['A dynamic timeline of Karen’s life. Inspired by our customers’ real stories, the presenter follows Karen’s journey from her younger days to today, moving through key decades: the 80s, 90s and 2000s. Each portal or room reveals a life milestone, and at one stage we introduce both the problem and the solution.',
+               'The presenter changes outfits to reflect each era, blending nostalgia, humour and emotional depth. VitaePro is present throughout: guiding, supporting and enhancing each stage of the journey. We show not just how life changes, but how VitaePro is there at every turn, helping our audience grow, adapt and thrive.']},
+      slate:[['Campaign','Summer 2025'],['Client','VitaePro'],['Format','Integrated · TV, social, UGC'],['Market','Norway'],['Year','2025']],
+      decades:['1981','1993','2002','+ 2025'], hl:3, decadesLine:'Four decades. One body that still moves.',
+      tri:[['1981','media/still-got-it/still-01.jpg'],['2002','media/still-got-it/still-04.jpg'],['2025','media/still-got-it/still-07.jpg']],
+      palette:[['Disco plum','#280F20'],['Berry','#7B3044'],['Dusty rose','#A07D77'],['Blush','#CEB7AD'],['Studio grey','#737579']],
+      caseLabel:'The concept',
+      blocks:[['hero','media/still-got-it/hero.jpg',{pos:'50% 25%', noRight:true}],['idea','media/still-got-it/still-02.jpg'],['case'],['film'],
+              ['list','media/still-got-it/still-08.jpg',['1981','1993','2002','+ 2025'],3,'Four decades. One body that still moves.','Through the decades'],
+              ['tri',[['1981','media/still-got-it/still-01.jpg'],['2002','media/still-got-it/still-04.jpg'],['2025','media/still-got-it/still-07.jpg']],'Three eras, one story'],
+              ['palette','media/still-got-it/still-05.jpg'],['full','media/still-got-it/still-06.jpg']]},
     media:[['w3','1993, the wedding',16/9,false,'media/still-got-it/still-03.jpg'],['w3','1981',16/9,false,'media/still-got-it/still-01.jpg'],['w3','Disco',16/9,false,'media/still-got-it/still-02.jpg'],
            ['w3','2002',16/9,false,'media/still-got-it/still-04.jpg'],['w3','2025, the gym',16/9,false,'media/still-got-it/still-07.jpg'],['w3','The product',16/9,false,'media/still-got-it/still-05.jpg'],
            ['w3','Host and friend',16/9,false,'media/still-got-it/still-06.jpg'],['w3','Through the decades',16/9,false,'media/still-got-it/still-08.jpg']]},
@@ -844,10 +977,14 @@ const SEGS = [
     led:['Brand idea and visual direction','Packaging system for Sweden and Finland'], made:['TBC: tell me what you made hands-on (illustration, packaging design, photography?)'],
     imgs:['media/vitaeheart/01-pack-in-bag.jpg'],
     hero:['hero','VitaeHeart pack, out in the world',1.5,false,'media/vitaeheart/01-pack-in-bag.jpg'],
-    story:[['Challenge',"Cholesterol products usually look clinical. VitaeHeart needed to stand out on a crowded shelf in Sweden and Finland and feel like something you'd happily carry around."],
+    story:[['Challenge',"Cholesterol products usually look clinical. VitaeHeart is a subscription, delivered straight to people's homes in Sweden and Finland, so it had to feel like something you're glad to receive and happy to carry around."],
            ['Idea',"A clean white pack with a bold red ribbon of illustration: people dancing, moving and living well. Heart health shown as joy, not as a warning."],
            ['What I delivered',"TBC: the brand, packaging and launch pieces I directed and made."]],
-    media:[['w3','Pack front · add image',1,false],['w3','Illustration detail · add image',1,false],['w6','In store / campaign · add image',16/9,false]]},
+    media:[['w3','Pack front · add image',1,false],['w3','Illustration detail · add image',1,false],['w6','In store / campaign · add image',16/9,false]],
+    visual:{dark:'#1B2430', mid:'#B8352C', light:'#F2E6DC', ink:'#FFF6F0',
+      slate:[['Brand','VitaeHeart'],['Client','VitaeLab'],['Scope','Brand · packaging · launch'],['Markets','Sweden · Finland'],['Model','Subscription']],
+      quote:'Heart health shown as joy, not as a warning.',
+      blocks:[['hero','media/vitaeheart/01-pack-in-bag.jpg',{pos:'50% 45%'}],['case'],['quote','A heart-health brand that feels like everyday joy, not medicine.','Concept mockups of the full brand system coming soon.']]}},
   {id:'digital-australia', kind:'project', dur:12, title:'Digital Channels, Australia', client:'TBC', year:'2016–2018', role:'Digital Creative Director', markets:'Australia',
     scale:'Apps, landing pages, social', line:'Digital creative direction across apps, web and social.', tracks:['design','dir'],
     led:['Team across UX, UI and motion','Digital channel strategy'], made:['UX flows','UI design','Prototypes']},
@@ -870,7 +1007,17 @@ const SEGS = [
     media:[['w2','Home screen on iPad',0.636,false,'kids/01-intro-title-ipad.jpg'],['w2','Character sheet',0.69,false,'kids/08-game-characters.jpg'],['w2','Storybook scenes',0.461,false,'kids/03-story-scenes-grid.jpg'],
            ['w3','Game · Super Charge',1.405,false,'kids/04-game-super-charge.jpg'],['w3','Game · Wipe Out',1.339,false,'kids/05-game-wipe-out.jpg'],
            ['w3','Game · Get Netted',1.412,false,'kids/06-game-get-netted.jpg'],['w3','Game · Bed Head',1.412,false,'kids/07-game-bed-head.jpg'],
-           ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg']]},
+           ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg']],
+    visual:{dark:'#1E3A35', mid:'#549D94', light:'#FAEFD2', ink:'#FFFDF6',
+      slate:[['Client','Cenovis'],['Agency','Pusher, Sydney'],['Format','iPad storybook app · 4 games'],['Market','Australia'],['Year','2012']],
+      quote:'A Word document in. A whole world out.',
+      palette:[['Leaf','#72BA84'],['Lagoon','#549D94'],['Cream','#FAEFD2'],['Pear','#D9DCA6'],['Bark','#5B524A']],
+      blocks:[['hero','kids/02-yummo-world-ipad.jpg',{fit:true}],['idea',{src:'kids/01-intro-title-ipad.jpg',fit:true,bg:'#FAEFD2'}],['case'],
+              ['duo',{src:'kids/04-game-super-charge.jpg',fit:true,bg:'#D9DCA6'},{src:'kids/05-game-wipe-out.jpg',fit:true,bg:'#FAEFD2'}],
+              ['duo',{src:'kids/06-game-get-netted.jpg',fit:true,bg:'#FAEFD2'},{src:'kids/07-game-bed-head.jpg',fit:true,bg:'#D9DCA6'}],
+              ['palette',{src:'kids/08-game-characters.jpg',fit:true,bg:'#FFFFFF'},'Colour'],
+              ['list',{src:'kids/03-story-scenes-grid.jpg',fit:true,bg:'#FAEFD2'},['Idea','Characters','Storyboards','Animation','+ 4 games'],4,'Everything beyond the script, made by hand.','Made by hand'],
+              ['full',{src:'kids/09-sammy-and-sally.jpg',fit:true,bg:'#72BA84'}]]}},
   {id:'end', kind:'end', dur:6, title:'Before you go', tracks:['dir'], imgs:['media/showreel-poster-v2.jpg']}
 ];
 let acc = 0;
@@ -959,6 +1106,18 @@ function fitCanvas(){
   const kick = () => { tryPlay(); if (!rv.paused) ['touchstart','pointerdown','scroll','keydown'].forEach(ev => removeEventListener(ev, kick, true)); };
   ['touchstart','pointerdown','scroll','keydown'].forEach(ev => addEventListener(ev, kick, {capture: true, passive: true}));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) tryPlay(); });
+})();
+// mobile coach-mark: a hand drags across the timeline twice after the splash, then gets out of the way
+(() => {
+  const h = document.getElementById('tlHint'); if (!h || !matchMedia('(max-width:820px)').matches) return;
+  let t1, t2;
+  const li = document.getElementById('lanesInner');
+  const hide = () => { clearTimeout(t1); clearTimeout(t2); h.classList.remove('show'); li && li.classList.remove('peek');
+    const rv = document.getElementById('reel'); if (rv && rv.paused && document.querySelector('.screen.intro')) { const pr = rv.play(); if (pr) pr.catch(() => {}); } setTimeout(() => h.remove(), 400);
+    ['touchstart','pointerdown','wheel'].forEach(ev => removeEventListener(ev, hide, true)); };
+  const start = () => { t1 = setTimeout(() => { h.classList.add('show'); li && li.classList.add('peek'); requestAnimationFrame(() => [h, li].forEach(el => el && el.getAnimations && el.getAnimations({subtree: true}).forEach(an => { an.currentTime = 0; }))); t2 = setTimeout(hide, 2300); }, 500);
+    ['touchstart','pointerdown','wheel'].forEach(ev => addEventListener(ev, hide, {capture: true, passive: true})); };
+  if (window.__splashDone || !document.getElementById('splash')) start(); else addEventListener('splashdone', start, {once: true});
 })();
 // redraw the current frame immediately (no blank frame in between)
 function redraw(){ const sec = secFromScroll(), s = segAt(sec); draw(s, (sec - s.start) / s.dur); }
@@ -1233,6 +1392,7 @@ function renderProject(p){
   const idx = PROJECTS.indexOf(p), next = PROJECTS[(idx + 1) % PROJECTS.length];
   const media = p.media || (p.kind === 'photo' ? PHOTO_MEDIA : MEDIA);
   lbItems = [p.hero || ['hero', p.kind === 'photo' ? 'Opening image' : 'Hero film', 16/9, p.kind !== 'photo'], ...media, ...(p.photos || [])];
+  if (p.visual) return renderVisual(p, next);
   const isPhoto = p.kind === 'photo';
   view.innerHTML = `
     <div class="view-bar"><button type="button" class="close" data-back style="margin-left:0">← Timeline</button>
@@ -1267,6 +1427,59 @@ function renderProject(p){
       ${p.photos ? `<div class="sec-head"><p class="eyebrow">Photography</p><h3>The photoshoot, shot by me</h3></div>
       <div class="media">${p.photos.map((m,i) => `<button type="button" class="m ${m[0]} real" data-lb="${media.length + i + 1}" aria-label="Open ${m[1]} full screen" style="aspect-ratio:${m[2]}">${cell(m)}</button>`).join('')}</div>` : ''}
       <button type="button" class="next" data-next="${next.id}"><span class="eyebrow">Next clip · ${next.n}</span><div class="v-title">${next.title} →</div></button>
+    </div>`;
+  view.scrollTop = 0;
+}
+/* visual case-study layout: edge-to-edge tiles built from blocks, a palette per project, editorial corner labels */
+function renderVisual(p, next){
+  const v = p.visual, all = lbItems, heroIsVideo = p.hero && p.hero[5];
+  const S = x => typeof x === 'string' ? {src: x} : x;
+  const lbI = f => { const i = all.findIndex((m, k) => m && m[4] === f && !(k === 0 && heroIsVideo)); return i < 0 ? '' : ` data-lb="${i}"`; };
+  const altOf = f => (all.find(m => m && m[4] === f) || [])[1] || p.title;
+  const lbl = (a, b, ink) => `<div class="vx-lbl mono" style="color:${ink || v.ink}"><span>${a}</span><span>${b}</span></div>`;
+  const tag = `${p.client.split(' (')[0].split(' · ')[0]} · ${p.year}`;
+  const imgT = (x, cls = '') => { x = S(x); const alt = altOf(x.src);
+    return `<button type="button" class="vx-t vx-img ${cls}${x.fit ? ' fit' : ''}"${lbI(x.src)}${x.bg ? ` style="background:${x.bg}"` : ''} aria-label="Open ${alt} full screen"><img src="${x.src}" alt="${alt}" loading="lazy"${x.pos ? ` style="object-position:${x.pos}"` : ''}>${lbl(tag, p.title, x.fit ? 'var(--vd)' : '#fff')}</button>`; };
+  const clean = a => (a || []).filter(x => !/^TBC/.test(x));
+  const B = {
+    hero: (src, opt = {}) => opt.fit
+      ? `<section class="vx-t vx-hero full vx-hero-fit" style="background:var(--vm)">${lbl('Clip ' + p.n + ' / ' + String(PROJECTS.length).padStart(2, '0'), 'Director\'s Cut · Case study')}
+          <div class="vx-hero-art"><img src="${src}" alt=""></div>
+          <div class="vx-hero-in"><h1 class="vx-h1" id="vTitle">${p.title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`
+      : `<section class="vx-t vx-hero full"><img src="${src}" alt="" style="object-position:${opt.pos || '50% 30%'}">
+          ${lbl('Clip ' + p.n + ' / ' + String(PROJECTS.length).padStart(2, '0'), opt.noRight ? '' : 'Director\'s Cut · Case study', '#fff')}
+          <div class="vx-hero-in"><h1 class="vx-h1" id="vTitle">${p.title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`,
+    idea: (img, flip) => { const panel = `<div class="vx-t vx-panel" style="background:var(--vl); color:var(--vd)">${lbl('The idea', tag, 'var(--vd)')}
+        <p class="vx-state">${v.idea || p.line}</p><p class="vx-small">${p.role} · ${p.scale}</p></div>`; return flip ? imgT(img) + panel : panel + imgT(img); },
+    film: () => heroIsVideo ? `<section class="vx-t full vx-film"><video class="hero-video" src="${p.hero[5]}" poster="${p.hero[4]}" controls playsinline preload="metadata" aria-label="${p.hero[1]}"></video></section>` : '',
+    case: () => { const story = v.cols || (p.story || []);
+      const lm = [['What I led', clean(p.led)], ['Hands-on', clean(p.made)]].filter(x => x[1].length);
+      return `<section class="vx-t full vx-case" style="background:#F4EEEA; color:var(--vd)">${lbl(v.caseLabel || 'The case', tag, 'var(--vd)')}
+        ${v.umbrella ? `<div class="vx-case-in vx-umb"><div><p class="vx-eyebrow mono">The campaign idea</p><p class="vx-big">${v.umbrella.title}</p><p class="vx-by mono">${v.umbrella.by}</p></div>
+          <div class="vx-case-txt">${v.umbrella.paras.map(t => `<p>${t}</p>`).join('')}</div></div>` : ''}
+        ${v.concept ? `<div class="vx-case-in"><div><p class="vx-eyebrow mono">${v.concept.label || 'The concept'}</p><p class="vx-quote">${v.concept.quote}</p></div>
+          <div class="vx-case-txt">${(v.concept.paras || []).map(t => `<p>${t}</p>`).join('')}</div></div>`
+          : `<div class="vx-case-in"><div><p class="vx-eyebrow mono">The project</p><p class="vx-quote">${v.quote || p.line}</p></div><div class="vx-case-txt">${(v.intro || []).map(t => `<p>${t}</p>`).join('')}</div></div>`}
+        ${story.length ? `<div class="vx-cols">${story.map(([h, t]) => `<div><p class="vx-eyebrow mono">${h}</p><p>${t}</p></div>`).join('')}</div>` : ''}
+        ${lm.length ? `<div class="vx-cols vx-lm">${lm.map(([h, l]) => `<div><p class="vx-eyebrow mono">${h}</p><ul>${l.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>` : ''}</section>`; },
+    list: (img, items, hl, caption, label, flip) => { const panel = `<div class="vx-t vx-panel vx-list" style="background:var(--vm); color:var(--vi)">${lbl(label, tag)}
+        <ul>${items.map((d, i) => `<li${i === hl ? ' class="on"' : ''}>${d}</li>`).join('')}</ul><p class="vx-small">${caption}</p></div>`; return flip ? panel + imgT(img) : imgT(img) + panel; },
+    tri: (items, label, bg) => `<section class="vx-t full vx-tri" style="background:${bg || 'var(--vd)'}">${lbl(label, tag)}
+        <div class="vx-tri-in">${items.map(([y, f]) => `<figure${lbI(f)} role="button" tabindex="0"><img src="${f}" alt="${y}" loading="lazy"><figcaption class="mono">${y}</figcaption></figure>`).join('')}</div></section>`,
+    palette: (img, label, flip) => { const panel = `<div class="vx-t vx-panel vx-pal" style="background:#F4EEEA; color:var(--vd)">${lbl(label || 'Grade palette', label ? 'The palette' : 'Pulled from the film', 'var(--vd)')}
+        <div class="vx-sw">${v.palette.map(([n, h]) => `<div style="background:${h}; color:${(parseInt(h.slice(1, 3), 16) * .3 + parseInt(h.slice(3, 5), 16) * .59 + parseInt(h.slice(5, 7), 16) * .11) > 150 ? '#1b1b1b' : '#fff'}"><b>${n}</b><span class="mono">${h}</span></div>`).join('')}</div></div>`; return flip ? imgT(img) + panel : panel + imgT(img); },
+    full: img => imgT(img, 'full'),
+    duo: (a, b) => imgT(a) + imgT(b),
+    quote: (text, sub) => `<section class="vx-t full vx-qt" style="background:var(--vm); color:var(--vi)">${lbl(p.title, tag)}<p class="vx-quote" style="color:var(--vi)">${text}</p>${sub ? `<p class="vx-small">${sub}</p>` : ''}</section>`
+  };
+  view.innerHTML = `
+    <div class="view-bar"><button type="button" class="close" data-back style="margin-left:0">← Timeline</button>
+      <span class="crumb">Director's Cut / <b>Clip ${p.n}</b> · ${p.title}</span>
+      <button type="button" class="close" data-back>Close <kbd>ESC</kbd></button></div>
+    <div class="vx" style="--vd:${v.dark}; --vm:${v.mid}; --vl:${v.light}; --vi:${v.ink}">
+      ${v.blocks.map(([k, ...a]) => B[k](...a)).join('')}
+      <button type="button" class="vx-t full vx-next" data-next="${next.id}">
+        ${lbl('Next clip · ' + next.n, 'Director\'s Cut', '#0A2E42')}<span class="vx-next-t">${next.title} →</span></button>
     </div>`;
   view.scrollTop = 0;
 }
@@ -1564,7 +1777,8 @@ $('#aboutBody').innerHTML = `
 const hideTip = () => {};
 $('#copyBtn').onclick = () => {
   const b = $('#copyBtn');
-  const done = () => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy email', 1600); };
+  const ICON = b.querySelector('svg').outerHTML, OK = '<svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5"/></svg>';
+  const done = () => { b.innerHTML = OK + '<span>Copied</span>'; setTimeout(() => b.innerHTML = ICON + '<span>Copy email</span>', 1600); };
   try { navigator.clipboard.writeText('lulokoba@gmail.com').then(done, () => selAddr()); } catch(_) { selAddr(); }
 };
 function selAddr(){ const r = document.createRange(); r.selectNodeContents($('#addr')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
