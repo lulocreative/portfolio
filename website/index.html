@@ -574,7 +574,8 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 @media (max-width:820px){.vx-cols{grid-template-columns:minmax(0,1fr)}}
 .vx-img.fit{background:var(--vl)}
 .vx-img.fit img{object-fit:contain; padding:9%; box-sizing:border-box; filter:drop-shadow(0 18px 30px rgba(0,0,0,.18))}
-.vx-img.vx-sprite-sheet.fit img{padding:clamp(12px,3vw,48px)}
+.vx-t.full.vx-sprite-sheet{aspect-ratio:auto}
+.vx-img.vx-sprite-sheet img{position:static; display:block; height:auto; transform:none}
 .vx-t.full.vx-enemy-artwork{width:min(100%,760px); justify-self:center; aspect-ratio:1}
 
 .vx-hero-fit{display:grid !important; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); align-items:end}
@@ -1025,7 +1026,7 @@ const SEGS = [
            ['w3','Game · Super Charge',1.405,false,'kids/04-game-super-charge.jpg'],['w3','Game · Wipe Out',1.339,false,'kids/05-game-wipe-out.jpg'],
            ['w3','Game · Get Netted',1.412,false,'kids/06-game-get-netted.jpg'],['w3','Game · Bed Head',1.412,false,'kids/07-game-bed-head.jpg'],
            ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg'],
-           ['w3','Character sprite sheet',3108/1790,false,'cenovis/img/Screenshot%202026-11-27%20at%2017.04.18.png'],
+           ['w3','Character sprite sheet',3912/1790,false,'cenovis/img/wide.png'],
            ['w3','Purple enemy character',1608/1498,false,'cenovis/img/Screenshot%202026-11-27%20at%2017.17.40.png']],
     visual:{dark:'#1E3A35', mid:'#549D94', light:'#FAEFD2', ink:'#FFFDF6',
       slate:[['Client','Cenovis'],['Agency','Pusher, Sydney'],['Format','iPad storybook app · 4 games'],['Market','Australia'],['Year','2012']],
@@ -1034,7 +1035,7 @@ const SEGS = [
       blocks:[['hero','cenovis/img/top_hero.png',{pos:'60% 50%'}],['idea',{src:'kids/01-intro-title-ipad.jpg',fit:true,bg:'#FAEFD2'}],['case'],
               ['film','cenovis/case_study/Cenovis%20-%20YUMMO%20Adventures-HD.mp4#t=1','kids/yummo-case-study-poster.jpg','Yummo Adventures case study','vx-yummo-film'],
               ['characterDesign'],
-              ['full',{src:'cenovis/img/Screenshot%202026-11-27%20at%2017.04.18.png',fit:true},'vx-sprite-sheet'],
+              ['full','cenovis/img/wide.png','vx-sprite-sheet'],
               ['full',{src:'cenovis/img/Screenshot%202026-11-27%20at%2017.17.40.png',fit:true},'vx-enemy-artwork'],
               ['enemies','The Candy Rocks',[
                 ['Grounded Candy Rock','cenovis/characters/animations/Character-grounded.svg'],
