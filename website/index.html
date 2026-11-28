@@ -592,6 +592,12 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .vx-film{background:#000}
 .vx-film video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000}
 .vx-t.full.vx-game,.vx-t.full.vx-enemies{aspect-ratio:auto}
+.vx-yummo-film{width:min(calc(100% - 2 * clamp(20px,6vw,96px)),900px); margin:clamp(28px,5vw,64px) auto; border-radius:12px}
+.vx-t.full.vx-character-design{aspect-ratio:auto; min-height:145vh; overflow:visible; background:var(--vl); color:var(--vd)}
+.vx-character-layout{position:sticky; top:var(--topH); min-height:min(72vh,620px); display:grid; grid-template-columns:1fr 1fr; gap:clamp(12px,4vw,60px); align-items:center; padding:clamp(20px,5vw,72px)}
+.vx-character-art{width:min(100%,480px); justify-self:center; aspect-ratio:400/383; background:url('kids/outline-to-colour.webp') no-repeat 0 0 / 700% 700%}
+@media (max-width:640px){.vx-character-layout{grid-template-columns:1fr; min-height:0}.vx-character-art{width:min(100%,36vh)}}
+@media (prefers-reduced-motion:reduce){.vx-t.full.vx-character-design{min-height:0}.vx-character-layout{position:static}.vx-character-art{background-position:100% 100%}}
 .vx-game{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); background:var(--vd); color:var(--vi)}
 .vx-game .vx-panel{padding:clamp(20px,5vw,72px)}
 .vx-game .vx-img{aspect-ratio:auto; min-height:clamp(240px,45vw,660px)}
@@ -1021,7 +1027,8 @@ const SEGS = [
       quote:'A Word document in. A whole world out.',
       palette:[['Leaf','#72BA84'],['Lagoon','#549D94'],['Cream','#FAEFD2'],['Pear','#D9DCA6'],['Bark','#5B524A']],
       blocks:[['hero','kids/02-yummo-world-ipad.jpg',{fit:true}],['idea',{src:'kids/01-intro-title-ipad.jpg',fit:true,bg:'#FAEFD2'}],['case'],
-              ['film','cenovis/case_study/Cenovis%20-%20YUMMO%20Adventures-HD.mp4#t=1','kids/yummo-case-study-poster.jpg','Yummo Adventures case study'],
+              ['film','cenovis/case_study/Cenovis%20-%20YUMMO%20Adventures-HD.mp4#t=1','kids/yummo-case-study-poster.jpg','Yummo Adventures case study','vx-yummo-film'],
+              ['characterDesign'],
               ['enemies','The Candy Rocks',[
                 ['Grounded Candy Rock','cenovis/characters/animations/Character-grounded.svg'],
                 ['Hopping Candy Rock','cenovis/characters/animations/Character-hop%20%281%29.svg'],
@@ -1466,7 +1473,7 @@ function renderVisual(p, next){
           <div class="vx-hero-in"><h1 class="vx-h1" id="vTitle">${p.title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`,
     idea: (img, flip) => { const panel = `<div class="vx-t vx-panel" style="background:var(--vl); color:var(--vd)">${lbl('The idea', tag, 'var(--vd)')}
         <p class="vx-state">${v.idea || p.line}</p><p class="vx-small">${p.role} · ${p.scale}</p></div>`; return flip ? imgT(img) + panel : panel + imgT(img); },
-    film: (src = heroIsVideo ? p.hero[5] : null, poster = p.hero[4], label = p.hero[1]) => src ? `<section class="vx-t full vx-film"><video class="hero-video" src="${src}" poster="${poster}" controls playsinline preload="metadata" aria-label="${label}"></video></section>` : '',
+    film: (src = heroIsVideo ? p.hero[5] : null, poster = p.hero[4], label = p.hero[1], extraClass = '') => src ? `<section class="vx-t full vx-film ${extraClass}"><video class="hero-video" src="${src}" poster="${poster}" controls playsinline preload="metadata" aria-label="${label}"></video></section>` : '',
     case: () => { const story = v.cols || (p.story || []);
       const lm = [['What I led', clean(p.led)], ['Hands-on', clean(p.made)]].filter(x => x[1].length);
       return `<section class="vx-t full vx-case" style="background:#F4EEEA; color:var(--vd)">${lbl(v.caseLabel || 'The case', tag, 'var(--vd)')}
@@ -1479,6 +1486,10 @@ function renderVisual(p, next){
         ${lm.length ? `<div class="vx-cols vx-lm">${lm.map(([h, l]) => `<div><p class="vx-eyebrow mono">${h}</p><ul>${l.map(x => `<li>${x}</li>`).join('')}</ul></div>`).join('')}</div>` : ''}</section>`; },
     list: (img, items, hl, caption, label, flip) => { const panel = `<div class="vx-t vx-panel vx-list" style="background:var(--vm); color:var(--vi)">${lbl(label, tag)}
         <ul>${items.map((d, i) => `<li${i === hl ? ' class="on"' : ''}>${d}</li>`).join('')}</ul><p class="vx-small">${caption}</p></div>`; return flip ? panel + imgT(img) : imgT(img) + panel; },
+    characterDesign: () => `<section class="vx-t full vx-character-design"><div class="vx-character-layout">
+      <div><h2 class="vx-state">Character design</h2><p class="vx-small">Drawn by hand in Adobe Illustrator.</p></div>
+      <div class="vx-character-art" role="img" aria-label="Sammy and Sally progress from construction lines to finished colour illustrations"></div>
+    </div></section>`,
     enemies: (title, characters) => `<section class="vx-t full vx-enemies"><p class="vx-eyebrow mono">Enemies</p><h2 class="vx-state">${title}</h2>
       <div class="vx-tri-in">${characters.map(([alt, src]) => `<img src="${src}" alt="${alt}" loading="lazy">`).join('')}</div></section>`,
     game: (title, img) => `<section class="vx-t full vx-game"><div class="vx-panel"><h2 class="vx-state">${title}</h2></div>${imgT(img)}</section>`,
@@ -1528,6 +1539,25 @@ function closeProject(){
   else { location.hash = 'cut'; }
 }
 function hideProject(){ if (view.hidden) return; view.hidden = true; curProject = null; lock(); refreshStage(); }
+if (!reduce) {
+  let characterFramePending = false;
+  view.addEventListener('scroll', () => {
+    const art = view.querySelector('.vx-character-art');
+    if (!art || characterFramePending) return;
+    characterFramePending = true;
+    requestAnimationFrame(() => {
+      characterFramePending = false;
+      if (!art.isConnected || view.hidden) return;
+      const section = art.closest('.vx-character-design');
+      const layout = art.parentElement;
+      const top = view.querySelector('.view-bar').offsetHeight;
+      const distance = Math.max(1, section.offsetHeight - layout.offsetHeight);
+      const progress = Math.max(0, Math.min(1, (top - section.getBoundingClientRect().top) / distance));
+      const frame = Math.round(progress * 48);
+      art.style.backgroundPosition = `${(frame % 7) * 100 / 6}% ${Math.floor(frame / 7) * 100 / 6}%`;
+    });
+  }, {passive:true});
+}
 view.addEventListener('click', e => {
   if (e.target.closest('[data-back]')) return closeProject();
   const n = e.target.closest('[data-next]'); if (n) { location.replace('#' + n.dataset.next); return; }
