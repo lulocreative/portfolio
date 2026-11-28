@@ -594,10 +594,10 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .vx-t.full.vx-game,.vx-t.full.vx-enemies{aspect-ratio:auto}
 .vx-yummo-film{width:min(calc(100% - 2 * clamp(20px,6vw,96px)),900px); margin:clamp(28px,5vw,64px) auto; border-radius:12px}
 .vx-t.full.vx-character-design{aspect-ratio:auto; min-height:145vh; overflow:visible; background:var(--vl); color:var(--vd)}
-.vx-character-layout{position:sticky; top:var(--topH); min-height:min(72vh,620px); display:grid; grid-template-columns:1fr 1fr; gap:clamp(12px,4vw,60px); align-items:center; padding:clamp(20px,5vw,72px)}
-.vx-character-art{width:min(100%,480px); justify-self:center; aspect-ratio:400/383; background:url('kids/outline-to-colour.webp') no-repeat 0 0 / 700% 700%}
-@media (max-width:640px){.vx-character-layout{grid-template-columns:1fr; min-height:0}.vx-character-art{width:min(100%,36vh)}}
-@media (prefers-reduced-motion:reduce){.vx-t.full.vx-character-design{min-height:0}.vx-character-layout{position:static}.vx-character-art{background-position:100% 100%}}
+.vx-character-layout{position:sticky; top:calc(var(--topH) + env(safe-area-inset-top,0px)); min-height:min(80vh,730px); display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); gap:clamp(12px,3vw,48px); align-items:center; padding:clamp(20px,4vw,64px)}
+.vx-character-art{display:block; width:min(100%,820px,76vh); justify-self:center; aspect-ratio:24/23; object-fit:contain; transform:translateY(var(--character-y,0px))}
+@media (max-width:640px){.vx-character-layout{grid-template-columns:1fr; min-height:0}.vx-character-art{width:min(100%,48vh)}}
+@media (prefers-reduced-motion:reduce){.vx-t.full.vx-character-design{min-height:0}.vx-character-layout{position:static}}
 .vx-game{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,2fr); background:var(--vd); color:var(--vi)}
 .vx-game .vx-panel{padding:clamp(20px,5vw,72px)}
 .vx-game .vx-img{aspect-ratio:auto; min-height:clamp(240px,45vw,660px)}
@@ -1488,7 +1488,7 @@ function renderVisual(p, next){
         <ul>${items.map((d, i) => `<li${i === hl ? ' class="on"' : ''}>${d}</li>`).join('')}</ul><p class="vx-small">${caption}</p></div>`; return flip ? panel + imgT(img) : imgT(img) + panel; },
     characterDesign: () => `<section class="vx-t full vx-character-design"><div class="vx-character-layout">
       <div><h2 class="vx-state">Character design</h2><p class="vx-small">Drawn by hand in Adobe Illustrator.</p></div>
-      <div class="vx-character-art" role="img" aria-label="Sammy and Sally progress from construction lines to finished colour illustrations"></div>
+      <video class="vx-character-art" muted playsinline preload="auto" poster="kids/outline-to-colour-poster.webp" aria-label="Sammy and Sally progress from construction lines to finished colour illustrations"></video>
     </div></section>`,
     enemies: (title, characters) => `<section class="vx-t full vx-enemies"><p class="vx-eyebrow mono">Enemies</p><h2 class="vx-state">${title}</h2>
       <div class="vx-tri-in">${characters.map(([alt, src]) => `<img src="${src}" alt="${alt}" loading="lazy">`).join('')}</div></section>`,
@@ -1541,20 +1541,31 @@ function closeProject(){
 function hideProject(){ if (view.hidden) return; view.hidden = true; curProject = null; lock(); refreshStage(); }
 if (!reduce) {
   let characterFramePending = false;
+  function updateCharacterVideo() {
+    const video = view.querySelector('.vx-character-art');
+    if (!video || view.hidden) return;
+    const section = video.closest('.vx-character-design');
+    const sectionTop = section.getBoundingClientRect().top;
+    if (sectionTop > view.clientHeight * 2) return;
+    if (!video.hasAttribute('src')) {
+      video.addEventListener('loadedmetadata', updateCharacterVideo, {once:true});
+      video.src = 'kids/outline-to-colour-alpha.webm';
+    }
+    const top = view.querySelector('.view-bar').offsetHeight;
+    const distance = Math.max(1, section.offsetHeight - video.parentElement.offsetHeight);
+    const progress = Math.max(0, Math.min(1, (top - sectionTop) / distance));
+    video.style.setProperty('--character-y', `${(0.5 - progress) * 52}px`);
+    if (Number.isFinite(video.duration)) {
+      const time = progress * (video.duration - 1 / 24);
+      if (Math.abs(video.currentTime - time) > 1 / 48) video.currentTime = time;
+    }
+  }
   view.addEventListener('scroll', () => {
-    const art = view.querySelector('.vx-character-art');
-    if (!art || characterFramePending) return;
+    if (characterFramePending) return;
     characterFramePending = true;
     requestAnimationFrame(() => {
       characterFramePending = false;
-      if (!art.isConnected || view.hidden) return;
-      const section = art.closest('.vx-character-design');
-      const layout = art.parentElement;
-      const top = view.querySelector('.view-bar').offsetHeight;
-      const distance = Math.max(1, section.offsetHeight - layout.offsetHeight);
-      const progress = Math.max(0, Math.min(1, (top - section.getBoundingClientRect().top) / distance));
-      const frame = Math.round(progress * 48);
-      art.style.backgroundPosition = `${(frame % 7) * 100 / 6}% ${Math.floor(frame / 7) * 100 / 6}%`;
+      updateCharacterVideo();
     });
   }, {passive:true});
 }
