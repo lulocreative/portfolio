@@ -55,7 +55,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 
 /* ---------- scroll space + sticky stage ---------- */
 #scrollspace{position:relative}
-.stage{position:fixed; top:0; right:0; bottom:0; left:0; padding-top:calc(var(--topH) + env(safe-area-inset-top,0px));
+.stage{position:fixed; isolation:isolate; top:0; right:0; bottom:0; left:0; padding-top:calc(var(--topH) + env(safe-area-inset-top,0px));
   display:grid; grid-template-rows:minmax(0,1fr) auto}
 .suite{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:1px; background:var(--line); min-height:0; border-bottom:1px solid var(--line)}
 .panel-head{display:flex; align-items:center; justify-content:space-between; gap:12px; height:34px; padding:0 14px; border-bottom:1px solid var(--line); flex:none}
@@ -189,7 +189,8 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .view{position:fixed; inset:0; z-index:60; background:var(--bg); overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch}
 /* Safari: rounded, clipped media flickers inside a scrolling container unless each sits on its own layer */
 .view .m,.view .v-hero,.view .facts,.view .ledmade > div{-webkit-transform:translateZ(0); transform:translateZ(0); -webkit-backface-visibility:hidden; backface-visibility:hidden}
-.view-bar{position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:12px; height:calc(var(--topH) + env(safe-area-inset-top,0px));
+.view > :not(.view-bar){isolation:isolate}
+.view-bar{position:sticky; top:0; z-index:10; flex-shrink:0; display:flex; align-items:center; gap:12px; height:calc(var(--topH) + env(safe-area-inset-top,0px));
   padding-top:env(safe-area-inset-top,0px); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px));
   background:var(--bg); border-bottom:1px solid var(--line)}
 .crumb{font-size:12px; color:var(--muted); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
@@ -598,6 +599,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .vx-yummo-film{width:min(calc(100% - 2 * clamp(20px,6vw,96px)),900px); margin:clamp(28px,5vw,64px) auto; border-radius:12px}
 .vx-t.full.vx-character-design{aspect-ratio:auto; min-height:145vh; overflow:visible; background:var(--vl); color:var(--vd)}
 .vx-character-layout{position:sticky; top:calc(var(--topH) + env(safe-area-inset-top,0px)); min-height:min(80vh,730px); display:grid; grid-template-columns:minmax(0,2fr) minmax(0,3fr); gap:clamp(12px,3vw,48px); align-items:center; padding:clamp(20px,4vw,64px)}
+.vx-character-layout .vx-small{max-width:40ch; line-height:1.6}
 .vx-character-art{display:block; width:min(100%,820px,76vh); justify-self:center; aspect-ratio:24/23; object-fit:contain; transform:translateY(var(--character-y,0px))}
 @media (max-width:640px){.vx-character-layout{grid-template-columns:1fr; min-height:0}.vx-character-art{width:min(100%,48vh)}}
 @media (prefers-reduced-motion:reduce){.vx-t.full.vx-character-design{min-height:0}.vx-character-layout{position:static}}
@@ -1486,7 +1488,8 @@ function renderVisual(p, next){
     list: (img, items, hl, caption, label, flip) => { const panel = `<div class="vx-t vx-panel vx-list" style="background:var(--vm); color:var(--vi)">${lbl(label, tag)}
         <ul>${items.map((d, i) => `<li${i === hl ? ' class="on"' : ''}>${d}</li>`).join('')}</ul><p class="vx-small">${caption}</p></div>`; return flip ? panel + imgT(img) : imgT(img) + panel; },
     characterDesign: () => `<section class="vx-t full vx-character-design"><div class="vx-character-layout">
-      <div><h2 class="vx-state">Character design</h2><p class="vx-small">Drawn by hand in Adobe Illustrator.</p></div>
+      <div><h2 class="vx-state">Meet Sally and Sammy</h2>
+        <p class="vx-small">One wrong turn and Sally and Sammy are lost in Yummo World. To find their way home, they set off on four adventures. Each has its own game, where they discover the vitamins hiding in fruit and vegetables and learn how those vitamins help their bodies.</p></div>
       <video class="vx-character-art" muted playsinline preload="auto" poster="kids/outline-to-colour-poster.webp" aria-label="Sammy and Sally progress from construction lines to finished colour illustrations"></video>
     </div></section>`,
     game: (title, img) => `<section class="vx-t full vx-game"><div class="vx-panel"><h2 class="vx-state">${title}</h2></div>${imgT(img)}</section>`,
