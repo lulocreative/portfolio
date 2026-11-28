@@ -548,6 +548,7 @@ button{font:inherit; color:inherit; background:none; border:0; cursor:pointer; p
 .vx-hero::after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,0) 30%, rgba(0,0,0,.15) 55%, rgba(0,0,0,.72))}
 .vx-hero-in{position:relative; z-index:2; width:100%; padding:0 clamp(20px,5vw,72px) clamp(24px,5vw,56px); color:#fff}
 .vx-h1{margin:0 0 clamp(18px,3vw,34px); font-family:var(--f-head); font-weight:700; font-size:clamp(48px,9vw,132px); line-height:.9; letter-spacing:-.04em; text-transform:uppercase}
+@media (max-width:420px){.vx-h1.vx-h1-stacked{font-size:min(48px,12vw)}}
 .vx-slate{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:0; border-top:1px solid rgba(255,255,255,.35)}
 .vx-slate div{position:relative; padding:12px 18px 0 0; display:flex; flex-direction:column; gap:4px}
 .vx-slate span{font-size:9.5px; letter-spacing:.14em; text-transform:uppercase; opacity:.7}
@@ -1021,7 +1022,7 @@ const SEGS = [
            ['w3','Game · Super Charge',1.405,false,'kids/04-game-super-charge.jpg'],['w3','Game · Wipe Out',1.339,false,'kids/05-game-wipe-out.jpg'],
            ['w3','Game · Get Netted',1.412,false,'kids/06-game-get-netted.jpg'],['w3','Game · Bed Head',1.412,false,'kids/07-game-bed-head.jpg'],
            ['w6','Sammy and Sally',2.4,false,'kids/09-sammy-and-sally.jpg']],
-    visual:{dark:'#1E3A35', mid:'#549D94', light:'#FAEFD2', ink:'#FFFDF6',
+    visual:{titleLines:['Yummo','Adventures'], dark:'#1E3A35', mid:'#549D94', light:'#FAEFD2', ink:'#FFFDF6',
       slate:[['Client','Cenovis'],['Agency','Pusher, Sydney'],['Format','iPad storybook app · 4 games'],['Market','Australia'],['Year','2012']],
       quote:'A Word document in. A whole world out.',
       palette:[['Leaf','#72BA84'],['Lagoon','#549D94'],['Cream','#FAEFD2'],['Pear','#D9DCA6'],['Bark','#5B524A']],
@@ -1451,6 +1452,8 @@ function renderProject(p){
 /* visual case-study layout: edge-to-edge tiles built from blocks, a palette per project, editorial corner labels */
 function renderVisual(p, next){
   const v = p.visual, all = lbItems, heroIsVideo = p.hero && p.hero[5];
+  const title = v.titleLines ? v.titleLines.join('<br>') : p.title;
+  const titleClass = v.titleLines ? 'vx-h1 vx-h1-stacked' : 'vx-h1';
   const S = x => typeof x === 'string' ? {src: x} : x;
   const lbI = f => { const i = all.findIndex((m, k) => m && m[4] === f && !(k === 0 && heroIsVideo)); return i < 0 ? '' : ` data-lb="${i}"`; };
   const altOf = f => (all.find(m => m && m[4] === f) || [])[1] || p.title;
@@ -1463,10 +1466,10 @@ function renderVisual(p, next){
     hero: (src, opt = {}) => opt.fit
       ? `<section class="vx-t vx-hero full vx-hero-fit" style="background:var(--vm)">${lbl('Clip ' + p.n + ' / ' + String(PROJECTS.length).padStart(2, '0'), 'Director\'s Cut · Case study')}
           <div class="vx-hero-art"><img src="${src}" alt=""></div>
-          <div class="vx-hero-in"><h1 class="vx-h1" id="vTitle">${p.title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`
+          <div class="vx-hero-in"><h1 class="${titleClass}" id="vTitle">${title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`
       : `<section class="vx-t vx-hero full"><img src="${src}" alt="" style="object-position:${opt.pos || '50% 30%'}">
           ${lbl('Clip ' + p.n + ' / ' + String(PROJECTS.length).padStart(2, '0'), opt.noRight ? '' : 'Director\'s Cut · Case study', '#fff')}
-          <div class="vx-hero-in"><h1 class="vx-h1" id="vTitle">${p.title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`,
+          <div class="vx-hero-in"><h1 class="${titleClass}" id="vTitle">${title}</h1><div class="vx-slate mono">${v.slate.map(([k, val]) => `<div><span>${k}</span><b>${val}</b><i>+</i></div>`).join('')}</div></div></section>`,
     idea: (img, flip) => { const panel = `<div class="vx-t vx-panel" style="background:var(--vl); color:var(--vd)">${lbl('The idea', tag, 'var(--vd)')}
         <p class="vx-state">${v.idea || p.line}</p><p class="vx-small">${p.role} · ${p.scale}</p></div>`; return flip ? imgT(img) + panel : panel + imgT(img); },
     film: (src = heroIsVideo ? p.hero[5] : null, poster = p.hero[4], label = p.hero[1], extraClass = '') => src ? `<section class="vx-t full vx-film ${extraClass}"><video class="hero-video" src="${src}" poster="${poster}" controls playsinline preload="metadata" aria-label="${label}"></video></section>` : '',
